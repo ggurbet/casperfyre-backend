@@ -8,11 +8,8 @@ session_start();
 /**
  * Load config
  */
-define('APP_NAME', 'CasperFYRE');
 
-if(file_exists(__DIR__.'/config.json')) {
-	$config_file = file_get_contents(__DIR__.'/config.json');
-} else {
+if(!file_exists(__DIR__.'/.env')) {
 	header('Content-type:application/json;charset=utf-8');
 	http_response_code(500);
 	exit(json_encode(array(
@@ -21,50 +18,26 @@ if(file_exists(__DIR__.'/config.json')) {
 	)));
 }
 
-try {
-	$config = json_decode($config_file);
-} catch (Exception $e) {
-	header('Content-type:application/json;charset=utf-8');
-	http_response_code(500);
-	exit(json_encode(array(
-		'status' => 'error',
-		'detail' => 'Please configure API server. error code 9'
-	)));
-}
+include_once('classes/dotenv.php');
+$dotenv = new Dotenv(__DIR__.'/.env');
+$dotenv->load();
 
-$err = false;
-isset($config->cors_site) ?: $err = 'Please configure API server. error code 2';
-isset($config->database_host) ?: $err = 'Please configure API server. error code 3';
-isset($config->database_user) ?: $err = 'Please configure API server. error code 4';
-isset($config->database_password) ?: $err = 'Please configure API server. error code 5';
-isset($config->database_name) ?: $err = 'Please configure API server. error code 6';
-isset($config->master_key) ?: $err = 'Please configure API server. error code 7';
-isset($config->node_ip) ?: $err = 'Please configure API server. error code 8';
+define('APP_NAME', getenv('APP_NAME'));
+define('CORS_SITE', getenv('CORS_SITE'));
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_USER', getenv('DB_USER'));
+define('DB_PASS', getenv('DB_PASS'));
+define('DB_NAME', getenv('DB_NAME'));
+define('MASTER_KEY', getenv('MASTER_KEY'));
 
-if($err) {
-	header('Content-type:application/json;charset=utf-8');
-	http_response_code(500);
-	exit(json_encode(array(
-		'status' => 'error',
-		'detail' => $err
-	)));
-}
-
-define('CORS_SITE', $config->cors_site);
-define('DB_HOST', $config->database_host);
-define('DB_USER', $config->database_user);
-define('DB_PASS', $config->database_password);
-define('DB_NAME', $config->database_name);
-define('MASTER_KEY', $config->master_key);
-
-if(filter_var($config->node_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-	define('NODE_IP', $config->node_ip);
+if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+	define('NODE_IP', getenv('NODE_IP'));
 } else {
 	define('NODE_IP', '127.0.0.1');
 }
 
-if(is_file($config->secret_key_path)) {
-	define('SECRET_KEY_PATH', $config->secret_key_path);
+if(is_file(getenv('SECRET_KEY_PATH'))) {
+	define('SECRET_KEY_PATH', getenv('SECRET_KEY_PATH'));
 } else {
 	define('SECRET_KEY_PATH', __DIR__.'/keys/secret_key.pem');
 }

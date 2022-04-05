@@ -1,6 +1,8 @@
 config.json
 config.backup.json
 
+.env
+
 composer.lock
 
 vendor/
