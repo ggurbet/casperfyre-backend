@@ -59,14 +59,6 @@ class Helper {
 	) {
 		global $db;
 
-		switch ($template_id) {
-			case 'register': $template = file_get_contents('../templates/register.html'); break;
-			default: $template = file_get_contents('../templates/register.html'); break;
-		}
-
-		$template = str_replace('[SUBJECT]', $subject, $template);
-		$template = str_replace('[BODY]', $body, $template);
-		$template = str_replace('[LINK]', $link, $template);
 		$created_at = $this->get_datetime();
 
 		$query = "
@@ -74,12 +66,14 @@ class Helper {
 				template_id,
 				subject,
 				body,
+				link,
 				email,
 				created_at
 			) VALUES (
 				'$template_id',
 				'$subject',
-				'$template',
+				'$body',
+				'$link',
 				'$recipient',
 				'$created_at'
 			)

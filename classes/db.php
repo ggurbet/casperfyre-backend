@@ -147,7 +147,7 @@ class DB {
 					`template_id` varchar(100) DEFAULT NULL,
 					`subject` varchar(255) DEFAULT '',
 					`body` text,
-					`link` varchar(255) DEFAULT NULL,
+					`link` text,
 					`email` varchar(255) DEFAULT NULL,
 					`created_at` timestamp NULL DEFAULT NULL,
 					`sent_at` timestamp NULL DEFAULT NULL,

@@ -18,6 +18,8 @@ RewriteRule ^user/register/?$ /user_api/register.php [NC]
 RewriteRule ^user/confirm-registration/?$ /user_api/confirm-registration.php [NC]
 RewriteRule ^user/resend-code/?$ /user_api/resend-code.php [NC]
 RewriteRule ^user/update-email/?$ /user_api/update-email.php [NC]
+RewriteRule ^user/forgot-password/?$ /user_api/forgot-password.php [NC]
+RewriteRule ^user/reset-password/?$ /user_api/reset-password.php [NC]
 
 RewriteRule ^user/history/?$ /user_api/history.php [NC]
 RewriteRule ^user/usage/?$ /user_api/usage.php [NC]

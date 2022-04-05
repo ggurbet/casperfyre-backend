@@ -3,6 +3,8 @@ Dispensory API interface for Casper mainnet
 
 ## Setup
 
+### Environment
+
 ```
 cp .env.example .env
 ```
