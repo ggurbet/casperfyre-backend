@@ -30,9 +30,9 @@ define('DB_NAME', getenv('DB_NAME'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-	define('NODE_IP', getenv('NODE_IP'));
+	define('NODE_IP', 'http://'.getenv('NODE_IP').':7777');
 } else {
-	define('NODE_IP', '127.0.0.1');
+	define('NODE_IP', 'http://127.0.0.1:7777');
 }
 
 /**
@@ -48,6 +48,17 @@ include_once('classes/helper.php');
 $db = new DB();
 $helper = new Helper();
 $casper_client = new Casper\Rpc\RpcClient(NODE_IP);
+
+/*
+$recipientPublicKey = Casper\Serializer\CLPublicKeySerializer::fromHex('011117189c666f81c5160cd610ee383dc9b2d0361f004934754d39752eedc64957');
+$latest_block = $casper_client->getLatestBlock();
+$block_hash = $latest_block->getHash();
+$state_root_hash = $casper_client->getStateRootHash($block_hash);
+$account = $casper_client->getAccount($block_hash, $recipientPublicKey);
+$accountBalance = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
+elog($accountBalance);
+exit();
+*/
 
 /**
  * Check DB integrity

@@ -204,6 +204,7 @@ class DB {
 					`cspr_expectation` int DEFAULT '0',
 					`admin_approved` int DEFAULT '0',
 					`deny_reason` text,
+					`twofa` int DEFAULT '0',
 					PRIMARY KEY (`guid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 			";
@@ -254,6 +255,20 @@ class DB {
 			";
 			$this->do_query($query);
 			elog('DB: Created wallets table');
+		}
+
+		if(!in_array('twofa', $all_tables)) {
+			$query = "
+				CREATE TABLE `twofa` (
+					`id` int NOT NULL AUTO_INCREMENT,
+					`guid` varchar(36) NOT NULL,
+					`created_at` timestamp NULL DEFAULT NULL,
+					`code` varchar(12) NOT NULL,
+					PRIMARY KEY (`id`)
+				) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created twofa table');
 		}
 	}
 }
