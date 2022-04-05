@@ -11,7 +11,14 @@ Adjust your .env configuration vairables to fit your instance.
 
 ### Database
 
-You will need to create the database itself manually. e.g. "casperfyre-db"
+You will need to create the database itself manually.
+
+e.g. 
+
+```
+mysql> create database casperfyre-db
+mysql> exit
+````
 
 Then, the first time pinging the server will build the tables inside the given named database and create an admin account.
 
