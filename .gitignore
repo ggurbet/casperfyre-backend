@@ -1,0 +1,8 @@
+config.json
+config.backup.json
+
+composer.lock
+
+vendor/
+
+keys/*

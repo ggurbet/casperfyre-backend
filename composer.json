@@ -1,0 +1,14 @@
+{
+    "name": "ledgerleapllc/casperfyre",
+    "description": "Ledgerleap's Casper CSPR dispensory over API",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Thomas Spangler",
+            "email": "thomas@ledgerleap.com"
+        }
+    ],
+    "require": {
+        "paragonie/sodium_compat": "^1.17"
+    }
+}
