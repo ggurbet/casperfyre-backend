@@ -17,6 +17,7 @@ Then, the first time pinging the server will build the tables inside the given n
 
 Find admin credentials in apache log. Example:
 
+````
 [CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created api_keys table
 [CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created ips table
 [CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created limits table
@@ -29,3 +30,4 @@ Find admin credentials in apache log. Example:
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Email: "email"
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Password: "password"
 [CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created wallets table
+````
