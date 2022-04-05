@@ -50,7 +50,6 @@ if($err) {
 	)));
 }
 
-exit('done');
 define('CORS_SITE', $config->cors_site);
 define('DB_HOST', $config->database_host);
 define('DB_USER', $config->database_user);
