@@ -3,10 +3,8 @@ Dispensory API interface for Casper mainnet
 
 ### Setup
 
-run ./setup.sh
-
 ```
-./setup.sh
+cp .env.example .env
 ```
 
-This will install automatically for your environment.
+Adjust your .env configuration vairables to fit your instance.
