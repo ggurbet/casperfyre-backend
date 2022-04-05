@@ -1,7 +1,7 @@
 # Casper FYRE API backend
 Dispensory API interface for Casper mainnet
 
-### Setup
+## Setup
 
 ```
 cp .env.example .env
@@ -9,7 +9,11 @@ cp .env.example .env
 
 Adjust your .env configuration vairables to fit your instance.
 
-First time pinging the server will build database and create admin account.
+### Database
+
+You will need to create the database itself manually. e.g. "casperfyre-db"
+
+Then, the first time pinging the server will build the tables inside the given named database and create an admin account.
 
 Find admin credentials in apache log. Example:
 
