@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Start session
  */
@@ -36,12 +35,6 @@ if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 	define('NODE_IP', '127.0.0.1');
 }
 
-if(is_file(getenv('SECRET_KEY_PATH'))) {
-	define('SECRET_KEY_PATH', getenv('SECRET_KEY_PATH'));
-} else {
-	define('SECRET_KEY_PATH', __DIR__.'/keys/secret_key.pem');
-}
-
 /**
  * Load classes
  */
@@ -54,6 +47,7 @@ include_once('classes/helper.php');
  */
 $db = new DB();
 $helper = new Helper();
+$casper_client = new Casper\Rpc\RpcClient(NODE_IP);
 
 /**
  * Check DB integrity
