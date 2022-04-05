@@ -10,35 +10,63 @@ session_start();
  */
 define('APP_NAME', 'CasperFYRE');
 
-try {
+if(file_exists(__DIR__.'/config.json')) {
 	$config_file = file_get_contents(__DIR__.'/config.json');
+} else {
+	header('Content-type:application/json;charset=utf-8');
+	http_response_code(500);
+	exit(json_encode(array(
+		'status' => 'error',
+		'detail' => 'Please configure API server. error code 1'
+	)));
+}
+
+try {
 	$config = json_decode($config_file);
-	define('CORS_SITE', $config->cors_site);
-	define('DB_HOST', $config->database_host);
-	define('DB_USER', $config->database_user);
-	define('DB_PASS', $config->database_password);
-	define('DB_NAME', $config->database_name);
-	define('MASTER_KEY', $config->master_key);
-
-	if(filter_var($config->node_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-		define('NODE_IP', $config->node_ip);
-	} else {
-		define('NODE_IP', '127.0.0.1');
-	}
-
-	if(is_file($config->secret_key_path)) {
-		define('SECRET_KEY_PATH', $config->secret_key_path);
-	} else {
-		define('SECRET_KEY_PATH', __DIR__.'/keys/secret_key.pem');
-	}
 } catch (Exception $e) {
-	define('CORS_SITE', 'casperfyre.localhost');
-	define('DB_HOST', 'localhost');
-	define('DB_USER', 'root');
-	define('DB_PASS', '');
-	define('DB_NAME', 'casperfyre');
-	define('MASTER_KEY', 'deadbeefdeadbeefdeadbeefdeadbeef');
+	header('Content-type:application/json;charset=utf-8');
+	http_response_code(500);
+	exit(json_encode(array(
+		'status' => 'error',
+		'detail' => 'Please configure API server. error code 9'
+	)));
+}
+
+$err = false;
+isset($config->cors_site) ?: $err = 'Please configure API server. error code 2';
+isset($config->database_host) ?: $err = 'Please configure API server. error code 3';
+isset($config->database_user) ?: $err = 'Please configure API server. error code 4';
+isset($config->database_password) ?: $err = 'Please configure API server. error code 5';
+isset($config->database_name) ?: $err = 'Please configure API server. error code 6';
+isset($config->master_key) ?: $err = 'Please configure API server. error code 7';
+isset($config->node_ip) ?: $err = 'Please configure API server. error code 8';
+
+if($err) {
+	header('Content-type:application/json;charset=utf-8');
+	http_response_code(500);
+	exit(json_encode(array(
+		'status' => 'error',
+		'detail' => $err
+	)));
+}
+
+exit('done');
+define('CORS_SITE', $config->cors_site);
+define('DB_HOST', $config->database_host);
+define('DB_USER', $config->database_user);
+define('DB_PASS', $config->database_password);
+define('DB_NAME', $config->database_name);
+define('MASTER_KEY', $config->master_key);
+
+if(filter_var($config->node_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+	define('NODE_IP', $config->node_ip);
+} else {
 	define('NODE_IP', '127.0.0.1');
+}
+
+if(is_file($config->secret_key_path)) {
+	define('SECRET_KEY_PATH', $config->secret_key_path);
+} else {
 	define('SECRET_KEY_PATH', __DIR__.'/keys/secret_key.pem');
 }
 
