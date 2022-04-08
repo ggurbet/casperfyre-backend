@@ -139,7 +139,7 @@ if (!function_exists('http_response_code')) {
 }
 
 /**
- * exit handler to include exit code, status, detail
+ * exit handler to include exit code, status, detail, exception
  *
  * @param  string $status
  * @param  string $detail
@@ -151,12 +151,15 @@ function _exit(
 	$exit_code = 200,
 	$exception = ''
 ) {
-	elog(
-		($_SERVER['REQUEST_URI'] ?? '/').' '.
-		(string)$exit_code.' '.
-		$status.
-		($exception? ' - ' : '').$exception
-	);
+	if($status != 200) {
+		elog(
+			($_SERVER['REQUEST_URI'] ?? '/').' '.
+			(string)$exit_code.' '.
+			$status.
+			($exception ? ' - ' : '').$exception
+		);
+	}
+
 	header('Content-type:application/json;charset=utf-8');
 	http_response_code($exit_code);
 	exit(json_encode(array(
