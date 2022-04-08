@@ -148,8 +148,15 @@ if (!function_exists('http_response_code')) {
 function _exit(
 	$status, 
 	$detail, 
-	$exit_code = 200
+	$exit_code = 200,
+	$exception = ''
 ) {
+	elog(
+		($_SERVER['REQUEST_URI'] ?? '/').' '.
+		(string)$exit_code.' '.
+		$status.
+		($exception? ' - ' : '').$exception
+	);
 	header('Content-type:application/json;charset=utf-8');
 	http_response_code($exit_code);
 	exit(json_encode(array(
