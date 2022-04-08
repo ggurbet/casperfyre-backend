@@ -197,7 +197,7 @@ if(
 $selection = "
 	SELECT
 	a.guid, a.role, a.email, a.verified, a.first_name, a.last_name,
-	a.company, a.description, a.cspr_expectation, a.admin_approved
+	a.company, a.description, a.cspr_expectation, a.admin_approved,
 	a.api_key_active, a.created_at, a.last_ip, b.bearer
 	FROM users AS a
 	LEFT JOIN sessions AS b
