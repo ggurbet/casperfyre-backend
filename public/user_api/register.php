@@ -53,6 +53,22 @@ if(strlen($password) < 8) {
 	);
 }
 
+/* check pre-existing email */
+$query = "
+	SELECT guid
+	FROM users
+	WHERE email = '$email'
+";
+$check = $db->do_select($query);
+
+if($check) {
+	_exit(
+		'error',
+		'An account with this email address already exists',
+		400
+	);
+}
+
 $guid = $helper->generate_guid();
 $created_at = $helper->get_datetime();
 $confirmation_code = $helper->generate_hash(6);
