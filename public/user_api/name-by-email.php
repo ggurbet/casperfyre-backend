@@ -5,7 +5,6 @@ global $db, $helper;
 
 require_method('GET');
 $email = _request('email');
-elog($email);
 
 if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 	_exit(

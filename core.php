@@ -151,7 +151,7 @@ function _exit(
 	$exit_code = 200,
 	$exception = ''
 ) {
-	if($status != 200) {
+	if($exit_code != 200) {
 		elog(
 			($_SERVER['REQUEST_URI'] ?? '/').' '.
 			(string)$exit_code.' '.
