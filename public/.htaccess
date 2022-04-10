@@ -21,6 +21,7 @@ RewriteRule ^user/update-email/?$ /user_api/update-email.php [NC]
 RewriteRule ^user/forgot-password/?$ /user_api/forgot-password.php [NC]
 RewriteRule ^user/reset-password/?$ /user_api/reset-password.php [NC]
 RewriteRule ^user/submit-mfa/?$ /user_api/submit-mfa.php [NC]
+RewriteRule ^user/name-by-email/?$ /user_api/name-by-email.php [NC]
 
 RewriteRule ^user/history/?$ /user_api/history.php [NC]
 RewriteRule ^user/usage/?$ /user_api/usage.php [NC]
