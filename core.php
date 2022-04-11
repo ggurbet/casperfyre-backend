@@ -153,6 +153,7 @@ function _exit(
 ) {
 	if($exit_code != 200) {
 		elog(
+			strtoupper($_SERVER['REQUEST_METHOD'] ?? '').' '.
 			($_SERVER['REQUEST_URI'] ?? '/').' '.
 			(string)$exit_code.' '.
 			$status.
