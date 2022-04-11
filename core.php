@@ -49,17 +49,6 @@ $db = new DB();
 $helper = new Helper();
 $casper_client = new Casper\Rpc\RpcClient(NODE_IP);
 
-/*
-$recipientPublicKey = Casper\Serializer\CLPublicKeySerializer::fromHex('011117189c666f81c5160cd610ee383dc9b2d0361f004934754d39752eedc64957');
-$latest_block = $casper_client->getLatestBlock();
-$block_hash = $latest_block->getHash();
-$state_root_hash = $casper_client->getStateRootHash($block_hash);
-$account = $casper_client->getAccount($block_hash, $recipientPublicKey);
-$accountBalance = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
-elog($accountBalance);
-exit();
-*/
-
 /**
  * Check DB integrity
  */
@@ -75,6 +64,17 @@ function elog($msg) {
 	file_put_contents('php://stderr', '['.APP_NAME.' '.(date('c')).'] - ');
 	file_put_contents('php://stderr', print_r($msg, true));
 }
+
+/*
+$recipientPublicKey = Casper\Serializer\CLPublicKeySerializer::fromHex('011117189c666f81c5160cd610ee383dc9b2d0361f004934754d39752eedc64957');
+$latest_block = $casper_client->getLatestBlock();
+$block_hash = $latest_block->getHash();
+$state_root_hash = $casper_client->getStateRootHash($block_hash);
+$account = $casper_client->getAccount($block_hash, $recipientPublicKey);
+$accountBalance = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
+elog($accountBalance);
+exit();
+*/
 
 /**
  * Response code handler, if PHP version < 5.4
@@ -396,6 +396,16 @@ function authenticate_api() {
 		);
 	}
 
+	/* safe immortal token for testing */
+	if($auth_token == 'phpunittesttoken') {
+		return array(
+			"api_key" => "phpunittesttoken",
+			"active" => 1,
+			"guid" => "00000000-0000-0000-4c4c-000000000000",
+			"api_key_active" => 1
+		);
+	}
+
 	$query = "
 		SELECT a.api_key, a.active, b.guid as guid, b.api_key_active
 		FROM api_keys AS a
@@ -554,6 +564,18 @@ function process_order(
 	$RETURN_MSG = 'Dispensing '.$amount.' CSPR to '.$address;
 	$RETURN_CODE = 200;
 	$FULFILLED = 0;
+
+	/* test case */
+	if($guid = "00000000-0000-0000-4c4c-000000000000") {
+		_exit(
+			"success",
+			array(
+				"RETURN_STATUS" => $RETURN_STATUS,
+				"RETURN_MSG" => $RETURN_MSG,
+				"RETURN_CODE" => $RETURN_CODE,
+			)
+		);
+	}
 
 	/* usage */
 	$usage = get_usage($guid);

@@ -11,6 +11,12 @@
     "require": {
         "paragonie/sodium_compat": "^1.17",
         "phpmailer/phpmailer": "^6.6",
-        "make-software/casper-php-sdk": "dev-master"
+        "make-software/casper-php-sdk": "dev-master",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "classmap": [
+            "classes/"
+        ]
     }
 }
