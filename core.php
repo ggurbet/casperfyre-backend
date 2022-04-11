@@ -189,14 +189,27 @@ function get_method() {
 function require_method($m) {
 	$method = get_method();
 
-	if($method == $m)
-		return true;
+	if(gettype($m) == 'array') {
+		if(in_array($method, $m)) {
+			return true;
+		}
 
-	_exit(
-		'error', 
-		'Invalid method. Only '.$m.' allowed', 
-		405
-	);
+		_exit(
+			'error', 
+			'Invalid method. Only '.$m.' allowed', 
+			405
+		);
+	} else {
+		if($method == $m) {
+			return true;
+		}
+
+		_exit(
+			'error', 
+			'Invalid method. Only '.implode('/', $m).' allowed', 
+			405
+		);
+	}
 }
 
 /**
