@@ -189,14 +189,6 @@ function get_method() {
 function require_method($m) {
 	$method = get_method();
 
-	if($method == 'OPTIONS') {
-		_exit(
-			'success',
-			'Success',
-			200
-		);
-	}
-
 	if(gettype($m) == 'array') {
 		if(in_array($method, $m)) {
 			return true;
