@@ -60,6 +60,11 @@ RewriteRule ^admin/deny-user/?$ /admin_api/deny-user.php [NC]
 RewriteRule ^admin/history/?$ /admin_api/history.php [NC]
 
 
+# CRON API
+RewriteRule ^cron/schedule/?$ /cron_jobs/schedule.php [NC]
+
+
+
 # TEMP FRONTEND PAGES
 RewriteRule ^overview/?$ /private/index.php [NC]
 RewriteRule ^plan/?$ /private/plan.php [NC]

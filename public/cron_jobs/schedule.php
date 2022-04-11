@@ -1,5 +1,5 @@
 <?php
-include_once('../core.php');
+include_once('../../core.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -41,14 +41,14 @@ if($selection) {
 		$sent_at = $helper->get_datetime();
 
 		switch ($template_id) {
-			case 'register': $template = file_get_contents(__DIR__.'/../templates/register.html'); break;
-			case 'forgot-password': $template = file_get_contents(__DIR__.'/../templates/forgot-password.html'); break;
-			default: $template = file_get_contents('../templates/register.html'); break;
+			case 'register': $template = file_get_contents(__DIR__.'/../../templates/register.html'); break;
+			case 'forgot-password': $template = file_get_contents(__DIR__.'/../../templates/forgot-password.html'); break;
+			default: $template = file_get_contents(__DIR__.'/../../templates/register.html'); break;
 		}
 
 		$template = str_replace(
 			'[LOGO_URL]', 
-			"https://".getenv('FRONTEND_URL').'/img/logo.png', 
+			"https://".getenv('FRONTEND_URL').'/images/logo.png', 
 			$template
 		);
 
