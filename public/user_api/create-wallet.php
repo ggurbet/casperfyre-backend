@@ -48,5 +48,6 @@ if($result) {
 _exit(
 	'error',
 	'Failed to create a new wallet address. Please contact administration',
-	500
+	500,
+	'Failed to create a new wallet address.'
 );

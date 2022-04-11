@@ -12,7 +12,8 @@ if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 	_exit(
 		'error',
 		'Invalid email address',
-		400
+		400,
+		'Invalid email address'
 	);
 }
 
@@ -20,7 +21,8 @@ if(!$password) {
 	_exit(
 		'error',
 		'Please provide a password',
-		400
+		400,
+		'No password provided'
 	);
 }
 
@@ -42,7 +44,8 @@ if(!hash_equals($fetched_password_hash, $password_hash)) {
 	_exit(
 		'error',
 		'Invalid email or password',
-		401
+		401,
+		'Invalid email or password'
 	);
 }
 

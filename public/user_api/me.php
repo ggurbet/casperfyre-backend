@@ -26,5 +26,6 @@ if($me) {
 _exit(
 	'error',
 	'Unauthorized',
-	401
+	401,
+	'Unauthorized'
 );

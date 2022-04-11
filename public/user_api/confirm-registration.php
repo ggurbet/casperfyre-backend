@@ -46,5 +46,6 @@ if(
 _exit(
 	'error',
 	'Failed to register user',
-	400
+	400,
+	'Failed to register user'
 );

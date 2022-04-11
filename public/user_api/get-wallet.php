@@ -27,5 +27,6 @@ if($selection) {
 _exit(
 	'error',
 	'You currently have no active wallets',
-	404
+	404,
+	'User has no active wallets'
 );

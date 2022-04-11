@@ -48,5 +48,6 @@ if($fetched_confirmation_code) {
 _exit(
 	'error',
 	'Failed to re-send confirmation code',
-	400
+	400,
+	'Failed to re-send confirmation code'
 );

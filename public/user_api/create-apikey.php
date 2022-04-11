@@ -41,5 +41,6 @@ if($result) {
 _exit(
 	'error',
 	'Failed to a create new api key',
-	500
+	500,
+	'Failed to a create new api key'
 );

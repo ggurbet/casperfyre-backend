@@ -17,7 +17,8 @@ if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 	_exit(
 		'error',
 		'Invalid email address',
-		400
+		400,
+		'Invalid email address'
 	);
 }
 
@@ -25,7 +26,8 @@ if(!$first_name || $first_name == '') {
 	_exit(
 		'error',
 		'Please provide first name',
-		400
+		400,
+		'Failed to provide first name'
 	);
 }
 
@@ -33,7 +35,8 @@ if(!$last_name || $last_name == '') {
 	_exit(
 		'error',
 		'Please provide last name',
-		400
+		400,
+		'Failed to provide last name'
 	);
 }
 
@@ -41,15 +44,21 @@ if(!$password || $password == '') {
 	_exit(
 		'error',
 		'Please provide a valid password',
-		400
+		400,
+		'Failed to provide password'
 	);
 }
 
-if(strlen($password) < 8) {
+if(
+	strlen($password) < 8 ||
+	!preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $password) ||
+	!preg_match('/[0-9]/', $password)
+) {
 	_exit(
 		'error',
-		'Password must be at least 8 characters long',
-		400
+		'Password must be at least 8 characters long, contain at least one (1) number, and one (1) special character',
+		400,
+		'Invalid password. Does not meet complexity requirements'
 	);
 }
 
@@ -65,7 +74,8 @@ if($check) {
 	_exit(
 		'error',
 		'An account with this email address already exists',
-		400
+		400,
+		'An account with this email address already exists'
 	);
 }
 
@@ -189,7 +199,8 @@ if(
 	_exit(
 		'error',
 		'Failed to register user. Please contact administration',
-		500
+		500,
+		'Failed to register user',
 	);
 }
 
@@ -231,5 +242,6 @@ if($me) {
 _exit(
 	'error',
 	'Failed to register user',
-	500
+	500,
+	'Failed to register user'
 );

@@ -35,5 +35,6 @@ if($result) {
 _exit(
 	'error',
 	'Failed to add IP to whitelist',
-	500
+	500,
+	'Failed to add IP to whitelist'
 );

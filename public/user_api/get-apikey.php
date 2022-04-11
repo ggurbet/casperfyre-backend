@@ -27,5 +27,6 @@ if($selection) {
 _exit(
 	'error',
 	'Could not retreive your api key',
-	404
+	404,
+	'Could not retreive api key'
 );

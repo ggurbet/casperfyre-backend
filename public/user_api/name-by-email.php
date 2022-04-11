@@ -10,7 +10,8 @@ if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 	_exit(
 		'error',
 		'Invalid email address',
-		400
+		400,
+		'Invalid email address'
 	);
 }
 
@@ -18,7 +19,8 @@ if(strlen($email) > 255) {
 	_exit(
 		'error',
 		'Invalid email address',
-		400
+		400,
+		'Invalid email address'
 	);
 }
 
@@ -41,5 +43,6 @@ if($selection) {
 _exit(
 	'error',
 	'User not found',
-	404
+	404,
+	'User not found'
 );
