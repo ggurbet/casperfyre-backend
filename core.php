@@ -183,7 +183,7 @@ function get_method() {
 /**
  * Require http method
  *
- * @param  string $m method
+ * @param  string | array $m  accepted method/methods
  * @return bool
  */
 function require_method($m) {
