@@ -196,7 +196,7 @@ function require_method($m) {
 
 		_exit(
 			'error', 
-			'Invalid method. Only '.$m.' allowed', 
+			'Invalid method. Only '.implode('/', $m).' allowed', 
 			405
 		);
 	} else {
@@ -206,7 +206,7 @@ function require_method($m) {
 
 		_exit(
 			'error', 
-			'Invalid method. Only '.implode('/', $m).' allowed', 
+			'Invalid method. Only '.$m.' allowed', 
 			405
 		);
 	}
