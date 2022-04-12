@@ -27,5 +27,6 @@ if($result) {
 _exit(
 	'error',
 	'Failed to remove IP from whitelist',
-	500
+	500,
+	'Failed to remove IP from whitelist'
 );

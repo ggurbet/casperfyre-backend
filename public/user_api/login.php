@@ -57,7 +57,7 @@ if($twofa == 1) {
 		'twofa',
 		$email,
 		'Two factor authentication',
-		'Please find you 2fa code below to login to CasperFYRE. This code expires in 10 minutes.',
+		'Please find your 2fa code below to login to CasperFYRE. This code expires in 10 minutes.',
 		$code
 	);
 
@@ -82,7 +82,8 @@ if($twofa == 1) {
 
 	_exit(
 		'success',
-		$guid
+		'twofa' => true
+		// $guid
 	);
 }
 

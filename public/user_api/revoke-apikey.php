@@ -28,5 +28,6 @@ if($result) {
 _exit(
 	'error',
 	'Failed to revoke your api key. Please verify your request',
-	400
+	400,
+	'Failed to revoke an api key'
 );

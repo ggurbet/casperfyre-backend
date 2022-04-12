@@ -12,16 +12,20 @@ $new_password_hash = hash('sha256', $new_password);
 
 if(
 	!$new_password ||
-	strlen($new_password) < 8
+	strlen($new_password) < 8 ||
+	!preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $new_password) ||
+	!preg_match('/[0-9]/', $new_password)
 ) {
 	_exit(
 		'error',
-		'Invalid new password. Must be at least 8 characters',
-		400
+		'Invalid new password. Must be at least 8 characters long, contain at least one (1) special character, and one (1) number',
+		400,
+		'Invalid new password. Failed complexity requirements'
 	);
 }
 
 $uri = $helper->aes_decrypt($hash);
+$uri = explode('::', $uri);
 $guid = $uri[0];
 $confirmation_code = $uri[1] ?? '';
 $time = $uri[2] ?? '';
@@ -35,27 +39,34 @@ if($time) {
 	$selection = $db->do_select($query);
 
 	if($selection) {
-		if($new_password_hash == $password) {
+		$fetched_password_hash = $selection[0]['password'] ?? '';
+		$fetched_confirmation_code = $selection[0]['confirmation_code'] ?? '';
+		$fetched_email = $selection[0]['email'] ?? '';
+
+		if($new_password_hash == $fetched_password_hash) {
 			_exit(
 				'error',
 				'Cannot use the same password as before',
-				400
+				400,
+				'Cannot use the same password as before'
 			);
 		}
 
-		if($confirmation_code != $selection[0]['confirmation_code']) {
+		if($confirmation_code != $fetched_confirmation_code) {
 			_exit(
 				'error',
 				'Error resetting password. Not authorized',
-				401
+				401,
+				'Error resetting password. Not authorized'
 			);
 		}
 
-		if($email != $selection[0]['email']) {
+		if($email != $fetched_email) {
 			_exit(
 				'error',
 				'Error resetting password. Not authorized',
-				401
+				401,
+				'Error resetting password. Not authorized'
 			);
 		}
 
@@ -77,7 +88,8 @@ if($time) {
 			_exit(
 				'error',
 				'Error resetting password',
-				500
+				500,
+				'Error resetting password'
 			);
 		}
 	}
@@ -86,5 +98,6 @@ if($time) {
 _exit(
 	'error',
 	'There was a problem resetting your password',
-	400
+	400,
+	'There was a problem resetting user password'
 );

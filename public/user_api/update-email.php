@@ -13,7 +13,8 @@ if(!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
 	_exit(
 		'error',
 		'Invalid email address',
-		400
+		400,
+		'Invalid email address'
 	);
 }
 
@@ -34,5 +35,6 @@ if($guid) {
 _exit(
 	'error',
 	'Failed to update email',
-	400
+	400,
+	'Failed to update email'
 );

@@ -66,12 +66,16 @@ if($selection && $mfa_code == $fetched_code) {
 
 		_exit(
 			'error',
-			'MFA code expired. Please try logging back in'
+			'MFA code expired. Please try logging back in',
+			400,
+			'MFA code expired'
 		);
 	}
 }
 
 _exit(
 	'error',
-	'MFA code incorrect. Please re-enter your code'
+	'MFA code incorrect. Please re-enter your code',
+	400,
+	'MFA code incorrect'
 );

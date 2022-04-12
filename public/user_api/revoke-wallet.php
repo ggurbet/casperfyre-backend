@@ -28,5 +28,6 @@ if($result) {
 _exit(
 	'error',
 	'Failed to revoke this wallet',
-	500
+	500,
+	'Failed to revoke a wallet'
 );
