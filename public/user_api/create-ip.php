@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /user/create-ip
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param ip  string
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

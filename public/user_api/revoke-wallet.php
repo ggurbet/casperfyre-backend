@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /user/revoke-wallet
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param address  string
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

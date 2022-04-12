@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * GET /user/logout
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $helper;

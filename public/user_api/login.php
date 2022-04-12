@@ -1,4 +1,12 @@
 <?php
+/**
+ *
+ * POST /user/login
+ *
+ * @param email     string
+ * @param password  string
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

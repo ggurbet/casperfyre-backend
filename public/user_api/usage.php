@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * GET /user/usage
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $helper;

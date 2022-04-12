@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /user/revoke-ip
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param ipid   int  - ID of the CIDR. Returned when /user/get-ips is called.
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;
@@ -7,7 +16,7 @@ require_method('POST');
 $auth = authenticate_session();
 $guid = $auth['guid'] ?? '';
 $params = get_params();
-$ipid = $params['ipid'] ?? 0;
+$ipid = (int)($params['ipid'] ?? 0);
 
 $query = "
 	DELETE FROM ips

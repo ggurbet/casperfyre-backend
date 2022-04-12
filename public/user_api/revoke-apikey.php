@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /user/revoke-apikey
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param api_key   string
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

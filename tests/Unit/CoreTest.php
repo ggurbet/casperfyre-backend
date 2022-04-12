@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-include_once(__DIR__.'/../core.php');
+include_once(__DIR__.'/../../core.php');
 
 final class CoreTest extends TestCase
 {

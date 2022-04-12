@@ -230,7 +230,8 @@ class DB {
 					' -- dev: no description -- ',
 					0,
 					1,
-					NULL
+					NULL,
+					0
 				)
 			";
 			$this->do_query($query);

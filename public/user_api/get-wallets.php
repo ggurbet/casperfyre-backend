@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * GET /user/get-wallets
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

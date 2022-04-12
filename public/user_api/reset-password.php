@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /user/reset-password
+ *
+ * @param email         string
+ * @param hash          string  - Hash from email link
+ * @param new_password  string
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

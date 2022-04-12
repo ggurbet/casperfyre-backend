@@ -1,4 +1,17 @@
 <?php
+/**
+ *
+ * POST /user/register
+ *
+ * @param email             string
+ * @param first_name        string
+ * @param last_name         string
+ * @param password          string
+ * @param company           string
+ * @param description       string
+ * @param cspr_expectation  int
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;
@@ -160,7 +173,7 @@ $query_ips = "
 
 /* create session */
 $bearer = $helper->generate_session_token();
-$expires_at = $helper->get_datetime();
+$expires_at = $helper->get_datetime(86400);
 $query_sessions = "
 	INSERT INTO sessions (
 	guid,

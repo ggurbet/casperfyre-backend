@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * POST /user/resend-code
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;
@@ -14,7 +21,7 @@ $query = "
 ";
 
 $selection = $db->do_select($query);
-$already_verified = $selection[0]['verified'] ?? null;
+$already_verified = (int)($selection[0]['verified'] ?? 0);
 $fetched_confirmation_code = $selection[0]['confirmation_code'] ?? null;
 $email = $selection[0]['email'] ?? null;
 
@@ -41,7 +48,7 @@ if($fetched_confirmation_code) {
 
 	_exit(
 		'success',
-		'Successfully confirmed registration'
+		'Successfully sent account confirmation code'
 	);
 }
 

@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /user/confirm-registration
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param confirmation_code
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

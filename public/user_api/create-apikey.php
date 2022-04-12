@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * POST /user/create-apikey
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

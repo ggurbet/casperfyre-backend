@@ -289,7 +289,8 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Unauthorized', 
-			401
+			401,
+			'Bearer token not found'
 		);
 	}
 
@@ -314,7 +315,8 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Unauthorized', 
-			401
+			401,
+			'No session token found'
 		);
 	}
 
@@ -327,7 +329,8 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Session expired', 
-			401
+			401,
+			'Expired session token'
 		);
 	}
 
@@ -344,19 +347,29 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Unauthorized', 
-			401
+			401,
+			'Failed clearance check'
 		);
 	}
 
 	if($clearance < 2) {
+		$request_uri = $_SERVER['REQUEST_URI'] ?? '';
+
 		if(
-			$verified == 0 ||
-			$admin_approved == 0
+			(
+				$admin_approved == 0 ||
+				$verified == 0
+			) &&
+			$request_uri != '/user/confirm-registration' &&
+			$request_uri != '/user/resend-code' &&
+			$request_uri != '/user/me' &&
+			$request_uri != '/user/logout'
 		) {
 			_exit(
 				'error', 
 				'Unauthorized', 
-				401
+				401,
+				'Failed clearance level 1 with no verification or admin approval'
 			);
 		}
 	}

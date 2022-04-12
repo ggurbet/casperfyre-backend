@@ -1,4 +1,12 @@
 <?php
+/**
+ *
+ * POST /user/submit-mfa
+ *
+ * @param mfa_code  string
+ * @param guid      string
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;
