@@ -2,11 +2,10 @@ config.json
 config.backup.json
 
 .env
+.env.backup
 
 composer.lock
 
 .phpunit.result.cache
 
 vendor/
-
-keys/*
