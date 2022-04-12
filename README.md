@@ -1,4 +1,4 @@
-# Casper FYRE API backend
+# CasperFYRE API
 Dispensory API interface for Casper mainnet
 
 ## Dependencies
