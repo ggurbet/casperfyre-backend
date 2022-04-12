@@ -11,7 +11,10 @@ $last_name = $params['last_name'] ?? '';
 $password = $params['password'] ?? '';
 $company = $params['company'] ?? '';
 $description = $params['description'] ?? '';
-$cspr_expectation = $params['cspr_expectation'] ? (int)$params['cspr_expectation'] : 0;
+$cspr_expectation = isset($params['cspr_expectation']) ? (int)$params['cspr_expectation'] : 0;
+
+/* For live tests */
+$phpunittesttoken = $params['phpunittesttoken'] ?? '';
 
 if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 	_exit(
@@ -79,7 +82,19 @@ if($check) {
 	);
 }
 
-$guid = $helper->generate_guid();
+if(
+	$phpunittesttoken &&
+	$phpunittesttoken == 'phpunittesttoken'
+) {
+	$guid = '00000000-0000-0000-4c4c-000000000000';
+	$role = 'test-user';
+	$do_email = false;
+} else {
+	$guid = $helper->generate_guid();
+	$role = 'user';
+	$do_email = true;
+}
+
 $created_at = $helper->get_datetime();
 $confirmation_code = $helper->generate_hash(6);
 $password_hash = hash('sha256', $password);
@@ -88,6 +103,7 @@ $registration_ip = $helper->get_real_ip();
 $query_users = "
 	INSERT INTO users (
 	guid, 
+	role,
 	email, 
 	first_name, 
 	last_name, 
@@ -100,6 +116,7 @@ $query_users = "
 	cspr_expectation
 	) VALUES (
 	'$guid',
+	'$role',
 	'$email',
 	'$first_name',
 	'$last_name',
@@ -225,13 +242,15 @@ if($me) {
 	$body = 'Welcome to CasperFyre. Your registration code is below:<br><br>';
 	$link = $confirmation_code; 
 
-	$helper->schedule_email(
-		'register',
-		$recipient,
-		$subject,
-		$body,
-		$link
-	);
+	if($do_email) {
+		$helper->schedule_email(
+			'register',
+			$recipient,
+			$subject,
+			$body,
+			$link
+		);
+	}
 
 	_exit(
 		'success',

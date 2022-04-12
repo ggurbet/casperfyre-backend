@@ -332,6 +332,7 @@ function authenticate_session($required_clearance = 1) {
 	}
 
 	switch ($session_role) {
+		case 'test-user': $clearance = 0; break;
 		case 'user': $clearance = 1; break;
 		case 'sub-admin': $clearance = 2; break;
 		case 'admin': $clearance = 3; break;
@@ -424,7 +425,8 @@ function authenticate_api() {
 			"api_key" => "phpunittesttoken",
 			"active" => 1,
 			"guid" => "00000000-0000-0000-4c4c-000000000000",
-			"api_key_active" => 1
+			"api_key_active" => 1,
+			"bearer" => "phpunittesttoken"
 		);
 	}
 

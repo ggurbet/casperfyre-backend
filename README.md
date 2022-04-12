@@ -35,7 +35,7 @@ Then, you can simply run **setup.sh** to run interactive setup script.
 
 The first time pinging the server will build the tables inside the given named database and create an admin account.
 
-Find admin credentials in apache log. Example output:
+Find admin credentials in apache error log. Example output:
 
 ````
 [CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created api_keys table
