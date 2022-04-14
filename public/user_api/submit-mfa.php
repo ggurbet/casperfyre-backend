@@ -64,7 +64,7 @@ if($selection && $mfa_code == $fetched_code) {
 		_exit(
 			'success',
 			array(
-				'bearer' => $bearer
+				'bearer' => $bearer,
 				'guid' => $guid
 			)
 		);
