@@ -210,7 +210,7 @@ class DB {
 			";
 			$this->do_query($query);
 			elog('DB: Created user table');
-			$created_email = 'thomas+admin@ledgerleap.com';
+			$created_email = getenv('ADMIN_EMAIL');
 			$random_password = $helper->generate_hash();
 			$random_password_hash = hash('sha256', $random_password);
 			$query = "
@@ -219,7 +219,7 @@ class DB {
 					'admin',
 					'$created_email',
 					1,
-					'thomas',
+					'admin',
 					'admin',
 					'$random_password_hash',
 					1,
@@ -270,6 +270,19 @@ class DB {
 			";
 			$this->do_query($query);
 			elog('DB: Created twofa table');
+		}
+
+		if(!in_array('throttle', $all_tables)) {
+			$query = "
+				CREATE TABLE `throttle` (
+					`ip` varchar(64) DEFAULT NULL,
+					`uri` varchar(64) DEFAULT NULL,
+					`hit` float DEFAULT NULL,
+					`last_request` int DEFAULT '0'
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created throttle table');
 		}
 	}
 }

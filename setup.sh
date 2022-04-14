@@ -12,6 +12,13 @@ read -p "Press enter to continue" READY
 echo
 echo
 
+echo -e "${COLOR_YELLOW}Your email address (Admin email)${COLOR_END}"
+read -p "Your email: " ADMIN_EMAIL
+if [ -z "$ADMIN_EMAIL" ]; then
+	echo -e "${COLOR_RED}Please specify a main URL for your server. ${COLOR_END}"
+	exit 1
+fi
+
 echo -e "${COLOR_YELLOW}Please enter the main URL of this server (eg. casperfyre.com)${COLOR_END}"
 read -p "Main domain URL: " FRONTEND_URL
 if [ -z "$FRONTEND_URL" ]; then
@@ -39,7 +46,7 @@ if [ -z "$DATABASE_HOST" ]; then
 fi
 
 echo -e "${COLOR_YELLOW}Please enter your database user. Default (root) ${COLOR_END}"
-read -p "Database password: " DATABASE_USER
+read -p "Database username: " DATABASE_USER
 if [ -z "$DATABASE_USER" ]; then
 	DATABASE_USER="root"
 fi
@@ -77,6 +84,7 @@ cp .env.example .env
 
 echo -e "${COLOR_YELLOW}Configuring...${COLOR_END}"
 
+sed -i "s/\[ADMIN_EMAIL\]/$ADMIN_EMAIL/g" .env
 sed -i "s/\[FRONTEND_URL\]/$FRONTEND_URL/g" .env
 sed -i "s/\[CORS_SITE\]/$CORS_SITE/g" .env
 sed -i "s/\[NODE_IP\]/$NODE_IP/g" .env

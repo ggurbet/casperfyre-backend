@@ -21,12 +21,14 @@ include_once('classes/dotenv.php');
 $dotenv = new Dotenv(__DIR__.'/.env');
 $dotenv->load();
 
+define('BASE_DIR', __DIR__);
 define('APP_NAME', getenv('APP_NAME'));
 define('CORS_SITE', getenv('CORS_SITE'));
 define('DB_HOST', getenv('DB_HOST'));
 define('DB_USER', getenv('DB_USER'));
 define('DB_PASS', getenv('DB_PASS'));
 define('DB_NAME', getenv('DB_NAME'));
+define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
@@ -41,12 +43,14 @@ if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 include_once('vendor/autoload.php');
 include_once('classes/db.php');
 include_once('classes/helper.php');
+include_once('classes/throttle.php');
 
 /**
  * Instantiate
  */
 $db = new DB();
 $helper = new Helper();
+$throttle = new Throttle($helper->get_real_ip());
 $casper_client = new Casper\Rpc\RpcClient(NODE_IP);
 
 /**
@@ -117,6 +121,7 @@ if (!function_exists('http_response_code')) {
 				case 413: $text = 'Request Entity Too Large'; break;
 				case 414: $text = 'Request-URI Too Large'; break;
 				case 415: $text = 'Unsupported Media Type'; break;
+				case 429: $text = 'Too Many Requests'; break;
 				case 500: $text = 'Internal Server Error'; break;
 				case 501: $text = 'Not Implemented'; break;
 				case 502: $text = 'Bad Gateway'; break;

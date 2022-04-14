@@ -90,8 +90,10 @@ if($twofa == 1) {
 
 	_exit(
 		'success',
-		'twofa' => true
-		// $guid
+		array(
+			'twofa' => true
+			'guid' => $guid
+		)
 	);
 }
 
@@ -121,5 +123,8 @@ $db->do_query($query2);
 
 _exit(
 	'success',
-	$bearer
+	array(
+		'bearer' => $bearer
+		'guid' => $guid
+	)
 );

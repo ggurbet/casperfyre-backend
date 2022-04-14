@@ -63,7 +63,10 @@ if($selection && $mfa_code == $fetched_code) {
 
 		_exit(
 			'success',
-			$bearer
+			array(
+				'bearer' => $bearer
+				'guid' => $guid
+			)
 		);
 	} else {
 		$query = "
