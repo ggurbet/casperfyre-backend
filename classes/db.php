@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Mysql database class. Includes entire schemas that build/re-build tables if integrity check fails.
+ */
 class DB {
 	public $connect = null;
 
