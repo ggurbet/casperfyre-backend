@@ -1,7 +1,26 @@
 <?php
-
+/**
+ * Http throttling class intended to mitigate brute force attacks. 
+ * Especially for endpoints that control the auto-mailer, like forgot-password.
+ *
+ * @param  string  $real_ip
+ */
 class Throttle {
-	function __construct($real_ip) {
+	/**
+	 * Instantiating the class immediately causes the throttling to take effect.
+	 * Exits with code 429 if the client fails based on IP address.
+	 */
+	function __construct($real_ip = '127.0.0.1') {
+		if(
+			$real_ip == '127.0.0.1' ||
+			$real_ip == 'localhost' ||
+			$real_ip == '::1' ||
+			$real_ip == '0:0:0:0:0:0:0:1' ||
+			DEV_MODE
+		) {
+			return true;
+		}
+
 		global $db;
 
 		$this->now = (int)time();
@@ -10,9 +29,9 @@ class Throttle {
 		$this->endpoints = array(
 			'/user/confirm-registration' => 10,
 			'/user/create-apikey' => 10,
-			'/user/create-ip' => 50,
-			'/user/create-wallet' => 20,
-			'/user/forgot-password' => 10,
+			'/user/create-ip' => 10,
+			'/user/create-wallet' => 5,
+			'/user/forgot-password' => 5,
 			'/user/get-apikey' => 100,
 			'/user/get-apikeys' => 100,
 			'/user/get-ips' => 100,
@@ -29,7 +48,7 @@ class Throttle {
 			'/user/revoke-apikey' => 20,
 			'/user/revoke-ip' => 20,
 			'/user/revoke-wallet' => 20,
-			'/user/submit-mfa' => 20,
+			'/user/submit-mfa' => 10,
 			'/user/update-email' => 10,
 			'/user/usage' => 100,
 			'/admin/approve-user' => 30,
@@ -44,7 +63,7 @@ class Throttle {
 			'/v1/dispense' => 50
 		);
 
-		$endpoint_throttle = $this->endpoints[$this->uri] ?? 100;
+		$endpoint_throttle = $this->endpoints[$this->uri] ?? 30;
 
 		$query = "
 			SELECT hit, last_request
