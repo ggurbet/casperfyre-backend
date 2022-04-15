@@ -30,6 +30,7 @@ define('DB_PASS', getenv('DB_PASS'));
 define('DB_NAME', getenv('DB_NAME'));
 define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
+define('DEV_MODE', (bool)(getenv('DEV_MODE')));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 	define('NODE_IP', 'http://'.getenv('NODE_IP').':7777');
