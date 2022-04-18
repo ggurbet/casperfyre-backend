@@ -41,6 +41,10 @@ if($selection) {
 		$sent_at = $helper->get_datetime();
 
 		switch ($template_id) {
+			case 'welcome': $template = file_get_contents(__DIR__.'/../../templates/welcome.html'); break;
+			case 'approved': $template = file_get_contents(__DIR__.'/../../templates/approved.html'); break;
+			case 'denied': $template = file_get_contents(__DIR__.'/../../templates/denied.html'); break;
+			case 'twofa': $template = file_get_contents(__DIR__.'/../../templates/twofa.html'); break;
 			case 'register': $template = file_get_contents(__DIR__.'/../../templates/register.html'); break;
 			case 'forgot-password': $template = file_get_contents(__DIR__.'/../../templates/forgot-password.html'); break;
 			default: $template = file_get_contents(__DIR__.'/../../templates/register.html'); break;
@@ -61,7 +65,7 @@ if($selection) {
 			$emailer->Subject = $subject;
 			$emailer->Body = $template;
 			$emailer->send();
-			elog("SENT Scheduled '".$template_id."' email sent to: ".$email);
+			elog("SENT Scheduled '".$template_id."' email ID# ".$sid." sent to: ".$email);
 
 			$query = "
 				UPDATE schedule
@@ -70,9 +74,9 @@ if($selection) {
 			";
 			$db->do_query($query);
 		} catch (Exception $e) {
-			elog($e);
+			// elog($e);
 			$emailer->getSMTPInstance()->reset();
-			elog("Failed to send scheduled '".$template_id."' email");
+			elog("Failed to send scheduled '".$template_id."' email ID# ".$sid);
 		}
 
 		$emailer->clearAddresses();

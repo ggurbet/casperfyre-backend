@@ -46,6 +46,27 @@ if(
 	";
 	$db->do_query($query);
 
+	/* send confirmation welcome email */
+	$query = "
+		SELECT email, first_name, last_name
+		FROM users
+		WHERE guid = '$guid'
+	";
+	$selection = $db->do_select($query);
+	$first_name = $selection[0]['first_name'] ?? '';
+	$user_email = $selection[0]['email'] ?? '';
+	$subject = 'CasperFYRE Registration Confirmed';
+	$body = 'Hello'.($first_name ? ', '.$first_name : '').'! You have successfully registered with CasperFYRE. From here, an admin will need to approved your account before you can start using its features. Please allow up to 24 hours for an update emailed to you. If you have any questions or concerns, you can contact '.getenv('ADMIN_EMAIL');
+
+	if($user_email) {
+		$helper->schedule_email(
+			'welcome',
+			$user_email,
+			$subject,
+			$body
+		);
+	}
+
 	_exit(
 		'success',
 		'Successfully confirmed registration'

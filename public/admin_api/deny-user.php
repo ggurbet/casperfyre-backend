@@ -19,6 +19,27 @@ if($user_guid) {
 	";
 	$db->do_query($query);
 
+	/* send email to denied user */
+	$query = "
+		SELECT email, first_name
+		FROM users
+		WHERE guid = '$user_guid'
+	";
+	$selection = $db->do_select($query);
+	$user_email = $selection[0]['email'] ?? '';
+	$first_name = $selection[0]['first_name'] ?? '';
+	$subject = 'CasperFYRE Application Status';
+	$body = 'Unfortunate news, '.$first_name.'. You have been <b>denied</b> access to your dashboard.<br><br>'.$deny_reason;
+
+	if($user_email) {
+		$helper->schedule_email(
+			'application_denied',
+			$user_email,
+			$subject,
+			$body
+		);
+	}
+
 	_exit(
 		'success',
 		'Successfully denied user'

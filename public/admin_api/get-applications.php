@@ -12,9 +12,9 @@ $query = "
 	FROM users
 	WHERE admin_approved = 0
 	AND verified = 1
+	AND role = 'user'
 ";
 $selection = $db->do_select($query);
-
 
 _exit(
 	'success',

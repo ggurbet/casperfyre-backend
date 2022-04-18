@@ -300,6 +300,18 @@ function authenticate_session($required_clearance = 1) {
 		);
 	}
 
+	if(
+		!ctype_xdigit($auth_bearer) ||
+		strlen($auth_bearer) != 256
+	) {
+		_exit(
+			'error', 
+			'Invalid bearer token', 
+			400,
+			'Invalid bearer token'
+		);
+	}
+
 	$query = "
 		SELECT a.guid, a.expires_at, b.role, b.verified, b.admin_approved
 		FROM sessions as a
@@ -346,7 +358,7 @@ function authenticate_session($required_clearance = 1) {
 		case 'sub-admin': $clearance = 2; break;
 		case 'admin': $clearance = 3; break;
 		case 'super-admin': $clearance = 4; break;
-		default: $clearance = 1; break;
+		default: $clearance = 0; break;
 	}
 
 	if($clearance < $required_clearance) {
