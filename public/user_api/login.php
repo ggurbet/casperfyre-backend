@@ -35,7 +35,7 @@ if(!$password) {
 }
 
 $query = "
-	SELECT guid, email, password, twofa
+	SELECT guid, email, first_name, last_name, role, password, twofa, verified, last_ip, company, admin_approved, deny_reason
 	FROM users
 	WHERE email = '$email'
 ";
@@ -125,6 +125,7 @@ _exit(
 	'success',
 	array(
 		'bearer' => $bearer,
-		'guid' => $guid
+		'guid' => $guid,
+		'user' => $result
 	)
 );

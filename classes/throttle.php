@@ -1,7 +1,7 @@
 <?php
 /**
  * Http throttling class intended to mitigate brute force attacks. 
- * Especially for endpoints that control the auto-mailer, like forgot-password.
+ * Especially for endpoints that call the auto-mailer, like forgot-password.
  *
  * @param  string  $real_ip
  */

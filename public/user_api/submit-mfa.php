@@ -61,11 +61,21 @@ if($selection && $mfa_code == $fetched_code) {
 		$db->do_query($query1);
 		$db->do_query($query2);
 
+		/* get the rest of the user array */
+		$query = "
+			SELECT guid, email, first_name, last_name, role, password, twofa, verified, last_ip, company, admin_approved, deny_reason
+			FROM users
+			WHERE guid = '$guid'
+		";
+		$result = $db->do_select($query);
+		$result = $result[0] ?? null;
+
 		_exit(
 			'success',
 			array(
 				'bearer' => $bearer,
-				'guid' => $guid
+				'guid' => $guid,
+				'user' => $result
 			)
 		);
 	} else {
