@@ -66,7 +66,7 @@ if($user_guid && $admin_guid) {
 			api_key,
 			created_at
 			) VALUES (
-			'$guid',
+			'$user_guid',
 			'$new_api_key',
 			'$created_at'
 			)
