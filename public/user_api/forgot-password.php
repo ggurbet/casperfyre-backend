@@ -29,23 +29,30 @@ $query = "
 	WHERE email = '$email'
 ";
 $selection = $db->do_select($query);
-$selection = $selection[0];
-$guid = $selection['guid'] ?? '';
-$email = $selection['email'] ?? '';
-$confirmation_code = $selection['confirmation_code'] ?? '';
-$uri = $helper->aes_encrypt($guid.'::'.$confirmation_code.'::'.(string)time());
+$selection = $selection[0] ?? null;
+$guid = $selection['guid'] ?? null;
+$email = $selection['email'] ?? null;
 
-$subject = 'CasperFYRE - Forgot Password';
-$body = 'You are receiving this email because we received a password reset request for your account. Please follow the link below to reset your password.';
-$link = 'https://'.getenv('FRONTEND_URL').'/reset-password/'.$uri.'?email='.$email;
+if(
+	$selection &&
+	$guid &&
+	$email
+) {
+	$confirmation_code = $selection['confirmation_code'] ?? '';
+	$uri = $helper->aes_encrypt($guid.'::'.$confirmation_code.'::'.(string)time());
 
-$helper->schedule_email(
-	'forgot-password',
-	$email,
-	$subject,
-	$body,
-	$link
-);
+	$subject = 'CasperFYRE - Forgot Password';
+	$body = 'You are receiving this email because we received a password reset request for your account. Please follow the link below to reset your password.';
+	$link = 'https://'.getenv('FRONTEND_URL').'/reset-password/'.$uri.'?email='.$email;
+
+	$helper->schedule_email(
+		'forgot-password',
+		$email,
+		$subject,
+		$body,
+		$link
+	);
+}
 
 _exit(
 	'success',
