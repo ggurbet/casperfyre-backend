@@ -111,7 +111,7 @@ class Helper {
 			$state_root_hash = $casper_client->getStateRootHash($block_hash);
 			$account = $casper_client->getAccount($block_hash, $recipient_public_key);
 			$balance_object = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
-			$balance_motes =  $balance_object->num ?? 0;
+			$balance_motes =  gmp_intval($balance_object);
 			$balance = (int)($balance_motes / 1000000000);
 		} catch (Exception $e) {
 			elog('Failed to get balance of '.$validator_id);
