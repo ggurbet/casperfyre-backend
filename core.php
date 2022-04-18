@@ -275,6 +275,9 @@ function get_params() {
  *
  * @param  int   $required_clearance
  * @return array
+ *
+ * If session belongs to a role with low clearance, checks for admin approval/verification. With some exceptions.
+ *
  */
 function authenticate_session($required_clearance = 1) {
 	global $db, $helper;
@@ -370,6 +373,7 @@ function authenticate_session($required_clearance = 1) {
 		);
 	}
 
+	/* if session belongs to a role with low clearance */
 	if($clearance < 2) {
 		$request_uri = $_SERVER['REQUEST_URI'] ?? '';
 

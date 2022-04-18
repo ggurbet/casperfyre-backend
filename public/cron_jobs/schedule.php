@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * GET /cron/schedule
+ *
+ * System cron will use curl or wget to ping this endpoint every 60 seconds to handle email scheduler.
+ *
+ */
 include_once('../../core.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
