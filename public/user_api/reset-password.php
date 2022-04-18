@@ -37,70 +37,78 @@ $uri = $helper->aes_decrypt($hash);
 $uri = explode('::', $uri);
 $guid = $uri[0];
 $confirmation_code = $uri[1] ?? '';
-$time = $uri[2] ?? '';
+$time = (int)($uri[2] ?? 0);
 
-if($time) {
+/* check for expired password reset code */
+if($time < (int)time() - 600) { // 10 minutes
+	_exit(
+		'error',
+		'Password reset token is expired. Please try again',
+		401,
+		'Password reset token is expired'
+	);
+}
+
+$query = "
+	SELECT guid, email, confirmation_code, password
+	FROM users
+	WHERE guid = '$guid'
+";
+$selection = $db->do_select($query);
+
+if($selection) {
+	$fetched_password_hash = $selection[0]['password'] ?? '';
+	$fetched_confirmation_code = $selection[0]['confirmation_code'] ?? '';
+	$fetched_email = $selection[0]['email'] ?? '';
+
+	if($new_password_hash == $fetched_password_hash) {
+		_exit(
+			'error',
+			'Cannot use the same password as before',
+			400,
+			'Cannot use the same password as before'
+		);
+	}
+
+	if($confirmation_code != $fetched_confirmation_code) {
+		_exit(
+			'error',
+			'Error resetting password. Not authorized',
+			401,
+			'Error resetting password. Not authorized'
+		);
+	}
+
+	if($email != $fetched_email) {
+		_exit(
+			'error',
+			'Error resetting password. Not authorized',
+			401,
+			'Error resetting password. Not authorized'
+		);
+	}
+
 	$query = "
-		SELECT guid, email, confirmation_code, password
-		FROM users
+		UPDATE users
+		SET password = '$new_password_hash'
 		WHERE guid = '$guid'
+		AND confirmation_code = '$confirmation_code'
 	";
-	$selection = $db->do_select($query);
+	$success = $db->do_query($query);
 
-	if($selection) {
-		$fetched_password_hash = $selection[0]['password'] ?? '';
-		$fetched_confirmation_code = $selection[0]['confirmation_code'] ?? '';
-		$fetched_email = $selection[0]['email'] ?? '';
-
-		if($new_password_hash == $fetched_password_hash) {
-			_exit(
-				'error',
-				'Cannot use the same password as before',
-				400,
-				'Cannot use the same password as before'
-			);
-		}
-
-		if($confirmation_code != $fetched_confirmation_code) {
-			_exit(
-				'error',
-				'Error resetting password. Not authorized',
-				401,
-				'Error resetting password. Not authorized'
-			);
-		}
-
-		if($email != $fetched_email) {
-			_exit(
-				'error',
-				'Error resetting password. Not authorized',
-				401,
-				'Error resetting password. Not authorized'
-			);
-		}
-
-		$query = "
-			UPDATE users
-			SET password = '$new_password_hash'
-			WHERE guid = '$guid'
-			AND confirmation_code = '$confirmation_code'
-		";
-		$success = $db->do_query($query);
-
-		if($success) {
-			_exit(
-				'success',
-				'Successfully reset your password',
-				200
-			);
-		} else {
-			_exit(
-				'error',
-				'Error resetting password',
-				500,
-				'Error resetting password'
-			);
-		}
+	if($success) {
+		_exit(
+			'success',
+			'Successfully reset your password',
+			200
+		);
+	} else {
+		_exit(
+			'error',
+			'Error resetting password',
+			500,
+			'Error resetting password'
+		);
 	}
 }
 
@@ -108,5 +116,5 @@ _exit(
 	'error',
 	'There was a problem resetting your password',
 	400,
-	'There was a problem resetting user password'
+	'There was a problem resetting user password. Perhaps invalid reset link hash'
 );
