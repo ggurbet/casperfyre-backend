@@ -95,6 +95,32 @@ class Helper {
 		);
 	}
 
+	public static function get_wallet_balance($validator_id) {
+		global $casper_client;
+
+		if(!$this->correct_validator_id_format($validator_id)) {
+			return 0;
+		}
+
+		$balance = 0;
+
+		try {
+			$recipient_public_key = Casper\Serializer\CLPublicKeySerializer::fromHex($validator_id);
+			$latest_block = $casper_client->getLatestBlock();
+			$block_hash = $latest_block->getHash();
+			$state_root_hash = $casper_client->getStateRootHash($block_hash);
+			$account = $casper_client->getAccount($block_hash, $recipient_public_key);
+			$balance_motes = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
+			$balance = (int)($balance_motes / 1000000000);
+		} catch (Exception $e) {
+			elog('Failed to get balance of '.$validator_id);
+			elog($e);
+			return $balance;
+		}
+
+		return $balance;
+	}
+
 	public static function b_encode($data) {
 		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 	}

@@ -70,17 +70,6 @@ function elog($msg) {
 	file_put_contents('php://stderr', print_r($msg, true));
 }
 
-/*
-$recipientPublicKey = Casper\Serializer\CLPublicKeySerializer::fromHex('011117189c666f81c5160cd610ee383dc9b2d0361f004934754d39752eedc64957');
-$latest_block = $casper_client->getLatestBlock();
-$block_hash = $latest_block->getHash();
-$state_root_hash = $casper_client->getStateRootHash($block_hash);
-$account = $casper_client->getAccount($block_hash, $recipientPublicKey);
-$accountBalance = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
-elog($accountBalance);
-exit();
-*/
-
 /**
  * Response code handler, if PHP version < 5.4
  *
