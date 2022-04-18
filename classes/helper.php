@@ -98,7 +98,7 @@ class Helper {
 	public static function get_wallet_balance($validator_id) {
 		global $casper_client;
 
-		if(!$this->correct_validator_id_format($validator_id)) {
+		if(!self::correct_validator_id_format($validator_id)) {
 			return 0;
 		}
 
@@ -110,7 +110,8 @@ class Helper {
 			$block_hash = $latest_block->getHash();
 			$state_root_hash = $casper_client->getStateRootHash($block_hash);
 			$account = $casper_client->getAccount($block_hash, $recipient_public_key);
-			$balance_motes = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
+			$balance_object = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
+			$balance_motes =  $balance_object->num ?? 0;
 			$balance = (int)($balance_motes / 1000000000);
 		} catch (Exception $e) {
 			elog('Failed to get balance of '.$validator_id);
