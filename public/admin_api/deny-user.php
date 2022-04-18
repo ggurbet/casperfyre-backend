@@ -33,7 +33,7 @@ if($user_guid) {
 
 	if($user_email) {
 		$helper->schedule_email(
-			'application_denied',
+			'denied',
 			$user_email,
 			$subject,
 			$body

@@ -88,7 +88,7 @@ if($user_guid && $admin_guid) {
 
 	if($user_email) {
 		$helper->schedule_email(
-			'application_approved',
+			'approved',
 			$user_email,
 			$subject,
 			$body,
