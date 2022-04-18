@@ -58,7 +58,7 @@ if($user_guid && $admin_guid) {
 	$api_key = $selection[0]['api_key'] ?? null;
 
 	if(!$api_key) {
-		$new_api_key = $help->generate_apikey();
+		$new_api_key = $helper->generate_apikey();
 
 		$query = "
 			INSERT INTO api_keys (
