@@ -8,7 +8,7 @@ $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
 
 $query = "
-	SELECT guid, email, company, last_ip, cspr_expectation, description
+	SELECT guid, email, company, last_ip, cspr_expectation, description, created_at
 	FROM users
 	WHERE admin_approved = 0
 	AND verified = 1
