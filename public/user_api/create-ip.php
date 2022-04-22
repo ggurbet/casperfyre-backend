@@ -20,6 +20,15 @@ $ip = $params['ip'] ?? '';
 $ip = preg_replace("/([^A-Fa-f0-9.\/])/", '', $ip);
 $created_at = $helper->get_datetime();
 
+if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+	_exit(
+		'error',
+		'Invalid IP address',
+		400,
+		'Invalid IP address'
+	);
+}
+
 $query = "
 	INSERT INTO ips (
 	guid,

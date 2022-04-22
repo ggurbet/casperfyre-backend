@@ -564,7 +564,7 @@ function insert_order(
 		INSERT INTO orders
 		(guid, created_at, ip, return_code, fulfilled, amount, address, api_key_id_used)
 		VALUES
-		('$guid', '$datetime', '$ip', $return_code, $fulfilled, $amount, '$address', '$api_key_id')
+		('$guid', '$datetime', '$ip', $return_code, $fulfilled, $amount, '$address', $api_key_id)
 	";
 
 	$result = $db->do_query($query);
@@ -600,7 +600,7 @@ function process_order(
 	$guid, 
 	$address, 
 	$amount,
-	$api_key_id
+	$api_key
 ) {
 	global $db, $helper;
 
@@ -614,7 +614,7 @@ function process_order(
 	$FULFILLED = 0;
 
 	/* test case */
-	if($guid = "00000000-0000-0000-4c4c-000000000000") {
+	if($guid == "00000000-0000-0000-4c4c-000000000000") {
 		_exit(
 			"success",
 			array(
@@ -693,6 +693,7 @@ function process_order(
 	}
 
 	/* insert order */
+	$api_key_id = $helper->get_apikey_id_by_apikey($api_key);
 	$inserted = insert_order(
 		$guid,
 		$datetime,
@@ -715,7 +716,8 @@ function process_order(
 	_exit(
 		'error',
 		'Failed to place order. Internal server error. Please contact administration',
-		500
+		500,
+		'Failed to place order. Internal server error. Please contact administration'
 	);
 }
 

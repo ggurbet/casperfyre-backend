@@ -110,10 +110,10 @@ class DB {
 			$query = "
 				CREATE TABLE `limits` (
 					`guid` varchar(36) DEFAULT NULL,
-					`per_limit` int DEFAULT '0',
-					`day_limit` int DEFAULT '0',
-					`week_limit` int DEFAULT '0',
-					`month_limit` int DEFAULT '0'
+					`per_limit` int DEFAULT '500',
+					`day_limit` int DEFAULT '1000',
+					`week_limit` int DEFAULT '5000',
+					`month_limit` int DEFAULT '10000'
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 			";
 			$this->do_query($query);
@@ -253,6 +253,7 @@ class DB {
 					`created_at` timestamp NULL DEFAULT NULL,
 					`inactive_at` timestamp NULL DEFAULT NULL,
 					`balance` int DEFAULT '0',
+					`last_balance_check` timestamp NULL DEFAULT NULL,
 					PRIMARY KEY (`id`)
 				) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 			";

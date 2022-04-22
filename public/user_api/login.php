@@ -41,9 +41,10 @@ $query = "
 ";
 
 $result = $db->do_select($query);
-$guid = $result[0]['guid'] ?? '';
-$twofa = (int)($result[0]['twofa'] ?? 0);
-$fetched_password_hash = $result[0]['password'] ?? '';
+$result = $result[0] ?? null;
+$guid = $result['guid'] ?? '';
+$twofa = (int)($result['twofa'] ?? 0);
+$fetched_password_hash = $result['password'] ?? '';
 $password_hash = hash('sha256', $password);
 $created_at = $helper->get_datetime();
 $expires_at = $helper->get_datetime(86400); // one day from now

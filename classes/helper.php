@@ -81,6 +81,19 @@ class Helper {
 		return $db->do_query($query);
 	}
 
+	public static function get_apikey_id_by_apikey($api_key) {
+		global $db;
+
+		$query = "
+			SELECT id
+			FROM api_keys
+			WHERE api_key = '$api_key'
+		";
+		$id = $db->do_select($query);
+		$id = (int)($id[0]['id'] ?? 0);
+		return $id;
+	}
+
 	public static function generate_wallet() {
 		$keypair = \Sodium\crypto_sign_keypair('ed25519');
 		$secret_bytes = \Sodium\crypto_sign_secretkey($keypair);
