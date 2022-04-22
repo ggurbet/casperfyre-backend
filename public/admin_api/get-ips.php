@@ -1,4 +1,12 @@
 <?php
+/**
+ *
+ * GET /admin/get-ips
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param string  guid
+ */
 include_once('../../core.php');
 
 global $db, $helper;

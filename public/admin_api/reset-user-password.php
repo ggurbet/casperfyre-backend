@@ -1,32 +1,26 @@
 <?php
 /**
  *
- * POST /user/forgot-password
+ * POST /admin/reset-user-password
  *
- * @param email   string
+ * HEADER Authorization: Bearer
  *
+ * @param string  guid
  */
 include_once('../../core.php');
 
 global $db, $helper;
 
 require_method('POST');
+$auth = authenticate_session(2);
+$admin_guid = $auth['guid'] ?? '';
 $params = get_params();
-$email = $params['email'] ?? '';
-
-if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-	_exit(
-		'error',
-		'Invalid email address',
-		400,
-		'Invalid email address'
-	);
-}
+$user_guid = $params['guid'] ?? '';
 
 $query = "
 	SELECT guid, email, confirmation_code
 	FROM users
-	WHERE email = '$email'
+	WHERE guid = '$user_guid'
 ";
 $selection = $db->do_select($query);
 $selection = $selection[0] ?? null;
@@ -52,10 +46,10 @@ if(
 	$db->do_query($query);
 
 	$confirmation_code = $selection['confirmation_code'] ?? '';
-	$uri = $helper->aes_encrypt($guid.'::'.$confirmation_code.'::'.(string)time().'::'.$reset_auth_code);
+	$uri = $helper->aes_encrypt($guid.'::'.$confirmation_code.'::'.(string)time().'::'.$reset_auth_code.'::admin');
 
 	$subject = 'CasperFYRE - Forgot Password';
-	$body = 'You are receiving this email because we received a password reset request for your account. Please follow the link below to reset your password. This password reset link will expire in 10 minutes.';
+	$body = 'You are receiving this email because an admin has issued a password reset request for your account. Please follow the link below to reset your password. This password reset link will expire in 24 hours.';
 	$link = 'https://'.getenv('FRONTEND_URL').'/reset-password/'.$uri.'?email='.$email;
 
 	$helper->schedule_email(
@@ -69,5 +63,5 @@ if(
 
 _exit(
 	'success',
-	'Please check your email for a reset link'
+	'Reset password email sent to the user'
 );

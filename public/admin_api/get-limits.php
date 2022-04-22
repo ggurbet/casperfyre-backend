@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * GET /admin/get-wallet
+ * GET /admin/get-limits
  *
  * HEADER Authorization: Bearer
  *
@@ -17,13 +17,17 @@ $admin_guid = $auth['guid'] ?? '';
 $user_guid = _request('guid');
 
 $query = "
-	SELECT guid, active, created_at, inactive_at, address, balance
-	FROM wallets
+	SELECT per_limit, day_limit, week_limit, month_limit
+	FROM limits
 	WHERE guid = '$user_guid'
-	AND active = 1
 ";
 $selection = $db->do_select($query);
-$selection = $selection[0] ?? array();
+$selection = $selection[0] ?? array(
+	"per_limit" => 0,
+	"day_limit" => 0,
+	"week_limit" => 0,
+	"month_limit" => 0
+);
 
 _exit(
 	'success',

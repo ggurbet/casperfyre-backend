@@ -38,9 +38,34 @@ $uri = explode('::', $uri);
 $guid = $uri[0];
 $confirmation_code = $uri[1] ?? '';
 $time = (int)($uri[2] ?? 0);
+$reset_auth_code = $uri[3] ?? null;
+$from_admin = $uri[4] ?? null;
 
-/* check for expired password reset code */
-if($time < (int)time() - 600) { // 10 minutes
+// check reset auth code
+$query = "
+	SELECT guid, code
+	FROM password_resets
+	WHERE code = '$reset_auth_code'
+";
+$auth_code_check = $db->do_select($query);
+
+if(!$auth_code_check) {
+	_exit(
+		'error',
+		'Password reset code is expired. Please try again',
+		401,
+		'Password reset code is expired'
+	);
+}
+
+/* check for expired password reset token */
+$expire_time = 600; // 10 minutes for user reset
+
+if($from_admin && $from_admin == 'admin') {
+	$expire_time = 86400;  // 24 hours for admin reset
+}
+
+if($time < (int)time() - $expire_time) {
 	_exit(
 		'error',
 		'Password reset token is expired. Please try again',
@@ -49,6 +74,7 @@ if($time < (int)time() - 600) { // 10 minutes
 	);
 }
 
+/* final confirmation check and reset */
 $query = "
 	SELECT guid, email, confirmation_code, password
 	FROM users
@@ -87,6 +113,13 @@ if($selection) {
 			'Error resetting password. Not authorized'
 		);
 	}
+
+	// clear reset code
+	$query = "
+		DELETE FROM password_resets
+		WHERE guid = '$guid'
+	";
+	$db->do_query($query);
 
 	$query = "
 		UPDATE users

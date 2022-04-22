@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * POST /admin/deny-user
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param string guid
+ * @param string deny_reason
+ */
 include_once('../../core.php');
 
 global $db, $helper;

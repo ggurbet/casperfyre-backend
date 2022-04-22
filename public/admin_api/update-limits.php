@@ -1,4 +1,15 @@
 <?php
+/**
+ *
+ * PUT /admin/update-limits
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param string  guid
+ * @param int     per_limit
+ * @param int     day_limit
+ * @param int     month_limit
+ */
 include_once('../../core.php');
 
 global $db, $helper;
@@ -20,7 +31,7 @@ if(gettype($per_limit) == 'integer') {
 		WHERE guid = '$user_guid'
 	";
 	$db->do_query($query);
-	$message .= "Daily limit is now $per_limit. ";
+	$message .= "Per request limit is now $per_limit. ";
 }
 
 if(gettype($day_limit) == 'integer') {

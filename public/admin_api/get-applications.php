@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * GET /admin/get-applications
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $db, $helper;

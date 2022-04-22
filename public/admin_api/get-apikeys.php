@@ -1,4 +1,12 @@
 <?php
+/**
+ *
+ * GET /admin/get-apikeys
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param string  guid
+ */
 include_once('../../core.php');
 
 global $db, $helper;
@@ -6,12 +14,21 @@ global $db, $helper;
 require_method('GET');
 $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
+$user_guid = _request('guid');
+
+if(!$user_guid) {
+	'error',
+	'Invalid user',
+	400,
+	'Invalid user'
+}
 
 $query = "
 	SELECT a.guid, a.email, a.company, b.id AS api_key_id, b.api_key, b.active, b.created_at, b.total_calls
 	FROM users AS a
 	JOIN api_keys AS b
 	ON a.guid = b.guid
+	WHERE a.guid = '$user_guid'
 ";
 $selection = $db->do_select($query);
 

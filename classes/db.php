@@ -287,6 +287,17 @@ class DB {
 			$this->do_query($query);
 			elog('DB: Created throttle table');
 		}
+
+		if(!in_array('password_resets', $all_tables)) {
+			$query = "
+				CREATE TABLE `password_resets` (
+					`guid` varchar(36) NOT NULL,
+					`code` varchar(12) NOT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created password_resets table');
+		}
 	}
 }
 ?>

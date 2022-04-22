@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * GET /admin/get-wallet
+ * GET /admin/get-user
  *
  * HEADER Authorization: Bearer
  *
@@ -17,13 +17,12 @@ $admin_guid = $auth['guid'] ?? '';
 $user_guid = _request('guid');
 
 $query = "
-	SELECT guid, active, created_at, inactive_at, address, balance
-	FROM wallets
+	SELECT *
+	FROM users
 	WHERE guid = '$user_guid'
-	AND active = 1
 ";
 $selection = $db->do_select($query);
-$selection = $selection[0] ?? array();
+$selection = $selection[0] ?? null;
 
 _exit(
 	'success',
