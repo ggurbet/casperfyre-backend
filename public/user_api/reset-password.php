@@ -121,6 +121,13 @@ if($selection) {
 	";
 	$db->do_query($query);
 
+	// clear sessions
+	$query = "
+		DELETE FROM sessions
+		WHERE guid = '$guid'
+	";
+	$db->do_query($query);
+
 	$query = "
 		UPDATE users
 		SET password = '$new_password_hash'
