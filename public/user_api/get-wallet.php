@@ -15,7 +15,7 @@ $auth = authenticate_session();
 $guid = $auth['guid'] ?? 0;
 
 $query = "
-	SELECT address, created_at
+	SELECT address, created_at, balance
 	FROM wallets
 	WHERE guid = '$guid'
 	AND active = 1

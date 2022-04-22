@@ -15,7 +15,7 @@ $auth = authenticate_session();
 $guid = $auth['guid'] ?? '';
 
 $query = "
-	SELECT api_key, active
+	SELECT api_key, active, total_calls, created_at
 	FROM api_keys
 	WHERE guid = '$guid'
 ";

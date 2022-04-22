@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ * GET /admin/history
+ *
+ * HEADER Authorization: Bearer
+ *
+ */
 include_once('../../core.php');
 
 global $helper, $db;

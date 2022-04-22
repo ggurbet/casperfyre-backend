@@ -21,6 +21,14 @@ $query = "
 ";
 $results = $db->do_select($query);
 
+_exit(
+	'success',
+	$results
+);
+
+/*
+not used anymore
+*/
 $output = array(
 	"data" => array()
 );
