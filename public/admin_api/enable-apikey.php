@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * POST /admin/disable-apikey
+ * POST /admin/enable-apikey
  *
  * HEADER Authorization: Bearer
  *
@@ -19,7 +19,7 @@ $api_key_id = (int)($params['api_key_id'] ?? 0);
 
 $query = "
 	UPDATE api_keys
-	SET active = 0
+	SET active = 1
 	WHERE id = $api_key_id
 ":
 $result = $db->do_query($query);
@@ -27,13 +27,13 @@ $result = $db->do_query($query);
 if($result) {
 	_exit(
 		'success',
-		'Successfully disabled API key'
+		'Successfully enabled API key'
 	);
 }
 
 _exit(
 	'error',
-	'Failed to disable api key',
+	'Failed to enable api key',
 	500,
-	'Failed to disable api key'
+	'Failed to enable api key'
 );

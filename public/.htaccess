@@ -51,6 +51,7 @@ RewriteRule ^admin/get-wallets/?$ /admin_api/get-wallets.php [NC]
 
 RewriteRule ^admin/create-apikey/?$ /admin_api/create-apikey.php [NC]
 RewriteRule ^admin/disable-apikey/?$ /admin_api/disable-apikey.php [NC]
+RewriteRule ^admin/enable-apikey/?$ /admin_api/enable-apikey.php [NC]
 RewriteRule ^admin/get-apikey/?$ /admin_api/get-apikey.php [NC]
 RewriteRule ^admin/get-apikeys/?$ /admin_api/get-apikeys.php [NC]
 
