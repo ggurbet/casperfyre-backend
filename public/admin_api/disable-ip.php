@@ -1,11 +1,11 @@
 <?php
 /**
  *
- * POST /admin/disable-apikey
+ * POST /admin/disable-ip
  *
  * HEADER Authorization: Bearer
  *
- * @param int api_key_id
+ * @param int ip_id
  */
 include_once('../../core.php');
 
@@ -15,25 +15,25 @@ require_method('POST');
 $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
 $params = get_params();
-$api_key_id = (int)($params['api_key_id'] ?? 0);
+$ip_id = (int)($params['ip_id'] ?? 0);
 
 $query = "
-	UPDATE api_keys
+	UPDATE ips
 	SET active = 0
-	WHERE id = $api_key_id
+	WHERE id = $ip_id
 ";
 $result = $db->do_query($query);
 
 if($result) {
 	_exit(
 		'success',
-		'Successfully disabled API key'
+		'Successfully disabled IP address'
 	);
 }
 
 _exit(
 	'error',
-	'Failed to disable api key',
+	'Failed to disable IP address',
 	400,
-	'Failed to disable api key'
+	'Failed to disable IP address'
 );

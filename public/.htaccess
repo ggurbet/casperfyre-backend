@@ -56,6 +56,8 @@ RewriteRule ^admin/get-apikey/?$ /admin_api/get-apikey.php [NC]
 RewriteRule ^admin/get-apikeys/?$ /admin_api/get-apikeys.php [NC]
 
 RewriteRule ^admin/get-ips/?$ /admin_api/get-ips.php [NC]
+RewriteRule ^admin/disable-ip/?$ /admin_api/disable-ip.php [NC]
+RewriteRule ^admin/enable-ip/?$ /admin_api/enable-ip.php [NC]
 
 RewriteRule ^admin/get-applications/?$ /admin_api/get-applications.php [NC]
 
