@@ -563,10 +563,25 @@ function insert_order(
 
 	/* record order */
 	$query = "
-		INSERT INTO orders
-		(guid, created_at, ip, return_code, fulfilled, amount, address, api_key_id_used)
-		VALUES
-		('$guid', '$datetime', '$ip', $return_code, $fulfilled, $amount, '$address', $api_key_id)
+		INSERT INTO orders (
+			guid, 
+			created_at, 
+			ip, 
+			return_code, 
+			fulfilled, 
+			amount, 
+			address, 
+			api_key_id_used
+		) VALUES (
+			'$guid', 
+			'$datetime', 
+			'$ip', 
+			$return_code, 
+			$fulfilled, 
+			$amount, 
+			'$address', 
+			$api_key_id
+		)
 	";
 
 	$result = $db->do_query($query);
@@ -736,9 +751,9 @@ function process_order(
 
 	_exit(
 		'error',
-		'Failed to place order. Internal server error. Please contact administration',
+		'Failed to place order. Internal server error. Please contact administration. Error code 2',
 		500,
-		'Failed to place order. Internal server error. Please contact administration'
+		'Failed to place order. Internal server error. Please contact administration. Error code 2'
 	);
 }
 
@@ -883,7 +898,7 @@ function whitelist($guid) {
 	global $db, $helper;
 
 	$query = "
-		SELECT ip
+		SELECT ip, active
 		FROM ips
 		WHERE guid = '$guid'
 	";
@@ -902,7 +917,8 @@ function whitelist($guid) {
 			$helper->in_CIDR_range(
 				strtolower($current_ip),
 				strtolower($ip['ip'])
-			)
+			) &&
+			(int)$ip['active'] == 1
 		) {
 			$authenticated = true;
 		}

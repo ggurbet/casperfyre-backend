@@ -28,7 +28,7 @@ class Throttle {
 		$this->uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 		$this->endpoints = array(
 			'/user/confirm-registration' => 10,
-			'/user/create-apikey' => 10,
+			'/user/create-apikey' => 5,
 			'/user/create-ip' => 10,
 			'/user/create-wallet' => 5,
 			'/user/forgot-password' => 5,
@@ -40,16 +40,16 @@ class Throttle {
 			'/user/history' => 100,
 			'/user/login' => 10,
 			'/user/logout' => 100,
-			'/user/me' => 200,
+			'/user/me' => 150,
 			'/user/name-by-email' => 20,
-			'/user/register' => 5,
+			'/user/register' => 3,
 			'/user/resend-code' => 3,
 			'/user/reset-password' => 3,
-			'/user/revoke-apikey' => 20,
+			'/user/revoke-apikey' => 10,
 			'/user/revoke-ip' => 20,
-			'/user/revoke-wallet' => 20,
+			'/user/revoke-wallet' => 10,
 			'/user/submit-mfa' => 10,
-			'/user/update-email' => 10,
+			'/user/update-email' => 5,
 			'/user/usage' => 100,
 			'/admin/approve-user' => 30,
 			'/admin/deny-user' => 30,
@@ -59,8 +59,8 @@ class Throttle {
 			'/admin/get-ips' => 100,
 			'/admin/get-wallets' => 100,
 			'/admin/history' => 100,
-			'/admin/update-limits' => 30,
-			'/v1/dispense' => 50
+			'/admin/update-limits' => 10,
+			'/v1/dispense' => 30
 		);
 
 		$endpoint_throttle = $this->endpoints[$this->uri] ?? 30;
