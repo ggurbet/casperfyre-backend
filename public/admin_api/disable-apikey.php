@@ -5,7 +5,7 @@
  *
  * HEADER Authorization: Bearer
  *
- * @param string guid
+ * @param int api_key_id
  */
 include_once('../../core.php');
 

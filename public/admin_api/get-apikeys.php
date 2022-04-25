@@ -14,7 +14,7 @@ global $db, $helper;
 require_method('GET');
 $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
-$user_guid = _request('guid'); 
+$user_guid = _request('guid');
 
 if(!$user_guid) {
 	_exit(

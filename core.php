@@ -455,7 +455,7 @@ function authenticate_api() {
 	}
 
 	$query = "
-		SELECT a.api_key, a.active, b.guid as guid, b.api_key_active
+		SELECT a.api_key, a.active AS api_key_active, b.guid AS guid, b.api_key_active AS account_active
 		FROM api_keys AS a
 		JOIN users AS b
 		ON a.guid = b.guid
@@ -472,10 +472,11 @@ function authenticate_api() {
 		);
 	}
 
-	$active = (int)($selection[0]['active'] ?? 0);
+	/*
 	$api_key_active = (int)($selection[0]['api_key_active'] ?? 0);
+	$account_active = (int)($selection[0]['account_active'] ?? 0);
 
-	if($active === 0) {
+	if($account_active === 0) {
 		_exit(
 			'error', 
 			'Your account is frozen', 
@@ -490,6 +491,7 @@ function authenticate_api() {
 			401
 		);
 	}
+	*/
 
 	return $selection[0];
 }
@@ -600,7 +602,7 @@ function process_order(
 	$guid, 
 	$address, 
 	$amount,
-	$api_key
+	$authentication_array
 ) {
 	global $db, $helper;
 
@@ -692,8 +694,27 @@ function process_order(
 		$FULFILLED = 2;
 	}
 
-	/* insert order */
+	/* api key check */
+	$api_key = $authentication_array['api_key'] ?? '';
 	$api_key_id = $helper->get_apikey_id_by_apikey($api_key);
+	$api_key_active = (int)($authentication_array['api_key_active'] ?? 0);
+	$account_active = (int)($authentication_array['account_active'] ?? 0);
+
+	if($account_active === 0) {
+		$RETURN_STATUS = 'error';
+		$RETURN_MSG = 'Your account is frozen';
+		$RETURN_CODE = 401;
+		$FULFILLED = 2;
+	}
+
+	if($api_key_active === 0) {
+		$RETURN_STATUS = 'error';
+		$RETURN_MSG = 'Your API key has been frozen';
+		$RETURN_CODE = 401;
+		$FULFILLED = 2;
+	}
+
+	/* insert order */
 	$inserted = insert_order(
 		$guid,
 		$datetime,
