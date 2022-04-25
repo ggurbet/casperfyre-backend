@@ -14,13 +14,15 @@ global $db, $helper;
 require_method('GET');
 $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
-$user_guid = _request('guid');
+$user_guid = _request('guid'); 
 
 if(!$user_guid) {
-	'error',
-	'Invalid user',
-	400,
-	'Invalid user'
+	_exit(
+		'error',
+		'Invalid user',
+		400,
+		'Invalid user'
+	);
 }
 
 $query = "
