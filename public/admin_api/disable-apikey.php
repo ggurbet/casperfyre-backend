@@ -21,7 +21,7 @@ $query = "
 	UPDATE api_keys
 	SET active = 0
 	WHERE id = $api_key_id
-":
+";
 $result = $db->do_query($query);
 
 if($result) {
