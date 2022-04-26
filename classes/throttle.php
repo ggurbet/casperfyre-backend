@@ -10,7 +10,65 @@ class Throttle {
 	 * Instantiating the class immediately causes the throttling to take effect.
 	 * Exits with code 429 if the client fails based on IP address.
 	 */
+
+	// known endpoints
+	public const endpoints = array(
+		'/user/confirm-registration' => 10,
+		'/user/create-apikey' => 5,
+		'/user/create-ip' => 10,
+		'/user/create-wallet' => 5,
+		'/user/forgot-password' => 5,
+		'/user/get-apikey' => 60,
+		'/user/get-apikeys' => 60,
+		'/user/get-ips' => 60,
+		'/user/get-wallet' => 60,
+		'/user/get-wallets' => 60,
+		'/user/history' => 60,
+		'/user/login' => 5,
+		'/user/logout' => 100,
+		'/user/me' => 150,
+		'/user/name-by-email' => 20,
+		'/user/register' => 3,
+		'/user/resend-code' => 3,
+		'/user/reset-password' => 3,
+		'/user/revoke-apikey' => 10,
+		'/user/revoke-ip' => 20,
+		'/user/revoke-wallet' => 10,
+		'/user/submit-mfa' => 10,
+		'/user/update-email' => 5,
+		'/user/usage' => 100,
+		'/admin/send-mfa' => 5,
+		'/admin/update-mfa' => 3,
+		'/admin/update-email' => 3,
+		'/admin/approve-user' => 30,
+		'/admin/deny-user' => 30,
+		'/admin/create-wallet' => 10,
+		'/admin/disable-ip' => 30,
+		'/admin/enable-ip' => 30,
+		'/admin/create-apikey' => 30,
+		'/admin/disable-apikey' => 30,
+		'/admin/enable-apikey' => 30,
+		'/admin/disable-user' => 30,
+		'/admin/enable-user' => 30,
+		'/admin/reset-user-password' => 10,
+		'/admin/get-apikey' => 60,
+		'/admin/get-apikeys' => 60,
+		'/admin/get-applications' => 60,
+		'/admin/get-ips' => 60,
+		'/admin/get-wallets' => 60,
+		'/admin/get-wallet' => 60,
+		'/admin/get-limits' => 60,
+		'/admin/get-user' => 100,
+		'/admin/get-users' => 100,
+		'/admin/get-admins' => 100,
+		'/admin/create-admin' => 10,
+		'/admin/history' => 100,
+		'/admin/update-limits' => 10,
+		'/v1/dispense' => 30
+	);
+
 	function __construct($real_ip = '127.0.0.1') {
+		// forget throttling during dev
 		if(
 			$real_ip == '127.0.0.1' ||
 			$real_ip == 'localhost' ||
@@ -26,45 +84,13 @@ class Throttle {
 		$this->now = (int)time();
 		$this->ip = $real_ip;
 		$this->uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
-		$this->endpoints = array(
-			'/user/confirm-registration' => 10,
-			'/user/create-apikey' => 5,
-			'/user/create-ip' => 10,
-			'/user/create-wallet' => 5,
-			'/user/forgot-password' => 5,
-			'/user/get-apikey' => 100,
-			'/user/get-apikeys' => 100,
-			'/user/get-ips' => 100,
-			'/user/get-wallet' => 100,
-			'/user/get-wallets' => 100,
-			'/user/history' => 100,
-			'/user/login' => 10,
-			'/user/logout' => 100,
-			'/user/me' => 150,
-			'/user/name-by-email' => 20,
-			'/user/register' => 3,
-			'/user/resend-code' => 3,
-			'/user/reset-password' => 3,
-			'/user/revoke-apikey' => 10,
-			'/user/revoke-ip' => 20,
-			'/user/revoke-wallet' => 10,
-			'/user/submit-mfa' => 10,
-			'/user/update-email' => 5,
-			'/user/usage' => 100,
-			'/admin/approve-user' => 30,
-			'/admin/deny-user' => 30,
-			'/admin/get-apikey' => 100,
-			'/admin/get-apikeys' => 100,
-			'/admin/get-applications' => 100,
-			'/admin/get-ips' => 100,
-			'/admin/get-wallets' => 100,
-			'/admin/history' => 100,
-			'/admin/update-limits' => 10,
-			'/v1/dispense' => 30
-		);
 
-		$endpoint_throttle = $this->endpoints[$this->uri] ?? 30;
+		// no need to go any further for unit tests
+		if($real_ip == 'unittest') {
+			return true;
+		}
 
+		// check hit, log hit
 		$query = "
 			SELECT hit, last_request
 			FROM throttle
@@ -88,7 +114,7 @@ class Throttle {
 		}
 
 		$minute = 60;
-		$minute_limit = $this->endpoints[$this->uri] ?? 100;
+		$minute_limit = self::endpoints[$this->uri] ?? 30;
 		$last_api_request = (int)($selection[0]['last_request'] ?? 0);
 		$last_api_diff = $this->now - $last_api_request;
 		$minute_throttle = (float)($selection[0]['hit'] ?? 0);
@@ -114,12 +140,13 @@ class Throttle {
 			AND uri = '$this->uri'
 		";
 		$db->do_query($query);
-
-
 	}
 
 	function __destruct() {
 		//
 	}
 
+	public static function get_endpoints() {
+		return self::endpoints;
+	}
 }

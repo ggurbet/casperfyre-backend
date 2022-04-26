@@ -13,14 +13,20 @@ final class RouterTest extends TestCase
 		$this->dir_admin_scan = array();
 		$this->dir_external_scan = array();
 
-		if(is_dir(__DIR__.'/../../public/user_api'))
-			$this->dir_user_scan = scandir(__DIR__.'/../../public/user_api');
+		$dir = __DIR__.'/../../public/user_api';
 
-		if(is_dir(__DIR__.'/../../public/admin_api'))
-			$this->dir_admin_scan = scandir(__DIR__.'/../../public/admin_api');
+		if(is_dir($dir))
+			$this->dir_user_scan = scandir($dir);
 
-		if(is_dir(__DIR__.'/../../public/external_api/v'.(string)API_VERSION))
-			$this->dir_external_scan = scandir(__DIR__.'/../../public/external_api/v'.(string)API_VERSION);
+		$dir = __DIR__.'/../../public/admin_api';
+
+		if(is_dir($dir))
+			$this->dir_admin_scan = scandir($dir);
+
+		$dir = __DIR__.'/../../public/external_api/v'.(string)API_VERSION;
+
+		if(is_dir($dir))
+			$this->dir_external_scan = scandir($dir);
 
 		for($i = 0; $i < count($this->dir_user_scan); $i++) {
 			if(
@@ -62,9 +68,9 @@ final class RouterTest extends TestCase
 		if(is_file(__DIR__.'/../../public/.htaccess'))
 			$router_file = file_get_contents(__DIR__.'/../../public/.htaccess');
 
-		$split = explode("\n", $router_file);
+		$lines = explode("\n", $router_file);
 
-		foreach ($split as $line) {
+		foreach ($lines as $line) {
 			if(strstr($line, 'RewriteRule')) {
 				$s = explode(' ', $line);
 				$path = $s[2] ?? '';
@@ -173,9 +179,9 @@ final class RouterTest extends TestCase
 		if(is_file(__DIR__.'/../../public/.htaccess'))
 			$router_file = file_get_contents(__DIR__.'/../../public/.htaccess');
 
-		$split = explode("\n", $router_file);
+		$lines = explode("\n", $router_file);
 
-		foreach ($split as $line) {
+		foreach ($lines as $line) {
 			if(strstr($line, 'RewriteRule')) {
 				$s = explode(' ', $line);
 				$path = $s[2] ?? '';

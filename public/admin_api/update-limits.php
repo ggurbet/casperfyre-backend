@@ -21,9 +21,9 @@ $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
 $params = get_params();
 $user_guid = $params['guid'] ?? '';
-$per_limit = $params['per_limit'] ? (int)$params['per_limit'] : null;
-$day_limit = $params['day_limit'] ? (int)$params['day_limit'] : null;
-$month_limit = $params['month_limit'] ? (int)$params['month_limit'] : null;
+$per_limit = isset($params['per_limit']) ? (int)$params['per_limit'] : null;
+$day_limit = isset($params['day_limit']) ? (int)$params['day_limit'] : null;
+$month_limit = isset($params['month_limit']) ? (int)$params['month_limit'] : null;
 $message = '';
 
 $query = "
