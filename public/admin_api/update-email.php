@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * POST /admin/update-email
+ * PUT /admin/update-email
  *
  * HEADER Authorization: Bearer
  *
@@ -13,7 +13,7 @@ include_once('../../core.php');
 
 global $db, $helper;
 
-require_method('POST');
+require_method('PUT');
 $auth = authenticate_session(2);
 $guid = $auth['guid'] ?? '';
 $twofa_on = (int)($auth['twofa'] ?? 0);

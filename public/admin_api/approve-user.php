@@ -6,6 +6,7 @@
  * HEADER Authorization: Bearer
  *
  * @param string  guid
+ *
  */
 include_once('../../core.php');
 
@@ -20,12 +21,20 @@ $created_at = $helper->get_datetime();
 if($user_guid) {
 	/* auth check */
 	$query = "
-		SELECT role
+		SELECT role, admin_approved
 		FROM users
 		WHERE guid = '$user_guid'
 	";
 	$check = $db->do_select($query);
 	$role = $check[0]['role'] ?? '';
+	$admin_approved = (int)($check[0]['admin_approved'] ?? 0);
+
+	if($admin_approved == 1) {
+		_exit(
+			'success',
+			'User already approved'
+		);
+	}
 
 	if($role != 'user') {
 		_exit(
@@ -44,7 +53,7 @@ if($user_guid) {
 	";
 	$db->do_query($query);
 
-	/* check status of new user first */
+	/* check addons of new user first */
 	$query = "
 		SELECT address
 		FROM wallets
@@ -109,7 +118,7 @@ if($user_guid) {
 	$selection = $db->do_select($query);
 	$user_email = $selection[0]['email'] ?? '';
 	$first_name = $selection[0]['first_name'] ?? '';
-	$subject = 'CasperFYRE Application Status';
+	$subject = APP_NAME.' Application Status';
 	$body = 'Great news, '.$first_name.'. You have been <b>approved</b> and granted access to your dashboard.<br><br>';
 
 	if($user_email) {

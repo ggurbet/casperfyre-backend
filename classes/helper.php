@@ -119,8 +119,8 @@ class Helper {
 			self::schedule_email(
 				'twofa',
 				$email,
-				'Multi Factor Authentication',
-				'Hello, '.$first_name.'. Please find your MFA code for CasperFYRE. This code expires in 10 minutes.',
+				APP_NAME.' - Multi Factor Authentication',
+				'Hello, '.$first_name.'. Please find your MFA code for '.APP_NAME.'. This code expires in 10 minutes.',
 				$code
 			);
 

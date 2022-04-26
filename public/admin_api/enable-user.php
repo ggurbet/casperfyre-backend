@@ -19,7 +19,7 @@ $guid = $params['guid'] ?? '';
 if($guid) {
 	/* auth check */
 	$query = "
-		SELECT role, email, first_name
+		SELECT role, email, first_name, admin_approved
 		FROM users
 		WHERE guid = '$guid'
 	";
@@ -27,6 +27,7 @@ if($guid) {
 	$role = $check[0]['role'] ?? '';
 	$email = $check[0]['email'] ?? '';
 	$first_name = $check[0]['first_name'] ?? '';
+	$admin_approved = (int)($check[0]['admin_approved'] ?? 0);
 
 	if(!$check) {
 		_exit(
@@ -45,6 +46,13 @@ if($guid) {
 		$auth = authenticate_session(3);
 	}
 
+	if($admin_approved == 1) {
+		_exit(
+			'success',
+			'User is already enabled'
+		);
+	}
+
 	$query = "
 		UPDATE users
 		SET admin_approved = 1
@@ -53,7 +61,7 @@ if($guid) {
 	$db->do_query($query);
 
 	/* send email to re-activated user */
-	$subject = 'CasperFYRE Access Status';
+	$subject = APP_NAME.' Access Status';
 	$body = 'Hello, '.$first_name.'. Your account has been <b>enabled</b> and granted dashboard access.<br><br>';
 
 	if($email) {

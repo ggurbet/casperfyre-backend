@@ -37,7 +37,7 @@ if($user_guid) {
 	$selection = $db->do_select($query);
 	$user_email = $selection[0]['email'] ?? '';
 	$first_name = $selection[0]['first_name'] ?? '';
-	$subject = 'CasperFYRE Application Status';
+	$subject = APP_NAME.' Application Status';
 	$body = 'Unfortunate news, '.$first_name.'. You have been <b>denied</b> access to your dashboard.<br><br>'.$deny_reason;
 
 	if($user_email) {

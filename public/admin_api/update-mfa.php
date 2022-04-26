@@ -16,6 +16,7 @@ global $db, $helper;
 require_method('PUT');
 $auth = authenticate_session(2);
 $admin_guid = $auth['guid'] ?? '';
+$twofa_on = (int)($auth['twofa'] ?? 0);
 $params = get_params();
 $active = isset($params['active']) ? (bool)$params['active'] : null;
 $mfa_code = $params['mfa_code'] ?? '';
@@ -71,6 +72,38 @@ if($active === true) {
 }
 
 if($active === false) {
+	// check 2fa code, if on
+	if($twofa_on == 1) {
+		if(!$mfa_code) {
+			_exit(
+				'error',
+				'MFA code required for turning off MFA. Please try again',
+				400,
+				'MFA code missing from request'
+			);
+		}
+
+		$verified = $helper->verify_mfa($admin_guid, $mfa_code);
+
+		if($verified == 'expired') {
+			_exit(
+				'error',
+				'MFA code expired. Please try updating your settings again',
+				400,
+				'MFA code expired'
+			);
+		}
+
+		if($verified == 'incorrect') {
+			_exit(
+				'error',
+				'MFA code incorrect',
+				400,
+				'MFA code incorrect'
+			);
+		}
+	}
+
 	$query = "
 		UPDATE users
 		SET twofa = 0

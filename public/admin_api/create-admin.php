@@ -6,6 +6,8 @@
  * HEADER Authorization: Bearer
  *
  * @param string  email
+ * @param enum    role  ["admin", "sub-admin"] default "sub-admin"
+ *
  */
 include_once('../../core.php');
 
@@ -16,6 +18,8 @@ $auth = authenticate_session(3);
 $admin_guid = $auth['guid'] ?? '';
 $params = get_params();
 $new_admin_email = $params['email'] ?? '';
+$role = $params['role'] ?? 'sub-admin';
+$selected_role = 'sub-admin';
 
 if(!filter_var($new_admin_email, FILTER_VALIDATE_EMAIL)) {
 	_exit(
@@ -43,6 +47,12 @@ if($check) {
 	);
 }
 
+switch ($role) {
+	case 'admin': $selected_role = 'admin'; break;
+	case 'sub-admin': $selected_role = 'sub-admin'; break;
+	default: $selected_role = 'sub-admin'; break;
+}
+
 $guid = $helper->generate_guid();
 $created_at = $helper->get_datetime();
 $confirmation_code = $helper->generate_hash(6);
@@ -68,7 +78,7 @@ $query = "
 		admin_approved
 	) VALUES (
 		'$guid',
-		'sub-admin',
+		'$selected_role',
 		'$new_admin_email',
 		1,
 		'',
@@ -97,8 +107,8 @@ $query = "
 ";
 $db->do_query($query);
 
-$subject = 'Welcome to CasperFyre Admin';
-$body = 'Welcome to CasperFyre Admin. Follow the link below to confirm your account and set a password:<br><br>';
+$subject = 'Welcome to '.APP_NAME.' Admin';
+$body = 'Welcome to '.APP_NAME.' Admin. Follow the link below to confirm your account and set a password:<br><br>';
 $uri = $helper->aes_encrypt($guid.'::'.$confirmation_code.'::'.(string)time().'::'.$reset_auth_code.'::register-admin');
 $link = 'https://'.getenv('FRONTEND_URL').'/reset-password/'.$uri.'?email='.$new_admin_email;
 
