@@ -18,5 +18,9 @@
         "classmap": [
             "classes/"
         ]
+    },
+    "scripts": {
+        "test": "echo ; echo '[+] Running Unit Tests' ; echo ; ./vendor/bin/phpunit --testdox tests/Unit",
+        "test-integration": "echo ; echo '[+] Running Integration Tests' ; echo ; ./vendor/bin/phpunit --testdox tests/Integration"
     }
 }

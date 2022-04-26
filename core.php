@@ -22,6 +22,7 @@ $dotenv = new Dotenv(__DIR__.'/.env');
 $dotenv->load();
 
 define('BASE_DIR', __DIR__);
+define('API_VERSION', 1);
 define('APP_NAME', getenv('APP_NAME'));
 define('CORS_SITE', getenv('CORS_SITE'));
 define('DB_HOST', getenv('DB_HOST'));
@@ -305,9 +306,9 @@ function authenticate_session($required_clearance = 1) {
 	}
 
 	$query = "
-		SELECT a.guid, a.expires_at, b.role, b.verified, b.admin_approved
-		FROM sessions as a
-		JOIN users as b
+		SELECT a.guid, a.expires_at, b.role, b.twofa, b.verified, b.admin_approved
+		FROM sessions AS a
+		JOIN users AS b
 		ON a.guid = b.guid
 		WHERE a.bearer = '$auth_bearer'
 	";
@@ -383,6 +384,16 @@ function authenticate_session($required_clearance = 1) {
 				'Failed clearance level 1 with no verification or admin approval'
 			);
 		}
+	}
+
+	/* fail for banned sub-admin role */
+	if($clearance == 2 && $admin_approved == 0) {
+		_exit(
+			'error', 
+			'Unauthorized', 
+			401,
+			'Failed clearance level 1 with no verification or admin approval'
+		);
 	}
 
 	return $selection;

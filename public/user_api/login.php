@@ -58,15 +58,15 @@ if(!hash_equals($fetched_password_hash, $password_hash)) {
 	);
 }
 
-/* check 2fa */
+/* check MFA */
 if($twofa == 1) {
 	$code = $helper->generate_hash(6);
 
 	$helper->schedule_email(
 		'twofa',
 		$email,
-		'Two factor authentication',
-		'Please find your 2fa code below to login to CasperFYRE. This code expires in 10 minutes.',
+		'Multi Factor Authentication',
+		'Please find your MFA code below to login to CasperFYRE. This code expires in 10 minutes.',
 		$code
 	);
 

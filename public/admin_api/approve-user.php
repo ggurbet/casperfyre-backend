@@ -13,16 +13,34 @@ global $db, $helper;
 
 require_method('POST');
 $auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
 $params = get_params();
 $user_guid = $params['guid'] ?? '';
 $created_at = $helper->get_datetime();
 
-if($user_guid && $admin_guid) {
+if($user_guid) {
+	/* auth check */
+	$query = "
+		SELECT role
+		FROM users
+		WHERE guid = '$user_guid'
+	";
+	$check = $db->do_select($query);
+	$role = $check[0]['role'] ?? '';
+
+	if($role != 'user') {
+		_exit(
+			'error',
+			'User approval only works for user roles',
+			400,
+			'User approval only works for user roles'
+		);
+	}
+
 	$query = "
 		UPDATE users
 		SET admin_approved = 1
 		WHERE guid = '$user_guid'
+		AND role = 'user'
 	";
 	$db->do_query($query);
 
@@ -113,5 +131,6 @@ if($user_guid && $admin_guid) {
 _exit(
 	'error',
 	'Please provide guid of the user to approve',
-	400
+	400,
+	'Failed to provide guid of the user to approve'
 );

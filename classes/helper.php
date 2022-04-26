@@ -81,6 +81,91 @@ class Helper {
 		return $db->do_query($query);
 	}
 
+	public static function send_mfa($guid) {
+		global $db;
+
+		$query = "
+			SELECT email, first_name
+			FROM users
+			WHERE guid = '$guid'
+		";
+
+		$selection = $db->do_select($query);
+		$email = $selection[0]['email'] ?? '';
+		$first_name = $selection[0]['first_name'] ?? '';
+		$code = self::generate_hash(6);
+		$created_at = self::get_datetime();
+
+		if($selection) {
+			$query = "
+				DELETE FROM twofa
+				WHERE guid = '$guid'
+			";
+			$db->do_query($query);
+
+			$query = "
+				INSERT INTO twofa (
+					guid,
+					created_at,
+					code
+				) VALUES (
+					'$guid',
+					'$created_at',
+					'$code'
+				)
+			";
+			$db->do_query($query);
+
+			self::schedule_email(
+				'twofa',
+				$email,
+				'Multi Factor Authentication',
+				'Hello, '.$first_name.'. Please find your MFA code for CasperFYRE. This code expires in 10 minutes.',
+				$code
+			);
+
+			return true;
+		}
+		return false;
+	}
+
+	public static function verify_mfa($guid, $mfa_code) {
+		global $db;
+
+		if(strlen($mfa_code) > 8) {
+			return 'incorrect';
+		}
+
+		$query = "
+			SELECT code, created_at
+			FROM twofa
+			WHERE guid = '$guid'
+			AND code = '$mfa_code'
+		";
+
+		$selection = $db->do_select($query);
+		$fetched_code = $selection[0]['code'] ?? '';
+		$created_at = $selection[0]['created_at'] ?? 0;
+		$expire_time = self::get_datetime(-600); // 10 minutes ago
+
+		if($selection) {
+			if($mfa_code == $fetched_code) {
+				$query = "
+					DELETE FROM twofa
+					WHERE guid = '$guid'
+				";
+				$db->do_query($query);
+
+				if($expire_time < $created_at) {
+					return 'success';
+				} else {
+					return 'expired';
+				}
+			}
+		}
+		return 'incorrect';
+	}
+
 	public static function get_apikey_id_by_apikey($api_key) {
 		global $db;
 
@@ -189,7 +274,7 @@ class Helper {
 		} elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		} else {
-			$ip = $_SERVER['REMOTE_ADDR'];
+			$ip = $_SERVER['REMOTE_ADDR'] ?? '';
 		}
 
 		if($ip == '::1')

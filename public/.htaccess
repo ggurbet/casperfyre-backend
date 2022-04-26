@@ -65,9 +65,19 @@ RewriteRule ^admin/get-user/?$ /admin_api/get-user.php [NC]
 RewriteRule ^admin/get-users/?$ /admin_api/get-users.php [NC]
 RewriteRule ^admin/approve-user/?$ /admin_api/approve-user.php [NC]
 RewriteRule ^admin/deny-user/?$ /admin_api/deny-user.php [NC]
+RewriteRule ^admin/enable-user/?$ /admin_api/enable-user.php [NC]
+RewriteRule ^admin/disable-user/?$ /admin_api/disable-user.php [NC]
 RewriteRule ^admin/reset-user-password/?$ /admin_api/reset-user-password.php [NC]
 
 RewriteRule ^admin/history/?$ /admin_api/history.php [NC]
+
+RewriteRule ^admin/get-admins/?$ /admin_api/get-admins.php [NC]
+RewriteRule ^admin/create-admin/?$ /admin_api/create-admin.php [NC]
+
+RewriteRule ^admin/send-mfa/?$ /admin_api/send-mfa.php [NC]
+RewriteRule ^admin/update-mfa/?$ /admin_api/update-mfa.php [NC]
+RewriteRule ^admin/update-email/?$ /admin_api/update-email.php [NC]
+
 
 
 # CRON API

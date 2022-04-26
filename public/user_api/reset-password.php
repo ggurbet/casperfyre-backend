@@ -65,6 +65,10 @@ if($from_admin && $from_admin == 'admin') {
 	$expire_time = 86400;  // 24 hours for admin reset
 }
 
+if($from_admin && $from_admin == 'register-admin') {
+	$expire_time = 2592000;  // 1 month for registering sub-admin
+}
+
 if($time < (int)time() - $expire_time) {
 	_exit(
 		'error',

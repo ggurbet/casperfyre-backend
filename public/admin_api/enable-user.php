@@ -1,0 +1,79 @@
+<?php
+/**
+ *
+ * POST /admin/enable-user
+ *
+ * HEADER Authorization: Bearer
+ *
+ * @param string  guid
+ */
+include_once('../../core.php');
+
+global $db, $helper;
+
+require_method('POST');
+$auth = authenticate_session(2);
+$params = get_params();
+$guid = $params['guid'] ?? '';
+
+if($guid) {
+	/* auth check */
+	$query = "
+		SELECT role, email, first_name
+		FROM users
+		WHERE guid = '$guid'
+	";
+	$check = $db->do_select($query);
+	$role = $check[0]['role'] ?? '';
+	$email = $check[0]['email'] ?? '';
+	$first_name = $check[0]['first_name'] ?? '';
+
+	if(!$check) {
+		_exit(
+			'error',
+			'Invalid guid',
+			400,
+			'Invalid guid'
+		);
+	}
+
+	if(
+		$role == 'admin' ||
+		$role == 'sub-admin'
+	) {
+		// require clearance level 3 if altering an admin role
+		$auth = authenticate_session(3);
+	}
+
+	$query = "
+		UPDATE users
+		SET admin_approved = 1
+		WHERE guid = '$guid'
+	";
+	$db->do_query($query);
+
+	/* send email to re-activated user */
+	$subject = 'CasperFYRE Access Status';
+	$body = 'Hello, '.$first_name.'. Your account has been <b>enabled</b> and granted dashboard access.<br><br>';
+
+	if($email) {
+		$helper->schedule_email(
+			'approved',
+			$email,
+			$subject,
+			$body,
+			getenv('FRONTEND_URL').'/auth/login'
+		);
+	}
+
+	_exit(
+		'success',
+		'You re-activated '.$email
+	);
+}
+
+_exit(
+	'error',
+	'Please provide guid of the user to enable',
+	400
+);

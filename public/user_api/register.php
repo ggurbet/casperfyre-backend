@@ -56,6 +56,29 @@ if(!$last_name || $last_name == '') {
 	);
 }
 
+if(
+	strlen($first_name) > 32 ||
+	strlen($last_name) > 32 ||
+	preg_match('/[\/~`\!@#\$%\^&\*\(\)_\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $first_name) ||
+	preg_match('/[\/~`\!@#\$%\^&\*\(\)_\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $last_name)
+) {
+	_exit(
+		'error',
+		'There are invalid characters in your name',
+		400,
+		'Invalid characters in registration first_name/last_name'
+	);
+}
+
+if(strlen($description) > 2048) {
+	_exit(
+		'error',
+		'Description is too long. Limit 2000 characters',
+		400,
+		'Description is too long. Limit 2000 characters'
+	);
+}
+
 if(!$password || $password == '') {
 	_exit(
 		'error',
