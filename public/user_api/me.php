@@ -15,7 +15,9 @@ $auth = authenticate_session();
 $guid = $auth['guid'] ?? '';
 
 $query = "
-	SELECT guid, role, email, verified, first_name, last_name, api_key_active, created_at
+	SELECT
+	guid, role, email, verified, first_name, last_name, api_key_active,
+	created_at, last_ip, company, description, admin_approved, deny_reason, twofa
 	FROM users
 	WHERE guid = '$guid'
 ";
