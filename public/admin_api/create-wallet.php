@@ -18,7 +18,7 @@ $params = get_params();
 $user_guid = $params['guid'] ?? '';
 
 $query = "
-	SELECT id
+	SELECT guid
 	FROM users
 	WHERE guid = '$user_guid'
 ";

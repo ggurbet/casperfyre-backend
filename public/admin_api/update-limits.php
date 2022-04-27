@@ -27,7 +27,7 @@ $month_limit = isset($params['month_limit']) ? (int)$params['month_limit'] : nul
 $message = '';
 
 $query = "
-	SELECT id
+	SELECT guid
 	FROM users
 	WHERE guid = '$user_guid'
 ";
