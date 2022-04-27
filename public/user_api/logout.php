@@ -22,6 +22,6 @@ $query = "
 $db->do_query($query);
 
 _exit(
-	'success'
+	'success',
 	'Session terminated'
 );

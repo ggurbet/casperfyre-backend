@@ -31,7 +31,7 @@ if($selection) {
 			$command .= " --amount ".$amount."000000000";
 			$command .= " --targer--account ".$address;
 			$command .= " --payment-amount 100000000";
-			$command .= " --chain-name casper"
+			$command .= " --chain-name casper";
 			$stdout = shell_exec($command);
 			$success = '';
 

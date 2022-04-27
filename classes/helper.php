@@ -268,6 +268,31 @@ class Helper {
 		return rtrim($decrypted, "\0..\32");
 	}
 
+	public static function get_dir_contents(
+		$__dir, 
+		$dir, 
+		&$result = array()
+	) {
+		$files = scandir($dir);
+
+		foreach($files as $key => $val) {
+			$path = realpath($dir.DIRECTORY_SEPARATOR.$val);
+			$path = str_replace($__dir.'/' , '', $path);
+
+			if(!is_dir($path)) {
+				$result[] = $path;
+			} elseif(
+				$val != '.' &&
+				$val != '..'
+			) {
+				self::get_dir_contents($__dir, $path, $result);
+				$result[] = $path;
+			}
+		}
+
+		return $result;
+	}
+
 	public static function get_real_ip() {
 		if(!empty($_SERVER['HTTP_CLIENT_IP'])) {
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
