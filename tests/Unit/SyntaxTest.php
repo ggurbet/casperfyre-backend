@@ -1,45 +1,52 @@
 <?php
-
+/**
+ * Syntax check unit test. 
+ * Starts at base DIR and iterates through all *.php files recursively.
+ * Spawns child processes shell_exec -l syntax check on all files found.
+ *
+ * @method void testPhpSyntax()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');
 
 final class SyntaxTest extends TestCase
 {
+	public const base_folders = array(
+		'public',
+		'classes',
+		'templates',
+		'tests'
+	);
+
 	public function testPhpSyntax()
 	{
 		global $helper;
 
-		$base_folders = array(
-			'public',
-			'classes',
-			'templates',
-			'tests'
-		);
-
-		foreach($base_folders as $folder) {
+		foreach(self::base_folders as $folder) {
 			$list = Helper::get_dir_contents(__DIR__.'/../../', $folder);
-			$new_list = array();
+			$err_list = array();
 
 			foreach($list as $item) {
 				if(strstr($item, '.php')) {
 					$result = shell_exec("php -l ".$item);
 
 					if(strstr($result, 'Errors parsing')) {
-						$new_list[] = trim($result);
+						$err_list[] = trim($result);
 					}
 				}
 			}
 
-			foreach($new_list as $p) {
-				echo $p."\n";
+			foreach($err_list as $e) {
+				echo $e."\n";
 			}
 
-			if(empty($new_list)) {
+			if(empty($err_list)) {
 				echo "Good syntax on ".$folder." PHP files\n";
 			}
 
-			$this->assertTrue(empty($new_list));
+			$this->assertTrue(empty($err_list));
 		}
 	}
 }

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Core unit test.
+ *
+ * @method void testFilter()
+ * @method void testRequireMethod()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');

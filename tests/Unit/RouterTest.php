@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Router integrity check unit test.
+ * Checks for valid router paths not found in directory structure,
+ * and valid endpoint paths not found in router.
+ *
+ * @method void testDirectoryRoutes()
+ * @method void testRouterRules()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');

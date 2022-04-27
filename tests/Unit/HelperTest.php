@@ -1,5 +1,21 @@
 <?php
-
+/**
+ * Helper unit test.
+ * Very important for functionality across the portal.
+ *
+ * @method void testGenerateGuid()
+ * @method void testGenerateApiKey()
+ * @method void testGenerateSessionToken()
+ * @method void testGenerateHash()
+ * @method void testCompareDatetime()
+ * @method void testGenerateWallet()
+ * @method void testAesEncryptionAndDecryption()
+ * @method void testCorrectValidatorIdFormat()
+ * @method void testFailIncorrectValidatorIdFormat()
+ * @method void testInCidrRange()
+ * @method void testNotInCidrRange()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');

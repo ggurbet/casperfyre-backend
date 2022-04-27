@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Database unit test. Could be considered an integration test,
+ * but it mainly checks for problems in DB selection/query.
+ *
+ * @method void testDoQuery()
+ * @method void testDoSelect()
+ * @method void testDbCleanup()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');

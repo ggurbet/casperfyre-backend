@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * API endpoint unit test.
+ * Test public non-auth'd endpoints, positive and negative, to ensure router integrity
+ *
+ * @method void testDispenseOrder()
+ * @method void testRegisterNewUser()
+ * @method void testRejectExistingEmailRegistration()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Throttler unit test.
+ * Simple throttle logic check for existence of throttle values for each API route.
+ *
+ * @method void testThrottledEndpoints()
+ *
+ */
 use PHPUnit\Framework\TestCase;
 
 include_once(__DIR__.'/../../core.php');
