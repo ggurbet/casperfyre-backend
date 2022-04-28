@@ -51,50 +51,108 @@ class AdminUpdateEmail extends Endpoints {
 			);
 		}
 
-		// check 2fa code, if on
-		if($twofa_on == 1) {
-			if(!$mfa_code) {
+		// also check new email in email_change table
+		$check_query = "
+			SELECT guid
+			FROM email_changes
+			WHERE new_email = '$new_email'
+			AND dead = 0
+		";
+		$check = $db->do_select($check_query);
+
+		if($check) {
+			$fetched_guid = $check[0]['guid'] ?? '';
+
+			if($fetched_guid == $guid) {
 				_exit(
 					'error',
-					'MFA code required for changing email address. Please try again',
+					'You are already in the process of changing your email. Please check your new email for an MFA code',
 					400,
-					'MFA code missing from request'
+					'Already in the process of changing email. Please check new email for an MFA code'
 				);
 			}
 
-			$verified = $helper->verify_mfa($guid, $mfa_code);
-
-			if($verified == 'expired') {
-				_exit(
-					'error',
-					'MFA code expired. Please try updating your settings again',
-					400,
-					'MFA code expired'
-				);
-			}
-
-			if($verified == 'incorrect') {
-				_exit(
-					'error',
-					'MFA code incorrect',
-					400,
-					'MFA code incorrect'
-				);
-			}
+			_exit(
+				'error',
+				'New email address specified is already in use',
+				400,
+				'New email address specified is already in use'
+			);
 		}
 
+		// do first mfa code
+		if(!$mfa_code) {
+			_exit(
+				'error',
+				'MFA code required for changing email address. Please try again',
+				400,
+				'MFA code missing from request'
+			);
+		}
+
+		$verified = $helper->verify_mfa($guid, $mfa_code);
+
+		if($verified == 'expired') {
+			_exit(
+				'error',
+				'MFA code expired. Please try updating your settings again',
+				400,
+				'MFA code expired'
+			);
+		}
+
+		if($verified == 'incorrect') {
+			_exit(
+				'error',
+				'MFA code incorrect',
+				400,
+				'MFA code incorrect'
+			);
+		}
+
+		// Insert new email_change request. To be confirmed with second mfa_code
 		$query = "
-			UPDATE users
-			SET email = '$new_email'
+			UPDATE email_changes
+			SET dead = 1
 			WHERE guid = '$guid'
 		";
 		$db->do_query($query);
+		$new_mfa_code = $helper->generate_hash(6);
+		$created_at = $helper->get_datetime();
+		$query = "
+			INSERT INTO email_changes (
+				guid,
+				new_email,
+				code,
+				created_at
+			) VALUES (
+				'$guid',
+				'$new_email',
+				'$new_mfa_code'
+			)
+		";
+		$ready = $db->do_query($query);
 
-		//// kill all reset tokens and session tokens associated with old email
+		if($ready) {
+			$helper->schedule_email(
+				'twofa',
+				$new_email,
+				APP_NAME.' - Confirm New Email',
+				'Please find your confirmation code below to verify your new email address. This code expires in 10 minutes.',
+				$new_mfa_code
+			);
+
+			_exit(
+				'success',
+				'Please check your new email address for a confirmation code'
+			);
+		}
 
 		_exit(
-			'success',
-			'Successfully updated email'
+			'error',
+			'There was a problem submitting your change emaiil request',
+			500,
+			'There was a problem submitting your change emaiil request'
 		);
 	}
 }

@@ -299,6 +299,21 @@ class DB {
 			$this->do_query($query);
 			elog('DB: Created password_resets table');
 		}
+
+		if(!in_array('email_changes', $all_tables)) {
+			$query = "
+				CREATE TABLE `email_changes` (
+					`guid` varchar(36) NOT NULL,
+					`new_email` varchar(255) DEFAULT NULL,
+					`code` varchar(12) NOT NULL,
+					`success` int DEFAULT '0',
+					`dead` int DEFAULT '0',
+					`created_at` timestamp NULL DEFAULT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created email_changes table');
+		}
 	}
 }
 ?>
