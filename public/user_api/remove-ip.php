@@ -2,14 +2,14 @@
 include_once('../../core.php');
 /**
  *
- * POST /user/revoke-ip
+ * POST /user/remove-ip
  *
  * HEADER Authorization: Bearer
  *
  * @param int $ip_id  ID of the CIDR. Returned when /user/get-ips is called.
  *
  */
-class UserRevokeIp extends Endpoints {
+class UserRemoveIp extends Endpoints {
 	function __construct(
 		$ip_id = 0
 	) {
@@ -21,8 +21,7 @@ class UserRevokeIp extends Endpoints {
 		$ip_id = (int)(parent::$params['ip_id'] ?? 0);
 
 		$query = "
-			UPDATE ips
-			SET active = 0
+			DELETE FROM ips
 			WHERE id = $ip_id
 			AND guid = '$guid'
 		";
@@ -32,16 +31,16 @@ class UserRevokeIp extends Endpoints {
 		if($result) {
 			_exit(
 				'success',
-				'Successfully disabled IP range from whitelist'
+				'Successfully removed IP range from whitelist'
 			);
 		}
 
 		_exit(
 			'error',
-			'Failed to disable IP from whitelist',
+			'Failed to remove IP from whitelist',
 			500,
-			'Failed to disable IP from whitelist'
+			'Failed to remove IP from whitelist'
 		);
 	}
 }
-new UserRevokeIp();
+new UserRemoveIp();

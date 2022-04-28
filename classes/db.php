@@ -204,6 +204,7 @@ class DB {
 					`company` varchar(255) DEFAULT NULL,
 					`description` text,
 					`cspr_expectation` int DEFAULT '0',
+					`cspr_actual` int DEFAULT '0',
 					`admin_approved` int DEFAULT '0',
 					`deny_reason` text,
 					`twofa` int DEFAULT '0',

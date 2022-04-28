@@ -28,13 +28,13 @@ class UserCreateApikey extends Endpoints {
 
 		$query = "
 			INSERT INTO api_keys (
-			guid,
-			api_key,
-			created_at
+				guid,
+				api_key,
+				created_at
 			) VALUES (
-			'$guid',
-			'$new_api_key',
-			'$created_at'
+				'$guid',
+				'$new_api_key',
+				'$created_at'
 			)
 		";
 
@@ -49,9 +49,9 @@ class UserCreateApikey extends Endpoints {
 
 		_exit(
 			'error',
-			'Failed to a create new api key',
+			'Failed to create new api key',
 			500,
-			'Failed to a create new api key'
+			'Failed to create new api key'
 		);
 	}
 }

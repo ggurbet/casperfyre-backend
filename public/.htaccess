@@ -42,6 +42,7 @@ RewriteRule ^user/revoke-wallet/?$ /user_api/revoke-wallet.php [NC]
 RewriteRule ^user/create-ip/?$ /user_api/create-ip.php [NC]
 RewriteRule ^user/get-ips/?$ /user_api/get-ips.php [NC]
 RewriteRule ^user/revoke-ip/?$ /user_api/revoke-ip.php [NC]
+RewriteRule ^user/remove-ip/?$ /user_api/remove-ip.php [NC]
 
 
 # ADMIN BACKEND API
@@ -57,10 +58,13 @@ RewriteRule ^admin/disable-apikey/?$ /admin_api/disable-apikey.php [NC]
 RewriteRule ^admin/enable-apikey/?$ /admin_api/enable-apikey.php [NC]
 RewriteRule ^admin/get-apikey/?$ /admin_api/get-apikey.php [NC]
 RewriteRule ^admin/get-apikeys/?$ /admin_api/get-apikeys.php [NC]
+RewriteRule ^admin/get-apikey-holders/?$ /admin_api/get-apikey-holders.php [NC]
 
+RewriteRule ^admin/create-ip/?$ /admin_api/create-ip.php [NC]
 RewriteRule ^admin/get-ips/?$ /admin_api/get-ips.php [NC]
 RewriteRule ^admin/disable-ip/?$ /admin_api/disable-ip.php [NC]
 RewriteRule ^admin/enable-ip/?$ /admin_api/enable-ip.php [NC]
+RewriteRule ^admin/remove-ip/?$ /admin_api/remove-ip.php [NC]
 
 RewriteRule ^admin/get-applications/?$ /admin_api/get-applications.php [NC]
 

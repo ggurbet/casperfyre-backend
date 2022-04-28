@@ -6,7 +6,7 @@ include_once('../../core.php');
  *
  * HEADER Authorization: Bearer
  *
- * @param string $ip
+ * @param string $ip  Can be CIDR range or single IP address
  *
  */
 class UserCreateIp extends Endpoints {
@@ -34,13 +34,13 @@ class UserCreateIp extends Endpoints {
 
 		$query = "
 			INSERT INTO ips (
-			guid,
-			ip,
-			created_at
+				guid,
+				ip,
+				created_at
 			) VALUES (
-			'$guid',
-			'$ip',
-			'$created_at'
+				'$guid',
+				'$ip',
+				'$created_at'
 			)
 		";
 
