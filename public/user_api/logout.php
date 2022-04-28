@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /user/logout
@@ -6,22 +7,25 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class UserLogout extends Endpoints {
+	function __construct() {
+		global $helper;
 
-global $helper;
+		require_method('GET');
+		$auth = authenticate_session();
+		$guid = $auth['guid'] ?? '';
 
-require_method('GET');
-$auth = authenticate_session();
-$guid = $auth['guid'] ?? '';
+		$query = "
+			DELETE FROM sessions
+			WHERE guid = '$guid'
+		";
 
-$query = "
-	DELETE FROM sessions
-	WHERE guid = '$guid'
-";
+		$db->do_query($query);
 
-$db->do_query($query);
-
-_exit(
-	'success',
-	'Session terminated'
-);
+		_exit(
+			'success',
+			'Session terminated'
+		);
+	}
+}
+new UserLogout();

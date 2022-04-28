@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /admin/get-users
@@ -6,22 +7,26 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class AdminGetUsers extends Endpoints {
+	function __construct() {
+		global $db;
 
-global $db, $helper;
+		require_method('GET');
 
-require_method('GET');
-$auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
 
-$query = "
-	SELECT *
-	FROM users
-	WHERE role = 'user'
-";
-$selection = $db->do_select($query);
+		$query = "
+			SELECT *
+			FROM users
+			WHERE role = 'user'
+		";
+		$selection = $db->do_select($query);
 
-_exit(
-	'success',
-	$selection
-);
+		_exit(
+			'success',
+			$selection
+		);
+	}
+}
+new AdminGetUsers();

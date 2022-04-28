@@ -46,9 +46,16 @@ include_once('vendor/autoload.php');
 include_once('classes/db.php');
 include_once('classes/helper.php');
 include_once('classes/throttle.php');
+include_once('classes/endpoints.php');
 
 /**
  * Instantiate
+ *
+ * @var DB        $db            Database instance.
+ * @var Helper    $helper        Helper instance.
+ * @var Throttle  $throttle      Helper instance.
+ * @var RpcClient $casper_client Helper instance.
+ *
  */
 $db = new DB();
 $helper = new Helper();
@@ -75,7 +82,7 @@ function elog($msg) {
  * Response code handler, if PHP version < 5.4
  *
  * @param  string $code
- * @return int
+ * @return int    $code
  */
 if (!function_exists('http_response_code')) {
 	function http_response_code($code = NULL) {
@@ -140,6 +147,8 @@ if (!function_exists('http_response_code')) {
  * @param  string $status
  * @param  string $detail
  * @param  int    $exit_code
+ * @param  string $exception
+ *
  */
 function _exit(
 	$status, 
@@ -179,7 +188,7 @@ function get_method() {
 /**
  * Require http method
  *
- * @param  string | array $m  accepted method/methods
+ * @param  string|array $m  accepted method/methods
  * @return bool
  */
 function require_method($m) {
@@ -219,7 +228,7 @@ function require_method($m) {
 /**
  * Filter/sanitize parameters for GET requests
  *
- * @param  string $string to filter
+ * @param  string $string Untrusted string to filter
  * @return string
  */
 function filter($string) {
@@ -483,27 +492,6 @@ function authenticate_api() {
 		);
 	}
 
-	/*
-	$api_key_active = (int)($selection[0]['api_key_active'] ?? 0);
-	$account_active = (int)($selection[0]['account_active'] ?? 0);
-
-	if($account_active === 0) {
-		_exit(
-			'error', 
-			'Your account is frozen', 
-			401
-		);
-	}
-
-	if($api_key_active === 0) {
-		_exit(
-			'error', 
-			'Your API key has been frozen', 
-			401
-		);
-	}
-	*/
-
 	return $selection[0];
 }
 
@@ -630,7 +618,7 @@ function process_order(
 	$amount,
 	$authentication_array
 ) {
-	global $db, $helper;
+	global $helper;
 
 	$datetime = $helper->get_datetime();
 	$ip = $helper->get_real_ip();

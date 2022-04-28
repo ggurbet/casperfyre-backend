@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /user/usage
@@ -6,16 +7,19 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class UserUsage extends Endpoints {
+	function __construct() {
+		global $helper;
 
-global $helper;
+		require_method('GET');
+		$auth = authenticate_session();
+		$guid = $auth['guid'] ?? '';
+		$usage = get_usage($guid);
 
-require_method('GET');
-$auth = authenticate_session();
-$guid = $auth['guid'] ?? '';
-$usage = get_usage($guid);
-
-_exit(
-	'success',
-	$usage
-);
+		_exit(
+			'success',
+			$usage
+		);
+	}
+}
+new UserUsage();

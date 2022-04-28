@@ -63,6 +63,19 @@ final class HelperTest extends TestCase
 		$this->assertArrayHasKey('secret', $test_wallet);
 	}
 
+	public function testGetWalletBalance()
+	{
+		$public_key = '011117189c666f81c5160cd610ee383dc9b2d0361f004934754d39752eedc64957';
+		$balance = Helper::get_wallet_balance($public_key);
+		$this->assertTrue($balance > 0);
+	}
+
+	public function testGetDirContents()
+	{
+		$scan = Helper::get_dir_contents(BASE_DIR, BASE_DIR.'/templates');
+		$this->assertTrue(in_array('templates/welcome.html', $scan));
+	}
+
 	public function testAesEncryptionAndDecryption()
 	{
 		$test_string = "abc123xyz";

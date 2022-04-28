@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Helper class contains vital methods for the functionality of the portal.
+ * Made to be static for PHPUnit tests.
+ */
 class Helper {
 	private const cipher = "AES-256-CBC";
 

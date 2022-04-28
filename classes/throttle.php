@@ -1,17 +1,17 @@
 <?php
 /**
- * Http throttling class intended to mitigate brute force attacks. 
- * Especially for endpoints that call the auto-mailer, like forgot-password.
+ * Http throttling class intended to mitigate brute force attacks on th API. 
+ * Especially for endpoints that call the auto-mailer, eg. forgot-password.
+ *
+ * Instantiating the class immediately causes the throttling to take effect.
+ * Exits with code 429 if the client fails based on IP address.
  *
  * @param  string  $real_ip
  */
 class Throttle {
-	/**
-	 * Instantiating the class immediately causes the throttling to take effect.
-	 * Exits with code 429 if the client fails based on IP address.
+	/** 
+	 * Known endpoints array. Referenced by PHPUnit
 	 */
-
-	// known endpoints
 	public const endpoints = array(
 		'/user/confirm-registration' => 10,
 		'/user/create-apikey' => 5,
@@ -71,7 +71,7 @@ class Throttle {
 		'/v1/dispense' => 30
 	);
 
-	function __construct($real_ip = '127.0.0.1') {
+	function __construct(string $real_ip = '127.0.0.1') {
 		// forget throttling during dev
 		if(
 			$real_ip == '127.0.0.1' ||
@@ -150,6 +150,11 @@ class Throttle {
 		//
 	}
 
+	/**
+	 * Used by PHPUnit to verify known endpoints are accounted for in the router.
+	 *
+	 * @return array<string, int> endpoints
+	 */
 	public static function get_endpoints() {
 		return self::endpoints;
 	}

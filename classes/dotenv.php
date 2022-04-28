@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Loads in .env for this project.
+ * Devs must remember to run ./setup.sh and/or copy .env.example to .env during deployment
+ */
 class Dotenv {
 	protected $path;
 

@@ -9,3 +9,6 @@ composer.lock
 .phpunit.result.cache
 
 vendor/
+
+.phpdoc/
+docs/

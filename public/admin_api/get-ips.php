@@ -1,29 +1,36 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /admin/get-ips
  *
  * HEADER Authorization: Bearer
  *
- * @param string  guid
+ * @param string  $guid
  */
-include_once('../../core.php');
+class AdminGetIps extends Endpoints {
+	function __construct(
+		$guid = ''
+	) {
+		global $db, $helper;
 
-global $db, $helper;
+		require_method('GET');
 
-require_method('GET');
-$auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
-$user_guid = _request('guid');
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
+		$user_guid = parent::$params['guid'] ?? '';
 
-$query = "
-	SELECT id, ip, active, created_at
-	FROM ips
-	WHERE guid = '$user_guid'
-";
-$selection = $db->do_select($query);
+		$query = "
+			SELECT id, ip, active, created_at
+			FROM ips
+			WHERE guid = '$user_guid'
+		";
+		$selection = $db->do_select($query);
 
-_exit(
-	'success',
-	$selection
-);
+		_exit(
+			'success',
+			$selection
+		);
+	}
+}
+new AdminGetIps();

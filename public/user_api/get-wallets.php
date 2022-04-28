@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /user/get-wallets
@@ -6,23 +7,26 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class UserGetWallets extends Endpoints {
+	function __construct() {
+		global $db, $helper;
 
-global $db, $helper;
+		require_method('GET');
+		$auth = authenticate_session();
+		$guid = $auth['guid'] ?? '';
 
-require_method('GET');
-$auth = authenticate_session();
-$guid = $auth['guid'] ?? '';
+		$query = "
+			SELECT address, active, created_at, inactive_at, balance
+			FROM wallets
+			WHERE guid = '$guid'
+		";
 
-$query = "
-	SELECT address, active, created_at, inactive_at, balance
-	FROM wallets
-	WHERE guid = '$guid'
-";
+		$selection = $db->do_select($query);
 
-$selection = $db->do_select($query);
-
-_exit(
-	'success',
-	$selection
-);
+		_exit(
+			'success',
+			$selection
+		);
+	}
+}
+new UserGetWallets();

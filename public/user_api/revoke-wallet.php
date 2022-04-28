@@ -1,42 +1,48 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * POST /user/revoke-wallet
  *
  * HEADER Authorization: Bearer
  *
- * @param address  string
+ * @param string $address
  *
  */
-include_once('../../core.php');
+class UserRevokeWallet extends Endpoints {
+	function __construct(
+		$address = ''
+	) {
+		global $db, $helper;
 
-global $db, $helper;
+		require_method('POST');
 
-require_method('POST');
-$auth = authenticate_session();
-$guid = $auth['guid'] ?? '';
-$params = get_params();
-$address = $params['address'] ?? '';
+		$auth = authenticate_session();
+		$guid = $auth['guid'] ?? '';
+		$address = parent::$params['address'] ?? '';
 
-$query = "
-	UPDATE wallets
-	SET active = 0
-	WHERE address = '$address'
-	AND guid = '$guid'
-";
+		$query = "
+			UPDATE wallets
+			SET active = 0
+			WHERE address = '$address'
+			AND guid = '$guid'
+		";
 
-$result = $db->do_query($query);
+		$result = $db->do_query($query);
 
-if($result) {
-	_exit(
-		'success',
-		'Successfully revoked wallet address'
-	);
+		if($result) {
+			_exit(
+				'success',
+				'Successfully revoked wallet address'
+			);
+		}
+
+		_exit(
+			'error',
+			'Failed to revoke this wallet',
+			400,
+			'Failed to revoke a wallet'
+		);
+	}
 }
-
-_exit(
-	'error',
-	'Failed to revoke this wallet',
-	500,
-	'Failed to revoke a wallet'
-);
+new UserRevokeWallet();

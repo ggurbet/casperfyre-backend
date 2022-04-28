@@ -1,37 +1,44 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /admin/history
  *
  * HEADER Authorization: Bearer
  *
- * @param string  guid
+ * @param string  $guid
  */
-include_once('../../core.php');
+class AdminHistory extends Endpoints {
+	function __construct(
+		$guid = ''
+	) {	
+		global $db;
 
-global $helper, $db;
+		require_method('GET');
 
-require_method('GET');
-$auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
-$user_guid = _request('guid');
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
+		$user_guid = parent::$params['guid'];
 
-if($user_guid && $user_guid != '') {
-	$query = "
-		SELECT * 
-		FROM orders
-		WHERE guid = '$user_guid'
-	";
-} else {
-	$query = "
-		SELECT * 
-		FROM orders
-	";
+		if($user_guid && $user_guid != '') {
+			$query = "
+				SELECT * 
+				FROM orders
+				WHERE guid = '$user_guid'
+			";
+		} else {
+			$query = "
+				SELECT * 
+				FROM orders
+			";
+		}
+
+		$results = $db->do_select($query);
+
+		_exit(
+			'success',
+			$results
+		);
+	}
 }
-
-$results = $db->do_select($query);
-
-_exit(
-	'success',
-	$results
-);
+new AdminHistory();

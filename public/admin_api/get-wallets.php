@@ -1,29 +1,36 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /admin/get-wallets
  *
  * HEADER Authorization: Bearer
  *
- * @param string  guid
+ * @param string  $guid
  */
-include_once('../../core.php');
+class AdminGetWallets extends Endpoints {
+	function __construct(
+		$guid = ''
+	) {
+		global $db;
 
-global $db, $helper;
+		require_method('GET');
 
-require_method('GET');
-$auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
-$user_guid = _request('guid');
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
+		$user_guid = parent::$params['guid'] ?? '';
 
-$query = "
-	SELECT guid, active, created_at, inactive_at, address, balance
-	FROM wallets
-	WHERE guid = '$user_guid'
-";
-$selection = $db->do_select($query);
+		$query = "
+			SELECT guid, active, created_at, inactive_at, address, balance
+			FROM wallets
+			WHERE guid = '$user_guid'
+		";
+		$selection = $db->do_select($query);
 
-_exit(
-	'success',
-	$selection
-);
+		_exit(
+			'success',
+			$selection
+		);
+	}
+}
+new AdminGetWallets();

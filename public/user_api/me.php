@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /user/me
@@ -6,35 +7,38 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class UserMe extends Endpoints {
+	function __construct() {
+		global $db, $helper;
 
-global $db, $helper;
+		require_method('GET');
+		$auth = authenticate_session();
+		$guid = $auth['guid'] ?? '';
 
-require_method('GET');
-$auth = authenticate_session();
-$guid = $auth['guid'] ?? '';
+		$query = "
+			SELECT
+			guid, role, email, verified, first_name, last_name, api_key_active,
+			created_at, last_ip, company, description, admin_approved, deny_reason, twofa
+			FROM users
+			WHERE guid = '$guid'
+		";
 
-$query = "
-	SELECT
-	guid, role, email, verified, first_name, last_name, api_key_active,
-	created_at, last_ip, company, description, admin_approved, deny_reason, twofa
-	FROM users
-	WHERE guid = '$guid'
-";
+		$me = $db->do_select($query);
+		$me = $me[0] ?? null;
 
-$me = $db->do_select($query);
-$me = $me[0] ?? null;
+		if($me) {
+			_exit(
+				'success',
+				$me
+			);
+		}
 
-if($me) {
-	_exit(
-		'success',
-		$me
-	);
+		_exit(
+			'error',
+			'Unauthorized',
+			401,
+			'Unauthorized'
+		);
+	}
 }
-
-_exit(
-	'error',
-	'Unauthorized',
-	401,
-	'Unauthorized'
-);
+new UserMe();

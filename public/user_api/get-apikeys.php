@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /user/get-apikeys
@@ -6,23 +7,27 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class UserGetApikeys extends Endpoints {
+	function __construct() {
+		global $db, $helper;
 
-global $db, $helper;
+		require_method('GET');
 
-require_method('GET');
-$auth = authenticate_session();
-$guid = $auth['guid'] ?? '';
+		$auth = authenticate_session();
+		$guid = $auth['guid'] ?? '';
 
-$query = "
-	SELECT api_key, active, total_calls, created_at
-	FROM api_keys
-	WHERE guid = '$guid'
-";
+		$query = "
+			SELECT api_key, active, total_calls, created_at
+			FROM api_keys
+			WHERE guid = '$guid'
+		";
 
-$selection = $db->do_select($query);
+		$selection = $db->do_select($query);
 
-_exit(
-	'success',
-	$selection
-);
+		_exit(
+			'success',
+			$selection
+		);
+	}
+}
+new UserGetApikeys();

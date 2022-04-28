@@ -26,7 +26,7 @@ class DB {
 	 * Do DB selection
 	 *
 	 * @param string $query
-	 * @return $return array
+	 * @return array $return
 	 */
 	public function do_select($query) {
 		$return = null;

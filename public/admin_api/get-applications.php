@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * GET /admin/get-applications
@@ -6,24 +7,28 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class AdminGetApplications extends Endpoints {
+	function __construct() {
+		global $db, $helper;
 
-global $db, $helper;
+		require_method('GET');
 
-require_method('GET');
-$auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
 
-$query = "
-	SELECT guid, email, company, last_ip, cspr_expectation, description, created_at
-	FROM users
-	WHERE admin_approved = 0
-	AND verified = 1
-	AND role = 'user'
-";
-$selection = $db->do_select($query);
+		$query = "
+			SELECT guid, email, company, last_ip, cspr_expectation, description, created_at
+			FROM users
+			WHERE admin_approved = 0
+			AND verified = 1
+			AND role = 'user'
+		";
+		$selection = $db->do_select($query);
 
-_exit(
-	'success',
-	$selection
-);
+		_exit(
+			'success',
+			$selection
+		);
+	}
+}
+new AdminGetApplications();

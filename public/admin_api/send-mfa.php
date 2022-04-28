@@ -1,4 +1,5 @@
 <?php
+include_once('../../core.php');
 /**
  *
  * POST /admin/send-mfa
@@ -6,27 +7,29 @@
  * HEADER Authorization: Bearer
  *
  */
-include_once('../../core.php');
+class AdminSendMfa extends Endpoints {
+	function __construct() {
+		global $helper;
 
-global $db, $helper;
+		require_method('POST');
 
-require_method('POST');
-$auth = authenticate_session(2);
-$admin_guid = $auth['guid'] ?? '';
-$params = get_params();
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
+		$sent = $helper->send_mfa($admin_guid);
 
-$sent = $helper->send_mfa($admin_guid);
+		if($sent) {
+			_exit(
+				'success',
+				'Check your email for an MFA code'
+			);
+		}
 
-if($sent) {
-	_exit(
-		'success',
-		'Check your email for an MFA code'
-	);
+		_exit(
+			'error',
+			'Failed to send MFA code',
+			500,
+			'Failed to send MFA code'
+		);
+	}
 }
-
-_exit(
-	'error',
-	'Failed to send MFA code',
-	500,
-	'Failed to send MFA code'
-);
+new AdminSendMfa();
