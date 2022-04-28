@@ -18,7 +18,7 @@ class AdminGetUser extends Endpoints {
 
 		$auth = authenticate_session(2);
 		$admin_guid = $auth['guid'] ?? '';
-		$user_guid = parent::$params['guid'];
+		$user_guid = parent::$params['guid'] ?? '';
 
 		$query = "
 			SELECT *
