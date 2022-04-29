@@ -6,10 +6,10 @@ include_once('../../core.php');
  *
  * HEADER Authorization: Bearer
  *
- * @param string  $new_email
- *
  * Requires MFA code to be sent and confirmed prior to requesting this endpoint.
  * After confirming MFA, user will have 5 minutes to submit request.
+ *
+ * @param string  $new_email
  *
  */
 class AdminUpdateEmail extends Endpoints {

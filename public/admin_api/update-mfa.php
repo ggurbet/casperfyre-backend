@@ -6,10 +6,10 @@ include_once('../../core.php');
  *
  * HEADER Authorization: Bearer
  *
- * @param bool  $active
- *
  * Requires MFA code to be sent and confirmed prior to requesting this endpoint.
  * After confirming MFA, user will have 5 minutes to submit request.
+ *
+ * @param bool  $active
  *
  */
 class AdminUpdateMfa extends Endpoints {
