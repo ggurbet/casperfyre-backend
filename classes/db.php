@@ -276,6 +276,17 @@ class DB {
 			elog('DB: Created twofa table');
 		}
 
+		if(!in_array('mfa_allowance', $all_tables)) {
+			$query = "
+				CREATE TABLE `mfa_allowance` (
+					`guid` varchar(36) NOT NULL,
+					`expires_at` timestamp NULL DEFAULT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created mfa_allowance table');
+		}
+
 		if(!in_array('throttle', $all_tables)) {
 			$query = "
 				CREATE TABLE `throttle` (

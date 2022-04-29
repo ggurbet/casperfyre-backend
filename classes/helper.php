@@ -123,7 +123,7 @@ class Helper {
 				'twofa',
 				$email,
 				APP_NAME.' - Multi Factor Authentication',
-				'Hello, '.$first_name.'. Please find your MFA code for '.APP_NAME.'. This code expires in 10 minutes.',
+				'Hello, '.$first_name.'. Please find your MFA code for '.APP_NAME.'. This code expires in 5 minutes.',
 				$code
 			);
 
@@ -149,7 +149,7 @@ class Helper {
 		$selection = $db->do_select($query);
 		$fetched_code = $selection[0]['code'] ?? '';
 		$created_at = $selection[0]['created_at'] ?? 0;
-		$expire_time = self::get_datetime(-600); // 10 minutes ago
+		$expire_time = self::get_datetime(-300); // 5 minutes ago
 
 		if($selection) {
 			if($mfa_code == $fetched_code) {
@@ -160,6 +160,7 @@ class Helper {
 				$db->do_query($query);
 
 				if($expire_time < $created_at) {
+					self::create_mfa_allowance($guid);
 					return 'success';
 				} else {
 					return 'expired';
@@ -167,6 +168,61 @@ class Helper {
 			}
 		}
 		return 'incorrect';
+	}
+
+	public static function create_mfa_allowance($guid) {
+		global $db;
+
+		$expires_at = self::get_datetime(300); // 5 minutes from now
+
+		$query = "
+			DELETE FROM mfa_allowance
+			WHERE guid = '$guid'
+		";
+		$db->do_query($query);
+
+		$query = "
+			INSERT INTO mfa_allowance (
+				guid,
+				expires_at
+			) VALUES (
+				'$guid',
+				'$expires_at'
+			)
+		";
+		$db->do_query($query);
+	}
+
+	public static function consume_mfa_allowance($guid) {
+		global $db;
+
+		$query = "
+			SELECT expires_at
+			FROM mfa_allowance
+			WHERE guid = '$guid'
+		";
+		$selection = $db->do_select($query);
+
+		if(!$selection) {
+			return false;
+		}
+
+		$expires_at = $selection[0]['expires_at'] ?? '';
+		$now_time = self::get_datetime();
+
+		if($now_time > $expires_at) {
+			$return = false;
+		} else {
+			$return = true;
+		}
+
+		$query = "
+			DELETE FROM mfa_allowance
+			WHERE guid = '$guid'
+		";
+		$db->do_query($query);
+
+		return $return;
 	}
 
 	public static function get_apikey_id_by_apikey($api_key) {

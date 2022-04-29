@@ -22,8 +22,10 @@ RewriteRule ^user/confirm-update-email/?$ /user_api/confirm-update-email.php [NC
 RewriteRule ^user/forgot-password/?$ /user_api/forgot-password.php [NC]
 RewriteRule ^user/reset-password/?$ /user_api/reset-password.php [NC]
 RewriteRule ^user/update-password/?$ /user_api/update-password.php [NC]
+
 RewriteRule ^user/submit-mfa/?$ /user_api/submit-mfa.php [NC]
 RewriteRule ^user/send-mfa/?$ /user_api/send-mfa.php [NC]
+RewriteRule ^user/confirm-mfa/?$ /user_api/confirm-mfa.php [NC]
 RewriteRule ^user/update-mfa/?$ /user_api/update-mfa.php [NC]
 RewriteRule ^user/name-by-email/?$ /user_api/name-by-email.php [NC]
 
@@ -84,6 +86,7 @@ RewriteRule ^admin/get-admins/?$ /admin_api/get-admins.php [NC]
 RewriteRule ^admin/create-admin/?$ /admin_api/create-admin.php [NC]
 
 RewriteRule ^admin/send-mfa/?$ /admin_api/send-mfa.php [NC]
+RewriteRule ^admin/confirm-mfa/?$ /admin_api/confirm-mfa.php [NC]
 RewriteRule ^admin/update-mfa/?$ /admin_api/update-mfa.php [NC]
 RewriteRule ^admin/update-email/?$ /admin_api/update-email.php [NC]
 RewriteRule ^admin/confirm-update-email/?$ /admin_api/confirm-update-email.php [NC]

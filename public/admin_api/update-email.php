@@ -7,13 +7,14 @@ include_once('../../core.php');
  * HEADER Authorization: Bearer
  *
  * @param string  $new_email
- * @param string  $mfa_code
+ *
+ * Requires MFA code to be sent and confirmed prior to requesting this endpoint.
+ * After confirming MFA, user will have 5 minutes to submit request.
  *
  */
 class AdminUpdateEmail extends Endpoints {
 	function __construct(
-		$new_email = '',
-		$mfa_code = ''
+		$new_email = ''
 	) {
 		global $db, $helper;
 
@@ -23,7 +24,6 @@ class AdminUpdateEmail extends Endpoints {
 		$guid = $auth['guid'] ?? '';
 		$twofa_on = (int)($auth['twofa'] ?? 0);
 		$new_email = parent::$params['new_email'] ?? '';
-		$mfa_code = parent::$params['mfa_code'] ?? '';
 
 		if(!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
 			_exit(
@@ -64,49 +64,26 @@ class AdminUpdateEmail extends Endpoints {
 			$fetched_guid = $check[0]['guid'] ?? '';
 
 			if($fetched_guid == $guid) {
+				// pass. let system overwrite current process
+			} else {
 				_exit(
 					'error',
-					'You are already in the process of changing your email. Please check your new email for an MFA code',
+					'New email address specified is already in use',
 					400,
-					'Already in the process of changing email. Please check new email for an MFA code'
+					'New email address specified is already in use'
 				);
 			}
-
-			_exit(
-				'error',
-				'New email address specified is already in use',
-				400,
-				'New email address specified is already in use'
-			);
 		}
 
-		// do first mfa code
-		if(!$mfa_code) {
+		// check mfa allowance
+		$mfa_response = $helper->consume_mfa_allowance($guid);
+
+		if(!$mfa_response) {
 			_exit(
 				'error',
-				'MFA code required for changing email address. Please try again',
-				400,
-				'MFA code missing from request'
-			);
-		}
-
-		$verified = $helper->verify_mfa($guid, $mfa_code);
-
-		if($verified == 'expired') {
-			_exit(
-				'error',
-				'MFA code expired. Please try updating your settings again',
-				400,
-				'MFA code expired'
-			);
-		}
-
-		if($verified == 'incorrect') {
-			_exit(
-				'error',
-				'MFA code incorrect',
-				400,
-				'MFA code incorrect'
+				'Requires MFA confirmation first',
+				401,
+				'Requires MFA confirmation first'
 			);
 		}
 
@@ -128,7 +105,8 @@ class AdminUpdateEmail extends Endpoints {
 			) VALUES (
 				'$guid',
 				'$new_email',
-				'$new_mfa_code'
+				'$new_mfa_code',
+				'$created_at'
 			)
 		";
 		$ready = $db->do_query($query);

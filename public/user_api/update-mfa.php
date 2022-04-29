@@ -6,108 +6,49 @@ include_once('../../core.php');
  *
  * HEADER Authorization: Bearer
  *
- * @param bool    $active
- * @param string  $mfa_code
+ * @param bool  $active
+ *
+ * Requires MFA code to be sent and confirmed prior to requesting this endpoint.
+ * After confirming MFA, user will have 5 minutes to submit request.
  *
  */
 class UserUpdateMfa extends Endpoints {
 	function __construct(
-		$active = true,
-		$mfa_code = ''
+		$active = true
 	) {
 		global $db, $helper;
 
 		require_method('PUT');
 
-		$auth = authenticate_session(1);
+		$auth = authenticate_session();
 		$user_guid = $auth['guid'] ?? '';
-		$twofa_on = (int)($auth['twofa'] ?? 0);
 		$active = isset(parent::$params['active']) ? (bool)parent::$params['active'] : null;
-		$mfa_code = parent::$params['mfa_code'] ?? '';
+		$mfa_response = $helper->consume_mfa_allowance($user_guid);
 
-		if($active === true) {
-			if(!$mfa_code) {
-				_exit(
-					'error',
-					'MFA code required for turning on MFA. Please try again',
-					400,
-					'MFA code missing from request'
-				);
-			}
-
-			$verified = $helper->verify_mfa($user_guid, $mfa_code);
-
-			if($verified == 'success') {
-				// turn on mfa
-				$query = "
-					UPDATE users
-					SET twofa = 1
-					WHERE guid = '$user_guid'
-				";
-				$db->do_query($query);
-
-				_exit(
-					'success',
-					'Successfully turned on MFA settings'
-				);
-			}
-
-			if($verified == 'expired') {
-				$query = "
-					DELETE FROM twofa
-					WHERE guid = '$user_guid'
-				";
-				$db->do_query($query);
-
-				_exit(
-					'error',
-					'MFA code expired. Please try updating your settings again',
-					400,
-					'MFA code expired'
-				);
-			}
-
+		if(!$mfa_response) {
 			_exit(
 				'error',
-				'MFA code incorrect',
-				400,
-				'MFA code incorrect'
+				'Requires MFA confirmation first',
+				401,
+				'Requires MFA confirmation first'
+			);
+		}
+
+		if($active === true) {
+			$query = "
+				UPDATE users
+				SET twofa = 1
+				WHERE guid = '$user_guid'
+			";
+			$db->do_query($query);
+
+			_exit(
+				'success',
+				'Successfully turned MFA settings on'
 			);
 		}
 
 		if($active === false) {
-			// check 2fa code, if on
-			if($twofa_on == 1) {
-				if(!$mfa_code) {
-					_exit(
-						'error',
-						'MFA code required for turning off MFA. Please try again',
-						400,
-						'MFA code missing from request'
-					);
-				}
-
-				$verified = $helper->verify_mfa($user_guid, $mfa_code);
-
-				if($verified == 'expired') {
-					_exit(
-						'error',
-						'MFA code expired. Please try updating your settings again',
-						400,
-						'MFA code expired'
-					);
-				}
-
-				if($verified == 'incorrect') {
-					_exit(
-						'error',
-						'MFA code incorrect',
-						400,
-						'MFA code incorrect'
-					);
-				}
-			}
-
 			$query = "
 				UPDATE users
 				SET twofa = 0
@@ -117,7 +58,7 @@ class UserUpdateMfa extends Endpoints {
 
 			_exit(
 				'success',
-				'Successfully turned off MFA settings'
+				'Successfully turned MFA settings off'
 			);
 		}
 

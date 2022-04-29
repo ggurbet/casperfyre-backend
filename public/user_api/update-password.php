@@ -7,12 +7,13 @@ include_once('../../core.php');
  * HEADER Authorization: Bearer
  *
  * @param string  $new_password
- * @param string  $mfa_code
+ *
+ * Requires MFA code to be sent and confirmed prior to requesting this endpoint.
+ * After confirming MFA, user will have 5 minutes to submit request.
  *
  */
 class UserUpdatePassword extends Endpoints {
 	function __construct(
-		$mfa_code = '',
 		$new_password = ''
 	) {
 		global $db, $helper;
@@ -21,9 +22,8 @@ class UserUpdatePassword extends Endpoints {
 
 		$auth = authenticate_session(1);
 		$guid = $auth['guid'] ?? '';
-		$twofa_on = (int)($auth['twofa'] ?? 0);
 		$new_password = parent::$params['new_password'] ?? '';
-		$mfa_code = parent::$params['mfa_code'] ?? '';
+		$new_password_hash = hash('sha256', $new_password);
 
 		if(
 			strlen($new_password) < 8 ||
@@ -38,39 +38,17 @@ class UserUpdatePassword extends Endpoints {
 			);
 		}
 
-		// check 2fa code, if on
-		if($twofa_on == 1) {
-			if(!$mfa_code) {
-				_exit(
-					'error',
-					'MFA code required for changing password. Please try again',
-					400,
-					'MFA code missing from request'
-				);
-			}
+		// check mfa allowance
+		$mfa_response = $helper->consume_mfa_allowance($guid);
 
-			$verified = $helper->verify_mfa($guid, $mfa_code);
-
-			if($verified == 'expired') {
-				_exit(
-					'error',
-					'MFA code expired. Please try updating your settings again',
-					400,
-					'MFA code expired'
-				);
-			}
-
-			if($verified == 'incorrect') {
-				_exit(
-					'error',
-					'MFA code incorrect',
-					400,
-					'MFA code incorrect'
-				);
-			}
+		if(!$mfa_response) {
+			_exit(
+				'error',
+				'Requires MFA confirmation first',
+				401,
+				'Requires MFA confirmation first'
+			);
 		}
-
-		$new_password_hash = hash('sha256', $new_password);
 
 		// check existing
 		$query = "

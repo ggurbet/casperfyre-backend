@@ -29,7 +29,7 @@ class UserSubmitMfa extends Endpoints {
 		$selection = $db->do_select($query);
 		$fetched_code = $selection[0]['code'] ?? '';
 		$created_at = $selection[0]['created_at'] ?? 0;
-		$expire_time = $helper->get_datetime(-600); // 10 minutes ago
+		$expire_time = $helper->get_datetime(-300); // 5 minutes ago
 
 		if($selection && $mfa_code == $fetched_code) {
 			if($expire_time < $created_at) {
@@ -93,7 +93,7 @@ class UserSubmitMfa extends Endpoints {
 					'error',
 					'MFA code expired. Please try logging back in',
 					400,
-					'MFA code expired'
+					'Login MFA code expired'
 				);
 			}
 		}

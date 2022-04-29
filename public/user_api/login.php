@@ -70,7 +70,7 @@ class UserLogin extends Endpoints {
 				'twofa',
 				$email,
 				'Multi Factor Authentication',
-				'Please find your MFA code below to login to CasperFYRE. This code expires in 10 minutes.',
+				'Please find your MFA code below to login to CasperFYRE. This code expires in 5 minutes.',
 				$code
 			);
 
