@@ -14,6 +14,15 @@ class Helper {
 		//
 	}
 
+	/**
+	 *
+	 * Generate GUID
+	 *
+	 * 4th set of bytes is always "4c4c", or LL (LedgerLeap)
+	 *
+	 * @return string
+	 *
+	 */
 	public static function generate_guid() {
 		$b1 = bin2hex(random_bytes(4));
 		$b2 = bin2hex(random_bytes(2));
@@ -23,16 +32,44 @@ class Helper {
 		return $b1.'-'.$b2.'-'.$b3.'-'.$b4.'-'.$b5;
 	}
 
+	/**
+	 *
+	 * Generate Api key
+	 *
+	 * 32 bytes, crypto safe
+	 *
+	 * @return string
+	 *
+	 */
 	public static function generate_apikey() {
 		$ret = bin2hex(openssl_random_pseudo_bytes(32));
 		return $ret;
 	}
 
+	/**
+	 *
+	 * Generate Session token
+	 *
+	 * 128 bytes, crypto safe
+	 *
+	 * @return string
+	 *
+	 */
 	public static function generate_session_token() {
 		$ret = bin2hex(openssl_random_pseudo_bytes(128));
 		return $ret;
 	}
 
+	/**
+	 *
+	 * Generate User friedly hash. For MFA, confirmation codes, etc
+	 *
+	 * Default 10 char length
+	 *
+	 * @param  int    $length
+	 * @return string
+	 *
+	 */
 	public static function generate_hash($length = 10) {
 		$seed = str_split(
 			'ABCDEFGHJKLMNPQRSTUVWXYZ'.
@@ -49,10 +86,34 @@ class Helper {
 		return $hash;
 	}
 
+	/**
+	 *
+	 * Get standard format date/time
+	 *
+	 * Behaves similar to epoch timestamp when compared with <=> operators
+	 *
+	 * @param  int    $future  Can be positive for future timestamp, negative for past timestamp
+	 * @return string
+	 *
+	 */
 	public static function get_datetime($future = 0) {
 		return(date('Y-m-d H:i:s', time() + $future));
 	}
 
+	/**
+	 *
+	 * Schedule an email
+	 *
+	 * Instead of sending emails immediately, this feeds a cron job that scheduled sends mail every 60 seconds
+	 *
+	 * @param  string  $template_id
+	 * @param  string  $recipient
+	 * @param  string  $subject
+	 * @param  string  $body
+	 * @param  string  $link
+	 * @return bool    $return   Indicating if queue was successful
+	 *
+	 */
 	public static function schedule_email(
 		$template_id,
 		$recipient,
@@ -84,6 +145,16 @@ class Helper {
 		return $db->do_query($query);
 	}
 
+	/**
+	 *
+	 * Send MFA code
+	 *
+	 * For MFA authenticated functions
+	 *
+	 * @param  string  $guid
+	 * @return bool
+	 *
+	 */
 	public static function send_mfa($guid) {
 		global $db;
 
@@ -132,6 +203,17 @@ class Helper {
 		return false;
 	}
 
+	/**
+	 *
+	 * Verfiy MFA code
+	 *
+	 * Once successfully verified, MFA allowance lasts 5 minutes
+	 *
+	 * @param  string  $guid
+	 * @param  string  $mfa_code
+	 * @return string
+	 *
+	 */
 	public static function verify_mfa($guid, $mfa_code) {
 		global $db;
 
@@ -170,6 +252,18 @@ class Helper {
 		return 'incorrect';
 	}
 
+	/**
+	 *
+	 * Create an MFA Allowance
+	 *
+	 * Happens when MFA is successfully verified.
+	 * Lasts 5 minutes.
+	 * Purposed for user ability to submit MFA and then submit authenticated request sequentially. 
+	 *
+	 * @param  string  $guid
+	 * @return string
+	 *
+	 */
 	public static function create_mfa_allowance($guid) {
 		global $db;
 
@@ -193,6 +287,17 @@ class Helper {
 		$db->do_query($query);
 	}
 
+	/**
+	 *
+	 * Consume MFA Allowance
+	 *
+	 * Once successfully consumed, MFA allowance is purged.
+	 * If allowance is attempted to be consumed and found to be expired, it purges record and returns false.
+	 *
+	 * @param  string  $guid
+	 * @return bool
+	 *
+	 */
 	public static function consume_mfa_allowance($guid) {
 		global $db;
 
@@ -225,6 +330,16 @@ class Helper {
 		return $return;
 	}
 
+	/**
+	 *
+	 * Search for Apikey ID by an actual API key
+	 *
+	 * Returns 0 if no record found
+	 *
+	 * @param  string  $api_key
+	 * @return int     $id
+	 *
+	 */
 	public static function get_apikey_id_by_apikey($api_key) {
 		global $db;
 
@@ -238,6 +353,15 @@ class Helper {
 		return $id;
 	}
 
+	/**
+	 *
+	 * Generate CasperLabs standard ED25519 wallet
+	 *
+	 * Using Libsodium
+	 *
+	 * @return array
+	 *
+	 */
 	public static function generate_wallet() {
 		$keypair = \Sodium\crypto_sign_keypair('ed25519');
 		$secret_bytes = \Sodium\crypto_sign_secretkey($keypair);
@@ -252,6 +376,16 @@ class Helper {
 		);
 	}
 
+	/**
+	 *
+	 * Get wallet balance
+	 *
+	 * Using PHP Casper Client SDK. Returns 0 if no record found
+	 *
+	 * @param  string  $validator_id
+	 * @return int     $balance
+	 *
+	 */
 	public static function get_wallet_balance($validator_id) {
 		global $casper_client;
 
@@ -279,14 +413,38 @@ class Helper {
 		return $balance;
 	}
 
+	/**
+	 *
+	 * Base64 encode data quickly
+	 *
+	 * @param  string  $data
+	 * @return string
+	 *
+	 */
 	public static function b_encode($data) {
 		return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 	}
 
+	/**
+	 *
+	 * Base64 decode data quickly
+	 *
+	 * @param  string  $data
+	 * @return string
+	 *
+	 */
 	public static function b_decode($data) {
 		return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
 	}
 
+	/**
+	 *
+	 * Encrypt data quickly. Crypto safe
+	 *
+	 * @param  string  $data
+	 * @return string  $ciphertext
+	 *
+	 */
 	public static function aes_encrypt($data) {
 		$iv = openssl_random_pseudo_bytes(16);
 
@@ -303,6 +461,14 @@ class Helper {
 		return $ciphertext;
 	}
 
+	/**
+	 *
+	 * Decrypt data quickly. Crypto safe
+	 *
+	 * @param  string  $data
+	 * @return string
+	 *
+	 */
 	public static function aes_decrypt($data) {
 		$decoded = self::b_decode($data);
 		$split = explode('::', $decoded);
@@ -327,6 +493,18 @@ class Helper {
 		return rtrim($decrypted, "\0..\32");
 	}
 
+	/**
+	 *
+	 * Get Dir Contents
+	 *
+	 * Recursively get all files/folders in the specied directory $dir.
+	 * Returns list of items relative to base $__dir supplied to method, meant as __DIR__.
+	 *
+	 * @param  string  $__dir
+	 * @param  string  $dir
+	 * @return array   $result
+	 *
+	 */
 	public static function get_dir_contents(
 		$__dir, 
 		$dir, 
@@ -352,6 +530,13 @@ class Helper {
 		return $result;
 	}
 
+	/**
+	 *
+	 * Get real IP address
+	 *
+	 * @return string
+	 *
+	 */
 	public static function get_real_ip() {
 		if(!empty($_SERVER['HTTP_CLIENT_IP'])) {
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -370,6 +555,14 @@ class Helper {
 		return $ip;
 	}
 
+	/**
+	 *
+	 * Verify validity of a CasperLabs public key / Validator ID
+	 *
+	 * @param  string  $vid
+	 * @return bool
+	 *
+	 */
 	public static function correct_validator_id_format($vid) {
 		if(gettype($vid) != 'string') {
 			return false;
@@ -394,6 +587,15 @@ class Helper {
 		return false;
 	}
 
+	/**
+	 *
+	 * Verify provided IP is in a provided CIDR range
+	 *
+	 * @param  string  $ip
+	 * @param  string  $iprange
+	 * @return bool
+	 *
+	 */
 	public static function in_CIDR_range($ip, $iprange) {
 		if(!$iprange || $iprange == '') return true;
 
