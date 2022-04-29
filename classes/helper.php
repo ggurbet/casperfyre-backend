@@ -2,7 +2,32 @@
 /**
  * Helper class contains vital methods for the functionality of the portal.
  * Made to be static for PHPUnit tests.
+ *
+ * @method generate_guid
+ * @method generate_apikey
+ * @method generate_session_token
+ * @method generate_hash
+ * @method get_datetime
+ * @method schedule_email
+ * @method send_mfa
+ * @method verify_mfa
+ * @method create_mfa_allowance
+ * @method consume_mfa_allowance
+ * @method get_apikey_id_by_apikey
+ * @method generate_wallet
+ * @method get_wallet_balance
+ * @method b_encode
+ * @method b_decode
+ * @method aes_encrypt
+ * @method aes_decrypt
+ * @method get_dir_contents
+ * @method get_real_ip
+ * @method correct_validator_id_format
+ * @method in_CIDR_range
+ *
  */
+
+
 class Helper {
 	private const cipher = "AES-256-CBC";
 
