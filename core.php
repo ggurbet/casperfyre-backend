@@ -401,7 +401,7 @@ function authenticate_session($required_clearance = 1) {
 			'error', 
 			'Unauthorized', 
 			401,
-			'Failed clearance level 1 with no verification or admin approval'
+			'Failed clearance level 2 with no verification or admin approval'
 		);
 	}
 
