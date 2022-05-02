@@ -18,7 +18,10 @@ class AdminGetApikeyHolders extends Endpoints {
 
 		$query = "
 			SELECT 
-			a.*, 
+			a.guid, a.role, a.email, a.verified, a.first_name, a.last_name,
+			a.api_key_active as account_active, a.created_at, a.confirmation_code,
+			a.last_ip, a.company, a.description, a.cspr_expectation, a.cspr_actual,
+			a.admin_approved, a.deny_reason, a.twofa,
 			SUM(b.total_calls) AS total_calls
 			FROM users AS a
 			JOIN api_keys AS b

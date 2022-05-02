@@ -20,7 +20,7 @@ class AdminGetApikey extends Endpoints {
 
 		require_method('GET');
 
-		// $auth = authenticate_session(2);
+		$auth = authenticate_session(2);
 		$admin_guid = $auth['guid'] ?? '';
 		$api_key_id = (int)(parent::$params['api_key_id'] ?? 0);
 		$user_guid = parent::$params['guid'] ?? '';
@@ -37,10 +37,6 @@ class AdminGetApikey extends Endpoints {
 			$selection = $db->do_select($query);
 			$selection = $selection[0] ?? array();
 			$api_key_id = $selection['api_key_id'] ?? 0;
-
-			// if(!$selection) {
-			// 	$selection['guid'] = $user_guid;
-			// }
 
 			$query = "
 				SELECT amount
