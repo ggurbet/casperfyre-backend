@@ -23,8 +23,10 @@ class AdminGetWallets extends Endpoints {
 		$query = "
 			SELECT guid, active, created_at, inactive_at, address, balance
 			FROM wallets
-			WHERE guid = '$user_guid'
 		";
+
+		if($user_guid) $query .= "WHERE guid = '$user_guid'";
+
 		$selection = $db->do_select($query);
 
 		_exit(

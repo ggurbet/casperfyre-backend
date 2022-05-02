@@ -26,12 +26,10 @@ class UserGetApikey extends Endpoints {
 		$selection = $db->do_select($query);
 		$selection = $selection[0]['api_key'] ?? null;
 
-		if($selection) {
-			_exit(
-				'success',
-				$selection
-			);
-		}
+		_exit(
+			'success',
+			$selection
+		);
 
 		_exit(
 			'error',

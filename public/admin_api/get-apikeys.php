@@ -32,7 +32,7 @@ class AdminGetApikeys extends Endpoints {
 		$query = "
 			SELECT a.guid, a.email, a.company, b.id AS api_key_id, b.api_key, b.active, b.created_at, b.total_calls
 			FROM users AS a
-			JOIN api_keys AS b
+			LEFT JOIN api_keys AS b
 			ON a.guid = b.guid
 			WHERE a.guid = '$user_guid'
 		";

@@ -12,7 +12,7 @@ class AdminGetIps extends Endpoints {
 	function __construct(
 		$guid = ''
 	) {
-		global $db, $helper;
+		global $db;
 
 		require_method('GET');
 
@@ -23,8 +23,10 @@ class AdminGetIps extends Endpoints {
 		$query = "
 			SELECT id, ip, active, created_at
 			FROM ips
-			WHERE guid = '$user_guid'
 		";
+
+		if($user_guid) $query .= " WHERE guid = '$user_guid'";
+
 		$selection = $db->do_select($query);
 
 		_exit(

@@ -20,7 +20,7 @@ class AdminGetApikey extends Endpoints {
 
 		require_method('GET');
 
-		$auth = authenticate_session(2);
+		// $auth = authenticate_session(2);
 		$admin_guid = $auth['guid'] ?? '';
 		$api_key_id = (int)(parent::$params['api_key_id'] ?? 0);
 		$user_guid = parent::$params['guid'] ?? '';
@@ -30,14 +30,18 @@ class AdminGetApikey extends Endpoints {
 				SELECT a.guid, a.email, b.id AS api_key_id, b.api_key, b.active, b.created_at, b.total_calls
 				FROM users AS a
 				LEFT JOIN api_keys AS b
-				ON a.guid = b.guid 
-				WHERE a.guid = '$user_guid'
+				ON b.guid = a.guid 
 				AND b.active = 1
+				WHERE a.guid = '$user_guid'
 			";
 			$selection = $db->do_select($query);
 			$selection = $selection[0] ?? array();
 			$api_key_id = $selection['api_key_id'] ?? 0;
-			$user_guid = $selection['guid'] ?? '';
+
+			// if(!$selection) {
+			// 	$selection['guid'] = $user_guid;
+			// }
+
 			$query = "
 				SELECT amount
 				FROM orders
@@ -65,7 +69,7 @@ class AdminGetApikey extends Endpoints {
 			SELECT a.guid, a.email, b.id AS api_key_id, b.api_key, b.active, b.created_at, b.total_calls
 			FROM users AS a
 			JOIN api_keys AS b
-			ON a.guid = b.guid
+			ON b.guid = a.guid
 			WHERE b.id = $api_key_id
 		";
 		$selection = $db->do_select($query);

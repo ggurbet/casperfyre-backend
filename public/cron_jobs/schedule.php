@@ -53,6 +53,7 @@ if($selection) {
 			case 'denied': $template = file_get_contents(__DIR__.'/../../templates/denied.html'); break;
 			case 'twofa': $template = file_get_contents(__DIR__.'/../../templates/twofa.html'); break;
 			case 'register': $template = file_get_contents(__DIR__.'/../../templates/register.html'); break;
+			case 'register-admin': $template = file_get_contents(__DIR__.'/../../templates/register-admin.html'); break;
 			case 'forgot-password': $template = file_get_contents(__DIR__.'/../../templates/forgot-password.html'); break;
 			default: $template = file_get_contents(__DIR__.'/../../templates/register.html'); break;
 		}
