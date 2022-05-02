@@ -29,6 +29,8 @@ RewriteRule ^user/confirm-mfa/?$ /user_api/confirm-mfa.php [NC]
 RewriteRule ^user/update-mfa/?$ /user_api/update-mfa.php [NC]
 RewriteRule ^user/name-by-email/?$ /user_api/name-by-email.php [NC]
 
+RewriteRule ^user/get-limits/?$ /user_api/get-limits.php [NC]
+
 RewriteRule ^user/history/?$ /user_api/history.php [NC]
 RewriteRule ^user/usage/?$ /user_api/usage.php [NC]
 

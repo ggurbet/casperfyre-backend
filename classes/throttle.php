@@ -43,6 +43,7 @@ class Throttle {
 		'/user/update-email' => 3,
 		'/user/confirm-update-email' => 3,
 		'/user/usage' => 100,
+		'/user/get-limits' => 30,
 		'/admin/send-mfa' => 3,
 		'/admin/confirm-mfa' => 3,
 		'/admin/update-mfa' => 3,
