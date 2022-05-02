@@ -114,7 +114,7 @@ class AdminCreateAdmin extends Endpoints {
 		$subject = 'Welcome to '.APP_NAME.' Admin';
 		$body = 'Welcome to '.APP_NAME.' Admin. Follow the link below to confirm your account and set a password:<br><br>';
 		$uri = $helper->aes_encrypt($guid.'::'.$confirmation_code.'::'.(string)time().'::'.$reset_auth_code.'::register-admin');
-		$link = 'https://'.getenv('FRONTEND_URL').'/reset-password/'.$uri.'?email='.$new_admin_email;
+		$link = 'https://'.getenv('FRONTEND_URL').'/auth/reset-password/'.$uri.'?email='.$new_admin_email;
 
 		$helper->schedule_email(
 			'register-admin',

@@ -53,7 +53,7 @@ class AdminResetUserPassword extends Endpoints {
 
 			$subject = APP_NAME.' - Forgot Password';
 			$body = 'You are receiving this email because an admin has issued a password reset request for your account. Please follow the link below to reset your password. This password reset link will expire in 24 hours.';
-			$link = 'https://'.getenv('FRONTEND_URL').'/reset-password/'.$uri.'?email='.$email;
+			$link = 'https://'.getenv('FRONTEND_URL').'/auth/reset-password/'.$uri.'?email='.$email;
 
 			$helper->schedule_email(
 				'forgot-password',
