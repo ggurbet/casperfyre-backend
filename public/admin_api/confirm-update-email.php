@@ -32,8 +32,9 @@ class AdminConfirmUpdateEmail extends Endpoints {
 		";
 		$selection = $db->do_select($query);
 		$selection = $selection[0] ?? null;
+		$new_email = $selection['new_email'] ?? null;
 
-		if($selection) {
+		if($selection && $new_email) {
 			// Check timestamp
 			$expire_time = $helper->get_datetime(-600); // 10 minutes ago
 			$then_time = $selection['created_at'] ?? '';
