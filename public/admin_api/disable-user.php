@@ -22,13 +22,16 @@ class AdminDisableUser extends Endpoints {
 		if($guid) {
 			/* auth check */
 			$query = "
-				SELECT role, email
+				SELECT role, email, first_name, admin_approved
 				FROM users
 				WHERE guid = '$guid'
 			";
 			$check = $db->do_select($query);
 			$role = $check[0]['role'] ?? '';
 			$email = $check[0]['email'] ?? '';
+			$first_name = $check[0]['first_name'] ?? '';
+			$admin_approved = (int)($check[0]['admin_approved'] ?? 0);
+			$admin_html = 'user ';
 
 			if(!$check) {
 				_exit(
@@ -45,10 +48,18 @@ class AdminDisableUser extends Endpoints {
 			) {
 				// require clearance level 3 if altering an admin role
 				$auth = authenticate_session(3);
+				$admin_html = 'admin ';
+			}
+
+			if($admin_approved == 0) {
+				_exit(
+					'success',
+					'User is already disabled'
+				);
 			}
 
 			/* prevent banning self */
-			if($guid == $auth['role']) {
+			if($guid == $auth['guid']) {
 				_exit(
 					'error',
 					'Cannot disable yourself',
@@ -66,7 +77,7 @@ class AdminDisableUser extends Endpoints {
 
 			_exit(
 				'success',
-				'You disabled '.$email
+				'You disabled '.$admin_html.$email
 			);
 		}
 

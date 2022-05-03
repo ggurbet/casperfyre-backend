@@ -31,6 +31,7 @@ class AdminEnableUser extends Endpoints {
 			$email = $check[0]['email'] ?? '';
 			$first_name = $check[0]['first_name'] ?? '';
 			$admin_approved = (int)($check[0]['admin_approved'] ?? 0);
+			$admin_html = 'user ';
 
 			if(!$check) {
 				_exit(
@@ -47,6 +48,7 @@ class AdminEnableUser extends Endpoints {
 			) {
 				// require clearance level 3 if altering an admin role
 				$auth = authenticate_session(3);
+				$admin_html = 'admin ';
 			}
 
 			if($admin_approved == 1) {
@@ -79,7 +81,7 @@ class AdminEnableUser extends Endpoints {
 
 			_exit(
 				'success',
-				'You re-activated '.$email
+				'You re-activated the '.$admin_html.$email
 			);
 		}
 

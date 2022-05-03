@@ -12,7 +12,7 @@ class AdminGetAdmins extends Endpoints {
 		global $db, $helper;
 
 		require_method('GET');
-		$auth = authenticate_session(3);
+		$auth = authenticate_session(2);
 		$admin_guid = $auth['guid'] ?? '';
 
 		$query = "
