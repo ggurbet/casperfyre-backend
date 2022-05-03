@@ -49,6 +49,7 @@ class AdminUpdateLimits extends Endpoints {
 		}
 
 		if(gettype($per_limit) == 'integer') {
+			$per_limit < 0 ? $per_limit = 0 : $per_limit;
 			$query = "
 				UPDATE limits
 				SET per_limit = $per_limit
@@ -59,6 +60,7 @@ class AdminUpdateLimits extends Endpoints {
 		}
 
 		if(gettype($day_limit) == 'integer') {
+			$day_limit < 0 ? $day_limit = 0 : $day_limit;
 			$query = "
 				UPDATE limits
 				SET day_limit = $day_limit
@@ -69,6 +71,7 @@ class AdminUpdateLimits extends Endpoints {
 		}
 
 		if(gettype($month_limit) == 'integer') {
+			$month_limit < 0 ? $month_limit = 0 : $month_limit;
 			$query = "
 				UPDATE limits
 				SET month_limit = $month_limit
