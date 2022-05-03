@@ -22,7 +22,7 @@ class Throttle {
 		'/user/get-ips' => 60,
 		'/user/get-wallet' => 60,
 		'/user/get-wallets' => 60,
-		'/user/history' => 60,
+		'/user/get-history' => 60,
 		'/user/login' => 5,
 		'/user/logout' => 100,
 		'/user/me' => 150,
@@ -44,6 +44,7 @@ class Throttle {
 		'/user/confirm-update-email' => 3,
 		'/user/usage' => 100,
 		'/user/get-limits' => 30,
+		'/user/update-limits' => 5,
 		'/admin/send-mfa' => 3,
 		'/admin/confirm-mfa' => 3,
 		'/admin/update-mfa' => 3,
@@ -75,7 +76,7 @@ class Throttle {
 		'/admin/get-users' => 100,
 		'/admin/get-admins' => 100,
 		'/admin/create-admin' => 10,
-		'/admin/history' => 100,
+		'/admin/get-history' => 100,
 		'/admin/update-limits' => 10,
 		'/v1/dispense' => 30
 	);

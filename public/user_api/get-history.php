@@ -2,12 +2,12 @@
 include_once('../../core.php');
 /**
  *
- * GET /user/history
+ * GET /user/get-history
  *
  * HEADER Authorization: Bearer
  *
  */
-class UserHistory extends Endpoints {
+class UserGetHistory extends Endpoints {
 	function __construct() {
 		global $helper, $db;
 
@@ -87,4 +87,4 @@ class UserHistory extends Endpoints {
 		exit(json_encode($output));
 	}
 }
-new UserHistory();
+new UserGetHistory();

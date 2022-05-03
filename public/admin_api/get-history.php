@@ -2,13 +2,13 @@
 include_once('../../core.php');
 /**
  *
- * GET /admin/history
+ * GET /admin/get-history
  *
  * HEADER Authorization: Bearer
  *
  * @param string  $guid
  */
-class AdminHistory extends Endpoints {
+class AdminGetHistory extends Endpoints {
 	function __construct(
 		$guid = ''
 	) {	
@@ -41,4 +41,4 @@ class AdminHistory extends Endpoints {
 		);
 	}
 }
-new AdminHistory();
+new AdminGetHistory();

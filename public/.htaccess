@@ -29,9 +29,10 @@ RewriteRule ^user/confirm-mfa/?$ /user_api/confirm-mfa.php [NC]
 RewriteRule ^user/update-mfa/?$ /user_api/update-mfa.php [NC]
 RewriteRule ^user/name-by-email/?$ /user_api/name-by-email.php [NC]
 
+RewriteRule ^user/update-limits/?$ /user_api/update-limits.php [NC]
 RewriteRule ^user/get-limits/?$ /user_api/get-limits.php [NC]
 
-RewriteRule ^user/history/?$ /user_api/history.php [NC]
+RewriteRule ^user/get-history/?$ /user_api/get-history.php [NC]
 RewriteRule ^user/usage/?$ /user_api/usage.php [NC]
 
 RewriteRule ^user/create-apikey/?$ /user_api/create-apikey.php [NC]
@@ -82,7 +83,7 @@ RewriteRule ^admin/disable-user/?$ /admin_api/disable-user.php [NC]
 RewriteRule ^admin/reset-user-password/?$ /admin_api/reset-user-password.php [NC]
 RewriteRule ^admin/update-password/?$ /admin_api/update-password.php [NC]
 
-RewriteRule ^admin/history/?$ /admin_api/history.php [NC]
+RewriteRule ^admin/get-history/?$ /admin_api/get-history.php [NC]
 
 RewriteRule ^admin/get-admins/?$ /admin_api/get-admins.php [NC]
 RewriteRule ^admin/create-admin/?$ /admin_api/create-admin.php [NC]
