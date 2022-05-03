@@ -17,25 +17,37 @@ class UserGetApikey extends Endpoints {
 		$guid = $auth['guid'] ?? '';
 
 		$query = "
-			SELECT api_key, active
-			FROM api_keys
-			WHERE guid = '$guid'
-			AND active = 1
-		";
-
+			SELECT a.guid, a.email, b.id AS api_key_id, b.api_key, b.active, b.created_at, b.total_calls
+			FROM users AS a
+			LEFT JOIN api_keys AS b
+			ON b.guid = a.guid 
+			AND b.active = 1
+			WHERE a.guid = '$guid'
+		"; 
 		$selection = $db->do_select($query);
-		$selection = $selection[0]['api_key'] ?? null;
+		$selection = $selection[0] ?? array();
+		$api_key_id = $selection['api_key_id'] ?? 0;
+
+		$query = "
+			SELECT amount
+			FROM orders
+			WHERE api_key_id_used = $api_key_id
+			AND success = 1
+		";
+		$result = $db->do_select($query);
+		$total_cspr_sent = 0;
+
+		if($result) {
+			foreach($result as $r) {
+				$total_cspr_sent += (int)$r['amount'];
+			}
+		}
+
+		$selection['total_cspr_sent'] = $total_cspr_sent;
 
 		_exit(
 			'success',
 			$selection
-		);
-
-		_exit(
-			'error',
-			'Could not retreive your api key',
-			404,
-			'Could not retreive api key'
 		);
 	}
 }
