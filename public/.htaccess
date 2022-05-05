@@ -27,6 +27,8 @@ RewriteRule ^user/submit-mfa/?$ /user_api/submit-mfa.php [NC]
 RewriteRule ^user/send-mfa/?$ /user_api/send-mfa.php [NC]
 RewriteRule ^user/confirm-mfa/?$ /user_api/confirm-mfa.php [NC]
 RewriteRule ^user/update-mfa/?$ /user_api/update-mfa.php [NC]
+RewriteRule ^user/update-totp/?$ /user_api/update-totp.php [NC]
+RewriteRule ^user/confirm-totp/?$ /user_api/confirm-totp.php [NC]
 RewriteRule ^user/name-by-email/?$ /user_api/name-by-email.php [NC]
 
 RewriteRule ^user/update-limits/?$ /user_api/update-limits.php [NC]

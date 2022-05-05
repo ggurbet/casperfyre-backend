@@ -126,6 +126,40 @@ class Helper {
 	) {
 		global $db;
 
+		/* Check exploitable endpoints for similar mail requests */
+		$partial_email = explode('+', $recipient);
+		$partial_email1 = $partial_email[0];
+		$partial_email2 = $partial_email[1] ?? '';
+		$partial_email2 = explode('@', $partial_email2);
+		$partial_email2 = $partial_email2[1] ?? '';
+		$query = "
+			SELECT *
+			FROM schedule
+			WHERE template_id = '$template_id'
+			AND complete = 0
+			AND (
+				email = '$recipient' OR (
+					email LIKE '%$partial_email1%' AND
+					email LIKE '%$partial_email2%'
+				)
+			)
+			ORDER BY id DESC
+		";
+		$similarity_check = $db->do_select($query) ?? array();
+
+		if(count($similarity_check) > 2) {
+			for($i = 1; $i < count($similarity_check); $i++) {
+				$sid = $similarity_check[$i]['id'] ?? 0;
+				$query = "
+					UPDATE schedule
+					SET complete = 1
+					WHERE id = $sid
+				";
+				$db->do_query($query);
+			}
+		}
+
+		/* Create schedule item */
 		$created_at = self::get_datetime();
 
 		$query = "
@@ -224,6 +258,28 @@ class Helper {
 			return 'incorrect';
 		}
 
+		// check mfa type first
+		$query = "
+			SELECT totp
+			FROM users
+			WHERE guid = '$guid'
+		";
+		$mfa_type = $db->do_select($query);
+		$mfa_type = (int)($mfa_type[0]['totp'] ?? 0);
+
+		// totp type mfa
+		if($mfa_type == 1) {
+			$verified = Totp::check_code($guid, $mfa_code);
+
+			if($verified) {
+				self::create_mfa_allowance($guid);
+				return 'success';
+			}
+
+			return 'incorrect';
+		}
+
+		// email type mfa
 		$query = "
 			SELECT code, created_at
 			FROM twofa

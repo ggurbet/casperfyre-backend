@@ -39,7 +39,7 @@ class UserLogin extends Endpoints {
 		}
 
 		$query = "
-			SELECT guid, email, first_name, last_name, role, password, twofa, verified, last_ip, company, admin_approved, deny_reason
+			SELECT guid, email, first_name, last_name, role, password, twofa, totp, verified, last_ip, company, admin_approved, deny_reason
 			FROM users
 			WHERE email = '$email'
 		";
@@ -48,6 +48,7 @@ class UserLogin extends Endpoints {
 		$result = $result[0] ?? null;
 		$guid = $result['guid'] ?? '';
 		$twofa = (int)($result['twofa'] ?? 0);
+		$totp = (int)($result['totp'] ?? 0);
 		$fetched_password_hash = $result['password'] ?? '';
 		$password_hash = hash('sha256', $password);
 		$created_at = $helper->get_datetime();
@@ -64,6 +65,32 @@ class UserLogin extends Endpoints {
 
 		/* check MFA */
 		if($twofa == 1) {
+			// totp mfa type, both auths required to be at most 5 minutes apart
+			$totp_expires_at = $helper->get_datetime(300); // 5 minutes
+
+			if($totp == 1) {
+				$query = "
+					INSERT INTO totp_logins (
+						guid,
+						expires_at
+					) VALUES (
+						'$guid',
+						'$totp_expires_at'
+					)
+				";
+				$db->do_query($query);
+
+				_exit(
+					'success',
+					array(
+						'twofa' => true,
+						'totp' => true,
+						'guid' => $guid
+					)
+				);
+			}
+
+			// email mfa type
 			$code = $helper->generate_hash(6);
 
 			$helper->schedule_email(
@@ -97,6 +124,7 @@ class UserLogin extends Endpoints {
 				'success',
 				array(
 					'twofa' => true,
+					'totp' => false,
 					'guid' => $guid
 				)
 			);

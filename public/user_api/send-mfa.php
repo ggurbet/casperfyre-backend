@@ -15,6 +15,23 @@ class UserSendMfa extends Endpoints {
 
 		$auth = authenticate_session(1);
 		$user_guid = $auth['guid'] ?? '';
+
+		// check for mfa type, email/totp
+		$query = "
+			SELECT totp
+			FROM users
+			WHERE guid = '$user_guid'
+		";
+		$mfa_type = $db->do_select($query);
+		$mfa_type = (int)($mfa_type[0]['totp'] ?? 0);
+
+		if($mfa_type == 1) {
+			_exit(
+				'success',
+				'Check your authenticator for an MFA code'
+			);
+		}
+
 		$sent = $helper->send_mfa($user_guid);
 
 		if($sent) {

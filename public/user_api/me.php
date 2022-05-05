@@ -18,7 +18,8 @@ class UserMe extends Endpoints {
 		$query = "
 			SELECT
 			guid, role, email, verified, first_name, last_name, api_key_active,
-			created_at, last_ip, company, description, admin_approved, deny_reason, twofa
+			created_at, last_ip, company, description, cspr_expectation, cspr_actual, 
+			admin_approved, deny_reason, twofa, totp
 			FROM users
 			WHERE guid = '$guid'
 		";

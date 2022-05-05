@@ -47,6 +47,7 @@ include_once('classes/db.php');
 include_once('classes/helper.php');
 include_once('classes/throttle.php');
 include_once('classes/endpoints.php');
+include_once('classes/totp.php');
 
 /**
  * Instantiate

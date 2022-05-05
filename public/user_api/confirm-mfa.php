@@ -19,7 +19,7 @@ class UserConfirmMfa extends Endpoints {
 
 		$auth = authenticate_session();
 		$guid = $auth['guid'] ?? '';
-		$mfa_code = parent::$params['mfa_code'] ?? '';
+		$mfa_code = (string)(parent::$params['mfa_code'] ?? '');
 		$response = $helper->verify_mfa($guid, $mfa_code);
 
 		if($response == 'incorrect') {
@@ -39,7 +39,7 @@ class UserConfirmMfa extends Endpoints {
 		} elseif($response == 'success') {
 			_exit(
 				'success',
-				'MFA code accepted'
+				'MFA code accepted. Expires in 5 minutes'
 			);
 		}
 

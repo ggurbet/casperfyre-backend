@@ -40,6 +40,8 @@ class Throttle {
 		'/user/send-mfa' => 3,
 		'/user/confirm-mfa' => 3,
 		'/user/update-mfa' => 3,
+		'/user/update-totp' => 3,
+		'/user/confirm-totp' => 3,
 		'/user/update-email' => 3,
 		'/user/confirm-update-email' => 3,
 		'/user/usage' => 100,

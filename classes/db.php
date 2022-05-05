@@ -208,6 +208,7 @@ class DB {
 					`admin_approved` int DEFAULT '0',
 					`deny_reason` text,
 					`twofa` int DEFAULT '0',
+					`totp` int DEFAULT '0',
 					PRIMARY KEY (`guid`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 			";
@@ -324,6 +325,30 @@ class DB {
 			";
 			$this->do_query($query);
 			elog('DB: Created email_changes table');
+		}
+
+		if(!in_array('totp', $all_tables)) {
+			$query = "
+				CREATE TABLE `totp` (
+					`guid` varchar(36) NOT NULL,
+					`secret` text,
+					`created_at` timestamp NULL DEFAULT NULL,
+					`active` int DEFAULT '1'
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created totp table');
+		}
+
+		if(!in_array('totp_logins', $all_tables)) {
+			$query = "
+				CREATE TABLE `totp_logins` (
+					`guid` varchar(36) NOT NULL,
+					`expires_at` timestamp NULL DEFAULT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+			";
+			$this->do_query($query);
+			elog('DB: Created totp_logins table');
 		}
 	}
 }
