@@ -78,4 +78,4 @@ class UserUpdateLimits extends Endpoints {
 		);
 	}
 }
-new UserUpdateEmail();
+new UserUpdateLimits();
