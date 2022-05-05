@@ -24,7 +24,7 @@ class UserUpdateLimits extends Endpoints {
 		require_method('PUT');
 
 		$auth = authenticate_session();
-		$guid = $auth['guid'] ?? '';
+		$user_guid = $auth['guid'] ?? '';
 		$per_limit = isset(parent::$params['per_limit']) ? (int)parent::$params['per_limit'] : null;
 		$day_limit = isset(parent::$params['day_limit']) ? (int)parent::$params['day_limit'] : null;
 		$month_limit = isset(parent::$params['month_limit']) ? (int)parent::$params['month_limit'] : null;
