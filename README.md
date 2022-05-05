@@ -38,14 +38,6 @@ The first time pinging the server will build the tables inside the given named d
 Find admin credentials in apache error log. Example output:
 
 ````
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created api_keys table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created ips table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created limits table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created orders table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created schedule table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created sessions table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created settings table
-[CasperFYRE 2022-04-05T12:28:46-04:00] - DB: Created user table
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Created admin
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Email: "email"
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Password: "password"
@@ -53,10 +45,10 @@ Find admin credentials in apache error log. Example output:
 
 ### Finish Environment
 
-The setup script does not contain interactive input pertaining to the webmaster email. You must setup an email server and provide an email username, password, port, host, etc; Or a relay API key like Sendgrid, in order to make the webmaster email scheduler function. This is required for receiving 2fa codes, getting registration confirmation codes, password reset links, a other similar functions.
+The setup script does not contain interactive input pertaining to the webmaster email. You must setup an email server and provide an email username, password, port, host, etc; Or a relay API key like Sendgrid, in order to make the webmaster email scheduler function. This is required for receiving 2fa codes, getting registration confirmation codes, password reset links, and other similar functions.
 
 ```
-cp .env.example .env
+cat .env
 ```
 
-Adjust your .env configuration vairables to fit your instance. 
+Adjust your .env configuration variables to fit your instance. 
