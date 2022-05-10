@@ -19,10 +19,7 @@ class DB extends SQLite3 {
 	 */
 	public function do_select($query) {
 		$return = null;
-		$sql =<<<EOF
-			$query
-EOF;
-		$ret = $this->query($sql);
+		$ret = $this->query($query);
 
 		while($row = $ret->fetchArray(SQLITE3_ASSOC)) {
 			$return[] = $row;
@@ -38,10 +35,7 @@ EOF;
 	 * @return bool
 	 */
 	public function do_query($query) {
-		$sql =<<<EOF
-			$query
-EOF;
-		$flag = $this->exec($sql);
+		$flag = $this->exec($query);
 		return $flag;
 	}
 
