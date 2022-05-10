@@ -60,6 +60,7 @@ RewriteRule ^admin/get-limits/?$ /admin_api/get-limits.php [NC]
 RewriteRule ^admin/create-wallet/?$ /admin_api/create-wallet.php [NC]
 RewriteRule ^admin/get-wallet/?$ /admin_api/get-wallet.php [NC]
 RewriteRule ^admin/get-wallets/?$ /admin_api/get-wallets.php [NC]
+RewriteRule ^admin/revoke-wallet/?$ /admin_api/revoke-wallet.php [NC]
 
 RewriteRule ^admin/create-apikey/?$ /admin_api/create-apikey.php [NC]
 RewriteRule ^admin/disable-apikey/?$ /admin_api/disable-apikey.php [NC]

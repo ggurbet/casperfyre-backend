@@ -2,23 +2,26 @@
 include_once('../../core.php');
 /**
  *
- * POST /user/revoke-wallet
+ * POST /admin/revoke-wallet
  *
  * HEADER Authorization: Bearer
  *
  * @param string $address
+ * @param string $guid
  *
  */
-class UserRevokeWallet extends Endpoints {
+class AdminRevokeWallet extends Endpoints {
 	function __construct(
-		$address = ''
+		$address = '',
+		$guid = ''
 	) {
 		global $db, $helper;
 
 		require_method('POST');
 
-		$auth = authenticate_session();
-		$guid = $auth['guid'] ?? '';
+		$auth = authenticate_session(2);
+		$admin_guid = $auth['guid'] ?? '';
+		$user_guid = parent::$params['guid'] ?? '';
 		$address = parent::$params['address'] ?? '';
 		$revoked_at = $helper->get_datetime();
 
@@ -26,7 +29,7 @@ class UserRevokeWallet extends Endpoints {
 			UPDATE wallets
 			SET active = 0, inactive_at = '$revoked_at'
 			WHERE address = '$address'
-			AND guid = '$guid'
+			AND guid = '$user_guid'
 		";
 
 		$result = $db->do_query($query);
@@ -46,4 +49,4 @@ class UserRevokeWallet extends Endpoints {
 		);
 	}
 }
-new UserRevokeWallet();
+new AdminRevokeWallet();

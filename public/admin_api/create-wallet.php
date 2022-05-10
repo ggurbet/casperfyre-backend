@@ -45,7 +45,7 @@ class AdminCreateWallet extends Endpoints {
 
 		$query = "
 			UPDATE wallets
-			SET active = 0
+			SET active = 0, inactive_at = '$created_at'
 			WHERE guid = '$user_guid'
 		";
 

@@ -55,6 +55,7 @@ class Throttle {
 		'/admin/approve-user' => 30,
 		'/admin/deny-user' => 30,
 		'/admin/create-wallet' => 10,
+		'/admin/revoke-wallet' => 10,
 		'/admin/create-ip' => 30,
 		'/admin/remove-ip' => 30,
 		'/admin/disable-ip' => 30,
