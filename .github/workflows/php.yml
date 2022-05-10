@@ -46,4 +46,5 @@ jobs:
         MASTER_KEY: deadbeefdeadbeefdeadbeefdeadbeef
         NODE_IP: 18.219.70.138
         APP_NAME: CasperFYRE
+        CORS_SITE: api.casperfyre.com
       run: composer run-script test
