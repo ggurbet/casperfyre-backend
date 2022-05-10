@@ -190,8 +190,7 @@ class DB extends SQLite3 {
 			$this->do_query($query);
 			elog('DB: Created user table');
 			$created_email = getenv('ADMIN_EMAIL');
-			$random_password = $helper->generate_hash();
-			$random_password_hash = hash('sha256', $random_password);
+			$random_password_hash = hash('sha256', 'Password123#');
 			$query = "
 				INSERT INTO `users` VALUES (
 					'5a199618-682d-2006-4c4c-c0cde9e672d5',
@@ -215,8 +214,6 @@ class DB extends SQLite3 {
 			";
 			$this->do_query($query);
 			elog('Created admin');
-			elog('Email: '.$created_email);
-			elog('Password: '.$random_password);
 		}
 
 		if(!in_array('wallets', $all_tables)) {
