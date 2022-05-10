@@ -43,4 +43,7 @@ jobs:
       env:
         DB_CONN: sqlite
         DB_NAME: database/database.sqlite
+        MASTER_KEY: deadbeefdeadbeefdeadbeefdeadbeef
+        NODE_IP: 18.219.70.138
+        APP_NAME: CasperFYRE
       run: composer run-script test
