@@ -33,6 +33,7 @@ define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
 define('CRON_TOKEN', getenv('CRON_TOKEN'));
 define('DEV_MODE', (bool)(getenv('DEV_MODE')));
+define('DB_CONN', (getenv('DB_CONN')));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 	define('NODE_IP', 'http://'.getenv('NODE_IP').':7777');
@@ -44,7 +45,7 @@ if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
  * Load classes
  */
 include_once('vendor/autoload.php');
-include_once('classes/db.php');
+DB_CONN == 'sqlite' ? include_once('classes/sqlite.php') : include_once('classes/db.php');
 include_once('classes/helper.php');
 include_once('classes/throttle.php');
 include_once('classes/endpoints.php');
