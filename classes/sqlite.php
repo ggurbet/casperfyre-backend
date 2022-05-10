@@ -49,10 +49,9 @@ EOF;
 	 * Check DB integrity
 	 */
 	public function check_integrity() {
-		return true;
 		global $helper;
 
-		$query = "SHOW TABLES";
+		$query = "TABLES";
 		$tables = $this->do_select($query);
 		$all_tables = array();
 
