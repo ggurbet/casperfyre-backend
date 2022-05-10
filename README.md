@@ -1,4 +1,4 @@
-<p align="center">
+<p>
 	<img src="https://api.casperfyre.com/logo.png" width="400">
 </p>
 
