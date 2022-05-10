@@ -31,9 +31,16 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+    - name: Update composer
+      run: composer update
+    - name: Copy .env
+      run: php  -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Create database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+    - name: Run tests
+      env:
+        DB_CONN: sqlite
+        DB_NAME: database/database.sqlite
+      run: composer run-script test
