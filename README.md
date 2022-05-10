@@ -78,6 +78,35 @@ CRON_TOKEN=$(echo $RANDOM_ENTROPY | md5sum | cut -d' ' -f1)
 (crontab -l 2>>/dev/null; echo "2 * * * * curl   -s http://127.0.0.1/cron/garbage          -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
 ```
 
+### VHOST
+
+For this example, using an Ubuntu 20 Ec2 instance, our http vhost would look something like this
+
+```
+<VirtualHost *:80>
+  ServerName api.casperfyre.com
+  DocumentRoot /var/www/capsperfyre-api/public
+  <Directory /var/www/capsperfyre-api/public>
+    AllowOverride All
+    Require all granted
+    Options -MultiViews
+
+    RewriteEngine On
+
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Headers "*"
+    Header set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+  </Directory>
+
+  ErrorDocument 403 /403.php
+  ErrorDocument 404 /404.php
+  ErrorDocument 500 /500.php
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
 The first time pinging the server will build the tables inside the given named database and create an admin account.
 
 Find admin credentials in apache error log. Example output:
