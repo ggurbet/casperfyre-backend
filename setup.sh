@@ -172,6 +172,7 @@ fi
 sudo apt -y install curl
 sudo a2enmod rewrite
 sudo a2enmod headers
+sudo a2enmod ssl
 sudo service apache2 restart
 
 if [ $COMPOSER_VERSION -lt 2 ]; then

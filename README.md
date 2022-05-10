@@ -44,17 +44,11 @@ Then, you can install basic prerequisites, navigate to http root, and run **setu
 
 ```bash
 sudo apt -y install apache2
-sudo a2enmod rewrite
-sudo a2enmod headers
-sudo a2enmod ssl
 sudo apt -y install software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 sudo apt-get update
 sudo apt-get install -y php8.1
 sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml}
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-php -r "unlink('composer-setup.php');"
 cd /var/www/
 git clone https://github.com/ledgerleapllc/casperfyre-backend casperfyre-api
 cd casperfyre-api
