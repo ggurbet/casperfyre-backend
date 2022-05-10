@@ -58,6 +58,14 @@ cd casperfyre-api
 If you want to setup the software manually, or if something goes wrong with the setup script, follow these steps.
 
 ```bash
+sudo apt -y install curl
+sudo a2enmod rewrite
+sudo a2enmod headers
+sudo a2enmod ssl
+sudo service apache2 restart
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+php -r "unlink('composer-setup.php');"
 composer install
 composer update
 cp .env.example .env
