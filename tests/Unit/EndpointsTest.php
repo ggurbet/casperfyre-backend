@@ -83,7 +83,6 @@ final class EndpointsTest extends TestCase
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		$response = curl_exec($ch);
 		curl_close($ch);
-		elog($response);
 		$json = json_decode($response);
 		$bearer = $json->detail->bearer;
 		$guid = $json->detail->guid;
