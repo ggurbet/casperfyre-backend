@@ -67,8 +67,7 @@ class DB extends SQLite3 {
 					`api_key` varchar(64) NOT NULL,
 					`active` int DEFAULT '1',
 					`created_at` timestamp NULL DEFAULT NULL,
-					`total_calls` int DEFAULT '0',
-					PRIMARY KEY (`id`)
+					`total_calls` int DEFAULT '0'
 				);
 			";
 			$this->do_query($query);
@@ -81,8 +80,7 @@ class DB extends SQLite3 {
 					`guid` varchar(36) DEFAULT NULL,
 					`ip` varchar(64) DEFAULT NULL,
 					`active` int DEFAULT '1',
-					`created_at` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`id`)
+					`created_at` timestamp NULL DEFAULT NULL
 				);
 			";
 			$this->do_query($query);
@@ -116,8 +114,7 @@ class DB extends SQLite3 {
 					`amount` int DEFAULT NULL,
 					`deploy_hash` varchar(66) DEFAULT NULL,
 					`success` int DEFAULT '0',
-					`api_key_id_used` int DEFAULT NULL,
-					PRIMARY KEY (`id`)
+					`api_key_id_used` int DEFAULT NULL
 				);
 			";
 			$this->do_query($query);
@@ -134,8 +131,7 @@ class DB extends SQLite3 {
 					`email` varchar(255) DEFAULT NULL,
 					`created_at` timestamp NULL DEFAULT NULL,
 					`sent_at` timestamp NULL DEFAULT NULL,
-					`complete` int DEFAULT '0',
-					PRIMARY KEY (`id`)
+					`complete` int DEFAULT '0'
 				);
 			";
 			$this->do_query($query);
@@ -148,8 +144,7 @@ class DB extends SQLite3 {
 					`guid` varchar(36) NOT NULL,
 					`bearer` text,
 					`created_at` timestamp NULL DEFAULT NULL,
-					`expires_at` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`id`)
+					`expires_at` timestamp NULL DEFAULT NULL
 				);
 			";
 			$this->do_query($query);
@@ -234,8 +229,7 @@ class DB extends SQLite3 {
 					`created_at` timestamp NULL DEFAULT NULL,
 					`inactive_at` timestamp NULL DEFAULT NULL,
 					`balance` int DEFAULT '0',
-					`last_balance_check` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`id`)
+					`last_balance_check` timestamp NULL DEFAULT NULL
 				);
 			";
 			$this->do_query($query);
@@ -247,8 +241,7 @@ class DB extends SQLite3 {
 				CREATE TABLE `twofa` (
 					`guid` varchar(36) NOT NULL,
 					`created_at` timestamp NULL DEFAULT NULL,
-					`code` varchar(12) NOT NULL,
-					PRIMARY KEY (`id`)
+					`code` varchar(12) NOT NULL
 				);
 			";
 			$this->do_query($query);
