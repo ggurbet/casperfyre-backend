@@ -1,3 +1,7 @@
+<p align="center">
+	<img src="https://api.casperfyre.com/logo.png" width="400">
+</p>
+
 # CasperFYRE API
 Dispensory API interface for Casper mainnet
 
