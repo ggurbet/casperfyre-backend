@@ -63,7 +63,6 @@ class DB extends SQLite3 {
 		if(!in_array('api_keys', $all_tables)) {
 			$query = "
 				CREATE TABLE `api_keys` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`guid` varchar(36) NOT NULL,
 					`api_key` varchar(64) NOT NULL,
 					`active` int DEFAULT '1',
@@ -79,7 +78,6 @@ class DB extends SQLite3 {
 		if(!in_array('ips', $all_tables)) {
 			$query = "
 				CREATE TABLE `ips` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`guid` varchar(36) DEFAULT NULL,
 					`ip` varchar(64) DEFAULT NULL,
 					`active` int DEFAULT '1',
@@ -108,7 +106,6 @@ class DB extends SQLite3 {
 		if(!in_array('orders', $all_tables)) {
 			$query = "
 				CREATE TABLE `orders` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`guid` varchar(36) NOT NULL,
 					`created_at` timestamp NULL DEFAULT NULL,
 					`sent_at` timestamp NULL DEFAULT NULL,
@@ -130,7 +127,6 @@ class DB extends SQLite3 {
 		if(!in_array('schedule', $all_tables)) {
 			$query = "
 				CREATE TABLE `schedule` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`template_id` varchar(100) DEFAULT NULL,
 					`subject` varchar(255) DEFAULT '',
 					`body` text,
@@ -149,7 +145,6 @@ class DB extends SQLite3 {
 		if(!in_array('sessions', $all_tables)) {
 			$query = "
 				CREATE TABLE `sessions` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`guid` varchar(36) NOT NULL,
 					`bearer` text,
 					`created_at` timestamp NULL DEFAULT NULL,
@@ -232,7 +227,6 @@ class DB extends SQLite3 {
 		if(!in_array('wallets', $all_tables)) {
 			$query = "
 				CREATE TABLE `wallets` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`guid` varchar(36) NOT NULL,
 					`address` varchar(70) DEFAULT NULL,
 					`secret_key_enc` varchar(255) DEFAULT NULL,
@@ -251,7 +245,6 @@ class DB extends SQLite3 {
 		if(!in_array('twofa', $all_tables)) {
 			$query = "
 				CREATE TABLE `twofa` (
-					`id` int NOT NULL AUTOINCREMENT,
 					`guid` varchar(36) NOT NULL,
 					`created_at` timestamp NULL DEFAULT NULL,
 					`code` varchar(12) NOT NULL,
