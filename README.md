@@ -86,6 +86,8 @@ Find admin credentials in apache error log. Example output:
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Password: "password"
 ````
 
+You can also use the apache error log to explore any/all API calls resulting in anything other than a success 200 code.
+
 ### Finish Environment
 
 The setup script does not contain interactive input pertaining to the webmaster email. You must setup an email server and provide an email username, password, port, host, etc; Or a relay API key like Sendgrid, in order to make the webmaster email scheduler function. This is required for receiving 2fa codes, getting registration confirmation codes, password reset links, and other similar functions.
