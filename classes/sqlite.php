@@ -45,7 +45,12 @@ class DB extends SQLite3 {
 	public function check_integrity() {
 		global $helper;
 
-		$query = "TABLES";
+		$query = "
+			SELECT name
+			FROM sqlite_master
+			WHERE type='table'
+			ORDER BY name
+		";
 		$tables = $this->do_select($query);
 		$all_tables = array();
 
