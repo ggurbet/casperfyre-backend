@@ -19,7 +19,10 @@ class DB extends SQLite3 {
 	 */
 	public function do_select($query) {
 		$return = null;
-		$ret = $this->query($query);
+		$sql =<<<EOF
+			$query
+EOF;
+		$ret = $this->query($sql);
 
 		while($row = $ret->fetchArray(SQLITE3_ASSOC)) {
 			$return[] = $row;
@@ -35,14 +38,18 @@ class DB extends SQLite3 {
 	 * @return bool
 	 */
 	public function do_query($query) {
-		$flag = $this->exec($query);
+		$sql =<<<EOF
+			$query
+EOF;
+		$flag = $this->exec($sql);
 		return $flag;
 	}
 
 	/**
 	 * Check DB integrity
 	 */
-	public function check_integrity() {	
+	public function check_integrity() {
+		return true;
 		global $helper;
 
 		$query = "SHOW TABLES";
