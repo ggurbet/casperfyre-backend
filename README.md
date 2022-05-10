@@ -131,11 +131,11 @@ Adjust your .env configuration variables to fit your instance.
 
 ## Usage Guide
 
-**Start here -**
+### Start here
 
 aaaaaaa
 
-**Other notes -**
+### Other notes
 
 These features were scoped and determined to be the essential features needed for CasperFYRE. Email any questions to team@ledgerleap.com.
 
