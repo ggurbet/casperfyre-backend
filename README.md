@@ -1,5 +1,5 @@
 <p>
-	<img src="https://api.casperfyre.com/logo.png" width="400">
+	<img src="https://api.casperfyre.com/logo.png" width="300">
 </p>
 
 # CasperFYRE API
