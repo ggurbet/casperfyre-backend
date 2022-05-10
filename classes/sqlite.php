@@ -3,23 +3,12 @@
  * Sqlite database class. Purposed for unit test workflow
  */
 class DB extends SQLite3 {
-	public $connect = null;
-
 	function __construct() {
-		$this->connect = new mysqli(
-			DB_HOST,
-			DB_USER,
-			DB_PASS,
-			DB_NAME
-		);
-
-		if($this->connect->connect_error)
-			$this->connect = null;
+		$this->open(BASE_DIR.'/database/database.sqlite');
 	}
 
 	function __destruct() {
-		if($this->connect)
-			$this->connect->close();
+		$this->close();
 	}
 
 	/**
@@ -30,15 +19,10 @@ class DB extends SQLite3 {
 	 */
 	public function do_select($query) {
 		$return = null;
+		$ret = $this->query($sql);
 
-		if($this->connect) {
-			$result = $this->connect->query($query);
-
-			if($result != null && $result->num_rows > 0) {
-				while($row = $result->fetch_assoc()) {
-					$return[] = $row;
-				}
-			}
+		while($row = $ret->fetchArray(SQLITE3_ASSOC)) {
+			$return[] = $row;
 		}
 
 		return $return;
@@ -51,11 +35,7 @@ class DB extends SQLite3 {
 	 * @return bool
 	 */
 	public function do_query($query) {
-		$flag = false;
-
-		if($this->connect)
-			$flag = $this->connect->query($query);
-
+		$flag = $this->exec($query);
 		return $flag;
 	}
 
