@@ -102,4 +102,5 @@ RewriteRule ^admin/confirm-update-email/?$ /admin_api/confirm-update-email.php [
 RewriteRule ^cron/schedule/?$ /cron_jobs/schedule.php [NC]
 RewriteRule ^cron/orders/?$ /cron_jobs/orders.php [NC]
 RewriteRule ^cron/verify-orders/?$ /cron_jobs/verify_orders.php [NC]
+RewriteRule ^cron/refresh-balances/?$ /cron_jobs/refresh-balances.php [NC]
 RewriteRule ^cron/garbage/?$ /cron_jobs/garbage.php [NC]

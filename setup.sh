@@ -69,6 +69,8 @@ echo -e "${COLOR_YELLOW}Generating entropy...${COLOR_END}"
 
 RANDOM_ENTROPY=$(head -c 64 < /dev/urandom)
 MASTER_KEY=$(echo $RANDOM_ENTROPY | md5sum | cut -d' ' -f1)
+RANDOM_ENTROPY2=$(head -c 64 < /dev/urandom)
+CRON_TOKEN=$(echo $RANDOM_ENTROPY2 | md5sum | cut -d' ' -f1)
 
 echo -e "${COLOR_GREEN}Key created${COLOR_END}"
 
@@ -92,6 +94,7 @@ sed -i "s/\[DB_HOST\]/$DATABASE_HOST/g" .env
 sed -i "s/\[DB_USER\]/$DATABASE_USER/g" .env
 sed -i "s/\[DB_PASS\]/$DATABASE_PASSWORD/g" .env
 sed -i "s/\[MASTER_KEY\]/$MASTER_KEY/g" .env
+sed -i "s/\[CRON_TOKEN\]/$CRON_TOKEN/g" .env
 
 echo -e "${COLOR_YELLOW}Checking for required software...${COLOR_END}"
 
@@ -181,11 +184,18 @@ fi
 composer install
 composer update
 
-echo -e "${COLOR_YELLOW}Installing cronjobs${COLOR_END}"
-(crontab -l 2>>/dev/null; echo "* * * * * curl -s $CORS_SITE/cron/schedule >> dev/null 2>&1") | crontab -
-(crontab -l 2>>/dev/null; echo "* * * * * curl -s $CORS_SITE/cron/orders >> dev/null 2>&1") | crontab -
-(crontab -l 2>>/dev/null; echo "*/5 * * * * curl -s $CORS_SITE/cron/verify-orders >> dev/null 2>&1") | crontab -
-(crontab -l 2>>/dev/null; echo "2 * * * * curl -s $CORS_SITE/cron/garbage >> dev/null 2>&1") | crontab -
+CURRENT_CRONS=$(crontab -l)
+
+if [[ "$CURRENT_CRONS" == *"$CORS_SITE"* ]]; then
+	echo -e "${COLOR_YELLOW}Cronjobs detected. Skipping${COLOR_END}"
+else
+	echo -e "${COLOR_YELLOW}Installing cronjobs${COLOR_END}"
+	(crontab -l 2>>/dev/null; echo "* * * * * curl   -s $CORS_SITE/cron/schedule         -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
+	(crontab -l 2>>/dev/null; echo "* * * * * curl   -s $CORS_SITE/cron/orders           -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
+	(crontab -l 2>>/dev/null; echo "*/5 * * * * curl -s $CORS_SITE/cron/verify-orders    -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
+	(crontab -l 2>>/dev/null; echo "*/2 * * * * curl -s $CORS_SITE/cron/refresh-balances -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
+	(crontab -l 2>>/dev/null; echo "2 * * * * curl   -s $CORS_SITE/cron/garbage          -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
+fi
 
 echo -e "${COLOR_GREEN}[+] Done${COLOR_END}"
 echo 

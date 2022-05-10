@@ -1,7 +1,18 @@
 <?php
+/**
+ *
+ * GET /cron/verify-orders
+ *
+ * HEADER Authorization: Token
+ *
+ * System cron will use curl or wget to ping this endpoint for checking order deployments
+ *
+ */
 include_once('../../core.php');
 
 global $helper;
+
+authenticate_cron();
 
 $query = "
 	SELECT id, deploy_hash, guid, amount

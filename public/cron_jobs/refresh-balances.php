@@ -1,7 +1,18 @@
 <?php
+/**
+ *
+ * GET /cron/refresh-balances
+ *
+ * HEADER Authorization: Token
+ *
+ * System cron will use curl or wget to ping this endpoint for refreshing active wallet balances
+ *
+ */
 include_once('../../core.php');
 
 global $helper, $db;
+
+authenticate_cron();
 
 $now = $helper->get_datetime();
 

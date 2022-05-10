@@ -3,6 +3,8 @@
  *
  * GET /cron/schedule
  *
+ * HEADER Authorization: Token
+ *
  * System cron will use curl or wget to ping this endpoint every 60 seconds to handle email scheduler.
  *
  */
@@ -13,6 +15,8 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 global $helper, $db;
+
+authenticate_cron();
 
 $emailer = new PHPMailer(true);
 // $emailer->SMTPDebug = SMTP::DEBUG_SERVER;

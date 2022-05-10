@@ -31,6 +31,7 @@ define('DB_PASS', getenv('DB_PASS'));
 define('DB_NAME', getenv('DB_NAME'));
 define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
+define('CRON_TOKEN', getenv('CRON_TOKEN'));
 define('DEV_MODE', (bool)(getenv('DEV_MODE')));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
@@ -494,6 +495,48 @@ function authenticate_api() {
 	}
 
 	return $selection[0];
+}
+
+/**
+ * Authenticate a request to the public cron panel for control
+ *
+ * @return bool
+ */
+function authenticate_cron() {
+	global $db;
+
+	$headers = getallheaders();
+
+	$auth_token_header = (
+		$headers['Authorization'] ??
+		$headers['authorization'] ??
+		''
+	);
+
+	$auth_token = explode(' ', $auth_token_header);
+	$auth_token_t = $auth_token[0];
+	$auth_token = filter($auth_token[1] ?? '');
+
+	if(
+		$auth_token_t != 'Token' &&
+		$auth_token_t != 'token'
+	) {
+		_exit(
+			'error', 
+			'Unauthorized', 
+			401
+		);
+	}
+
+	if(!hash_equals($auth_token, CRON_TOKEN)) {
+		_exit(
+			'error', 
+			'Unauthorized', 
+			401
+		);
+	}
+
+	return true;
 }
 
 /**
