@@ -70,7 +70,7 @@ class DB extends SQLite3 {
 					`created_at` timestamp NULL DEFAULT NULL,
 					`total_calls` int DEFAULT '0',
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created api_keys table');
@@ -85,7 +85,7 @@ class DB extends SQLite3 {
 					`active` int DEFAULT '1',
 					`created_at` timestamp NULL DEFAULT NULL,
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created ips table');
@@ -99,7 +99,7 @@ class DB extends SQLite3 {
 					`day_limit` int DEFAULT '1000',
 					`week_limit` int DEFAULT '5000',
 					`month_limit` int DEFAULT '10000'
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created limits table');
@@ -121,7 +121,7 @@ class DB extends SQLite3 {
 					`success` int DEFAULT '0',
 					`api_key_id_used` int DEFAULT NULL,
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created orders table');
@@ -140,7 +140,7 @@ class DB extends SQLite3 {
 					`sent_at` timestamp NULL DEFAULT NULL,
 					`complete` int DEFAULT '0',
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created schedule table');
@@ -155,7 +155,7 @@ class DB extends SQLite3 {
 					`created_at` timestamp NULL DEFAULT NULL,
 					`expires_at` timestamp NULL DEFAULT NULL,
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created sessions table');
@@ -166,7 +166,7 @@ class DB extends SQLite3 {
 				CREATE TABLE `settings` (
 					`name` varchar(64) DEFAULT NULL,
 					`value` text
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created settings table');
@@ -195,7 +195,7 @@ class DB extends SQLite3 {
 					`twofa` int DEFAULT '0',
 					`totp` int DEFAULT '0',
 					PRIMARY KEY (`guid`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created user table');
@@ -242,7 +242,7 @@ class DB extends SQLite3 {
 					`balance` int DEFAULT '0',
 					`last_balance_check` timestamp NULL DEFAULT NULL,
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created wallets table');
@@ -256,7 +256,7 @@ class DB extends SQLite3 {
 					`created_at` timestamp NULL DEFAULT NULL,
 					`code` varchar(12) NOT NULL,
 					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created twofa table');
@@ -267,7 +267,7 @@ class DB extends SQLite3 {
 				CREATE TABLE `mfa_allowance` (
 					`guid` varchar(36) NOT NULL,
 					`expires_at` timestamp NULL DEFAULT NULL
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created mfa_allowance table');
@@ -280,7 +280,7 @@ class DB extends SQLite3 {
 					`uri` varchar(64) DEFAULT NULL,
 					`hit` float DEFAULT NULL,
 					`last_request` int DEFAULT '0'
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created throttle table');
@@ -291,7 +291,7 @@ class DB extends SQLite3 {
 				CREATE TABLE `password_resets` (
 					`guid` varchar(36) NOT NULL,
 					`code` varchar(12) NOT NULL
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created password_resets table');
@@ -306,7 +306,7 @@ class DB extends SQLite3 {
 					`success` int DEFAULT '0',
 					`dead` int DEFAULT '0',
 					`created_at` timestamp NULL DEFAULT NULL
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created email_changes table');
@@ -319,7 +319,7 @@ class DB extends SQLite3 {
 					`secret` text,
 					`created_at` timestamp NULL DEFAULT NULL,
 					`active` int DEFAULT '1'
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created totp table');
@@ -330,7 +330,7 @@ class DB extends SQLite3 {
 				CREATE TABLE `totp_logins` (
 					`guid` varchar(36) NOT NULL,
 					`expires_at` timestamp NULL DEFAULT NULL
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+				);
 			";
 			$this->do_query($query);
 			elog('DB: Created totp_logins table');
