@@ -115,3 +115,13 @@ We use PHPUnit for unit testing of the portal's critical functionality. In order
 ```bash
 composer run-script test
 ```
+
+### Documentation
+
+We use PHPDoc to generate new API documentation each time there are changes to the API. You can generate your own local documentation by running:
+
+```bash
+composer run-script generate-docs
+```
+
+You will find the newly generated documentation at /docs/index.html
