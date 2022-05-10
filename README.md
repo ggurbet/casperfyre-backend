@@ -129,7 +129,7 @@ cat .env
 
 Adjust your .env configuration variables to fit your instance. 
 
-### Usage Guide
+## Usage Guide
 
 **Start here -**
 
