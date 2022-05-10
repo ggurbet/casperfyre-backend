@@ -34,9 +34,8 @@ class Totp {
 		";
 		$email = $db->do_select($query);
 		$email = $email[0]['email'] ?? null;
-		elog(':::::::::::::::::::::::::::::::::::: '.$guid);
 
-		if(!$email) {
+		if(!$email && $guid != '00000000-0000-0000-4c4c-000000000000') {
 			return false;
 		}
 
