@@ -233,8 +233,10 @@ class DB {
 					'ledgerleap llc',
 					' -- dev: no description -- ',
 					0,
+					0,
 					1,
 					NULL,
+					0,
 					0
 				)
 			";
