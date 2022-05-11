@@ -51,6 +51,7 @@ if($selection) {
 				elog($e);
 			}
 
+			/* Success */
 			if($success == 'success') {
 				$query = "
 					UPDATE orders
@@ -72,6 +73,16 @@ if($selection) {
 					UPDATE users
 					SET cspr_actual = $cspr_actual
 					WHERE guid = '$guid'
+				";
+				$db->do_query($query);
+			}
+
+			/* Failure */
+			if($success == 'failure') {
+				$query = "
+					UPDATE orders
+					SET fulfilled = 2
+					WHERE id = $order_id
 				";
 				$db->do_query($query);
 			}

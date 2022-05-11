@@ -144,6 +144,12 @@ else
 	YARN_VERSION=$(yarn --version | cut -d'.' -f1)
 fi
 
+if ! command -v casper-client &> /dev/null; then
+	CASPERCLIENT_VERSION=0
+else
+	CASPERCLIENT_VERSION=$(casper-client --version | cut -d' ' -f3 | cut -d'.' -f1)
+fi
+
 
 if [ ! $OS_VERSION = 'Ubuntu' ]; then
 	echo -e "${COLOR_RED}This software is only tested to work on Ubuntu systems${COLOR_END}"
@@ -168,6 +174,15 @@ fi
 if [ $MYSQL_VERSION -lt 5 ]; then
 	echo -e "${COLOR_RED}You are using Mysql version $MYSQL_VERSION. Please install at least Mysql version 5${COLOR_END}"
 	exit 1
+fi
+
+if [ $CASPERCLIENT_VERSION -lt 1 ]; then
+	echo -e "${COLOR_YELLOW}Installing Casper Client${COLOR_END}"
+	echo "deb https://repo.casperlabs.io/releases" bionic main | sudo tee -a /etc/apt/sources.list.d/casper.list
+	curl -O https://repo.casperlabs.io/casper-repo-pubkey.asc
+	sudo apt-key add casper-repo-pubkey.asc
+	sudo apt update
+	sudo apt install casper-client
 fi
 
 sudo apt -y install curl

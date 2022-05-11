@@ -48,7 +48,7 @@ mysql> create database casperfyre;
 mysql> exit
 ````
 
-Then, you can install basic prerequisites, navigate to http root, and run **setup.sh** to run interactive setup script.
+**Option 1 -** You can install basic prerequisites, navigate to http root, and run **setup.sh** to run interactive setup script.
 
 ```bash
 sudo apt -y install apache2
@@ -63,7 +63,7 @@ cd casperfyre-api
 ./setup.sh
 ```
 
-If you want to setup the software manually, or if something goes wrong with the setup script, follow these steps.
+**Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, follow these steps after attempting to use the setup script.
 
 ```bash
 sudo apt -y install curl
@@ -84,6 +84,11 @@ CRON_TOKEN=$(echo $RANDOM_ENTROPY | md5sum | cut -d' ' -f1)
 (crontab -l 2>>/dev/null; echo "*/5 * * * * curl -s http://127.0.0.1/cron/verify-orders    -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
 (crontab -l 2>>/dev/null; echo "*/2 * * * * curl -s http://127.0.0.1/cron/refresh-balances -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
 (crontab -l 2>>/dev/null; echo "2 * * * * curl   -s http://127.0.0.1/cron/garbage          -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
+echo "deb https://repo.casperlabs.io/releases" bionic main | sudo tee -a /etc/apt/sources.list.d/casper.list
+curl -O https://repo.casperlabs.io/casper-repo-pubkey.asc
+sudo apt-key add casper-repo-pubkey.asc
+sudo apt update
+sudo apt install casper-client
 ```
 
 ### VHOST
