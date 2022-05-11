@@ -24,7 +24,7 @@ The system will check for the existence of the following softwares that are requ
 Before doing anything else, make sure you're up to date.
 
 ```bash
-sudo apt get update
+sudo apt-get update
 ```
 
 ### Software
