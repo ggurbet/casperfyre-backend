@@ -17,6 +17,7 @@ The system will check for the existence of the following softwares that are requ
  4. Mysql 5+
  5. cURL
  6. Composer 2+
+ 7. Casper Client 1.4+
 ```
 
 ## Setup
