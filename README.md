@@ -21,6 +21,12 @@ The system will check for the existence of the following softwares that are requ
 
 ## Setup
 
+Before doing anything else, make sure you're up to date.
+
+```bash
+sudo apt get update
+```
+
 ### Software
 
 We generally would use the latest version of Ubuntu for testing installs. Example hosting server: AWS ec2 t2 medium with at least 10Gb SSD. Setup the repo according to our VHOST path using the instruction below. Note, the actual VHOST path in this case would be set to **/var/www/casperfyre-api/public**
