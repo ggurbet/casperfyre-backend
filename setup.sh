@@ -5,10 +5,10 @@ COLOR_YELLOW='\033[1;33m'
 COLOR_GREEN='\033[1;32m'
 COLOR_END='\033[0m'
 
-echo -e "Setting up CasperFYRE API.."
+echo -e "${COLOR_GREEN}Setting up CasperFYRE API..${COLOR_END}"
 echo
 echo -e "Please have your database and vhost details ready before starting this setup."
-read -p "Press enter to continue" READY
+read -p "Press enter to continue ${COLOR_RED}>${COLOR_END}" READY
 echo
 echo
 
@@ -166,7 +166,7 @@ if [ $PHP_VERSION -lt 7 ]; then
 fi
 
 if [ $MYSQL_VERSION -lt 5 ]; then
-	echo -e "${COLOR_RED}You are using Mysql version $MYSQL_VERSION. Please innstall at least Mysql version 5${COLOR_END}"
+	echo -e "${COLOR_RED}You are using Mysql version $MYSQL_VERSION. Please install at least Mysql version 5${COLOR_END}"
 	exit 1
 fi
 
@@ -189,9 +189,9 @@ composer update
 CURRENT_CRONS=$(crontab -l)
 
 if [[ "$CURRENT_CRONS" == *"$CORS_SITE"* ]]; then
-	echo -e "${COLOR_YELLOW}Cronjobs detected. Skipping${COLOR_END}"
+	echo -e "${COLOR_YELLOW}Crontab detected. Skipping${COLOR_END}"
 else
-	echo -e "${COLOR_YELLOW}Installing cronjobs${COLOR_END}"
+	echo -e "${COLOR_YELLOW}Installing crontab${COLOR_END}"
 	(crontab -l 2>>/dev/null; echo "* * * * * curl   -s $CORS_SITE/cron/schedule         -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
 	(crontab -l 2>>/dev/null; echo "* * * * * curl   -s $CORS_SITE/cron/orders           -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
 	(crontab -l 2>>/dev/null; echo "*/5 * * * * curl -s $CORS_SITE/cron/verify-orders    -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -

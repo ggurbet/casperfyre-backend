@@ -39,10 +39,12 @@ e.g.
 
 ```bash
 sudo apt -y install mysql-server
+sudo mysql -u root
 ```
 
 ```sql
-mysql> create database casperfyre_db
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'YOUR_DATABASE_PASSWORD';
+mysql> create database casperfyre;
 mysql> exit
 ````
 
@@ -54,7 +56,7 @@ sudo apt -y install software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 sudo apt-get update
 sudo apt-get install -y php8.1
-sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml}
+sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
 cd /var/www/
 git clone https://github.com/ledgerleapllc/casperfyre-backend casperfyre-api
 cd casperfyre-api
@@ -91,8 +93,8 @@ For this example, using an Ubuntu 20 Ec2 instance, our http vhost would look som
 ```
 <VirtualHost *:80>
   ServerName api.casperfyre.com
-  DocumentRoot /var/www/capsperfyre-api/public
-  <Directory /var/www/capsperfyre-api/public>
+  DocumentRoot /var/www/casperfyre-api/public
+  <Directory /var/www/casperfyre-api/public>
     AllowOverride All
     Require all granted
     Options -MultiViews
