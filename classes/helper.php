@@ -472,6 +472,25 @@ class Helper {
 		return $balance;
 	}
 
+	public static function get_user_secret_key($wallet_id) {
+		global $db;
+
+		$query = "
+			SELECT secret_key_enc
+			FROM wallets
+			WHERE id = $wallet_id
+		";
+		$selection = $db->do_select($query);
+		$secret_key_enc = $selection[0]['secret_key_enc'] ?? '';
+		$secret_key = '';
+
+		if($secret_key_enc) {
+			$secret_key = self::aes_decrypt($secret_key_enc);
+		}
+
+		return $secret_key;
+	}
+
 	/**
 	 *
 	 * Base64 encode data quickly

@@ -28,7 +28,7 @@ if($selection) {
 	foreach($selection as $s) {
 		$order_id = $s['id'];
 		$address = $s['address'];
-		$wallet_id = $s['wallet_id_used'];
+		$wallet_id = (int)$s['wallet_id_used'];
 		$amount = (int)($s['amount'] ?? 0);
 		$sent_at = $helper->get_datetime();
 
