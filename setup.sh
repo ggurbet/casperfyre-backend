@@ -8,7 +8,7 @@ COLOR_END='\033[0m'
 echo -e "${COLOR_GREEN}Setting up CasperFYRE API..${COLOR_END}"
 echo
 echo -e "Please have your database and vhost details ready before starting this setup."
-read -p "Press enter to continue ${COLOR_RED}>${COLOR_END}" READY
+read -p "Press enter to continue >" READY
 echo
 echo
 
