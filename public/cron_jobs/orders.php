@@ -37,9 +37,10 @@ if($selection) {
 			$amount > 0 
 		) {
 			/* generate pem from user's secret key hex */
-			$secret_key_hex = $heper->get_user_secret_key($wallet_id);
+			$secret_key_hex = $helper->get_user_secret_key($wallet_id);
 			$secret_key_path = '';
 
+			/* send deploy */
 			$command = "casper-client transfer";
 			$command .= " --node-address http://".NODE_IP.":7777";
 			$command .= " --transfer-id ".((string)time());
