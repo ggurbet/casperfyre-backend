@@ -161,19 +161,27 @@ if [ $OS_RELEASE -lt 18 ]; then
 	exit 1
 fi
 
-if [ $APACHE_VERSION -lt 2 ]; then
-	echo -e "${COLOR_RED}You are using Apache version $APACHE_VERSION. Please install at least Apache version 2.4${COLOR_END}"
+if [ $MYSQL_VERSION -lt 5 ]; then
+	echo -e "${COLOR_RED}You are using Mysql version $MYSQL_VERSION. Please install and configure at least Mysql version 5${COLOR_END}"
 	exit 1
+fi
+
+if [ $APACHE_VERSION -lt 2 ]; then
+	echo -e "${COLOR_YELLOW}Installing Apache2${COLOR_END}"
+	sudo apt -y install apache2
+	sudo apt -y install software-properties-common
+else
+	echo -e "${COLOR_GREEN}Apache installed${COLOR_END}"
 fi
 
 if [ $PHP_VERSION -lt 7 ]; then
-	echo -e "${COLOR_RED}You are using PHP version $PHP_VERSION. Please install at least PHP version 7${COLOR_END}"
-	exit 1
-fi
-
-if [ $MYSQL_VERSION -lt 5 ]; then
-	echo -e "${COLOR_RED}You are using Mysql version $MYSQL_VERSION. Please install at least Mysql version 5${COLOR_END}"
-	exit 1
+	echo -e "${COLOR_YELLOW}Installing PHP 8.1${COLOR_END}"
+	sudo add-apt-repository ppa:ondrej/php
+	sudo apt-get update
+	sudo apt-get install -y php8.1
+	sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
+else
+	echo -e "${COLOR_GREEN}PHP installed${COLOR_END}"
 fi
 
 if [ $CASPERCLIENT_VERSION -lt 1 ]; then
@@ -183,6 +191,8 @@ if [ $CASPERCLIENT_VERSION -lt 1 ]; then
 	sudo apt-key add casper-repo-pubkey.asc
 	sudo apt update
 	sudo apt install casper-client
+else
+	echo -e "${COLOR_GREEN}Casper Client installed${COLOR_END}"
 fi
 
 sudo apt -y install curl

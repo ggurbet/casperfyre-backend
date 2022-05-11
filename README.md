@@ -21,15 +21,11 @@ The system will check for the existence of the following softwares that are requ
 
 ## Setup
 
-Before doing anything else, make sure you're up to date.
+We generally would use the latest version of Ubuntu for testing installs. Example hosting server: AWS ec2 t2 medium with at least 10Gb SSD. Before doing anything else, make sure you're up to date.
 
 ```bash
 sudo apt-get update
 ```
-
-### Software
-
-We generally would use the latest version of Ubuntu for testing installs. Example hosting server: AWS ec2 t2 medium with at least 10Gb SSD. Setup the repo according to our VHOST path using the instruction below. Note, the actual VHOST path in this case would be set to **/var/www/casperfyre-api/public**
 
 ### Database
 
@@ -48,7 +44,21 @@ mysql> create database casperfyre;
 mysql> exit
 ````
 
-**Option 1 -** You can install basic prerequisites, navigate to http root, and run **setup.sh** to run interactive setup script.
+### Software
+
+Setup the repo according to our VHOST path using the instruction below. Note, the actual VHOST path in this case would be set to **/var/www/casperfyre-api/public**
+
+**Option 1 -** Navigate to the http root, and run **setup.sh** to run interactive setup script.
+
+```bash
+sudo mkdir /var/www
+cd /var/www/
+git clone https://github.com/ledgerleapllc/casperfyre-backend casperfyre-api
+cd casperfyre-api
+./setup.sh
+```
+
+**Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, follow these steps.
 
 ```bash
 sudo apt -y install apache2
@@ -57,15 +67,6 @@ sudo add-apt-repository ppa:ondrej/php
 sudo apt-get update
 sudo apt-get install -y php8.1
 sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
-cd /var/www/
-git clone https://github.com/ledgerleapllc/casperfyre-backend casperfyre-api
-cd casperfyre-api
-./setup.sh
-```
-
-**Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, follow these steps after attempting to use the setup script.
-
-```bash
 sudo apt -y install curl
 sudo a2enmod rewrite
 sudo a2enmod headers
