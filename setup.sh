@@ -66,14 +66,14 @@ if [ -z "$API_VHOST" ]; then
 	exit 1
 fi
 
-echo -e "${COLOR_YELLOW}Generating entropy...${COLOR_END}"
+echo -e "${COLOR_GREEN}Generating entropy...${COLOR_END}"
 
 RANDOM_ENTROPY=$(head -c 64 < /dev/urandom)
 MASTER_KEY=$(echo $RANDOM_ENTROPY | md5sum | cut -d' ' -f1)
 RANDOM_ENTROPY2=$(head -c 64 < /dev/urandom)
 CRON_TOKEN=$(echo $RANDOM_ENTROPY2 | md5sum | cut -d' ' -f1)
 
-echo -e "${COLOR_GREEN}Key created${COLOR_END}"
+echo -e "${COLOR_GREEN}Keys created${COLOR_END}"
 
 if [ -f ".env" ]; then
 	if [ -f ".env.backup" ]; then
