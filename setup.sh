@@ -58,8 +58,9 @@ if [ -z "$DATABASE_PASSWORD" ]; then
 	exit 1
 fi
 
+echo ''
 echo -e "${COLOR_YELLOW}Please enter your VHOST document directory for the backend API (eg. /var/www/casperfyre-backend/public). ${COLOR_END}"
-read -s -p "VHOST directory: " API_VHOST
+read -p "VHOST directory: " API_VHOST
 if [ -z "$API_VHOST" ]; then
 	echo -e "${COLOR_RED}Please specify your API VHOST directory. ${COLOR_END}"
 	exit 1
