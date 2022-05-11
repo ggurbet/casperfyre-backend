@@ -465,7 +465,7 @@ class Helper {
 			$balance = (int)($balance_motes / 1000000000);
 		} catch (Exception $e) {
 			elog('Failed to get balance of '.$validator_id);
-			elog($e);
+			// elog($e);
 			return $balance;
 		}
 
