@@ -135,6 +135,7 @@ class DB {
 					`deploy_hash` varchar(66) DEFAULT NULL,
 					`success` int DEFAULT '0',
 					`api_key_id_used` int DEFAULT NULL,
+					`wallet_id_used` int DEFAULT NULL,
 					PRIMARY KEY (`id`)
 				) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 			";

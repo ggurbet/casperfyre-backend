@@ -601,7 +601,8 @@ function insert_order(
 	$fulfilled,
 	$amount,
 	$address,
-	$api_key_id
+	$api_key_id,
+	$wallet_id
 ) {
 	global $db;
 
@@ -615,7 +616,8 @@ function insert_order(
 			fulfilled, 
 			amount, 
 			address, 
-			api_key_id_used
+			api_key_id_used,
+			wallet_id_used
 		) VALUES (
 			'$guid', 
 			'$datetime', 
@@ -624,7 +626,8 @@ function insert_order(
 			$fulfilled, 
 			$amount, 
 			'$address', 
-			$api_key_id
+			$api_key_id,
+			$wallet_id
 		)
 	";
 
@@ -663,7 +666,7 @@ function process_order(
 	$amount,
 	$authentication_array
 ) {
-	global $helper;
+	global $helper, $db;
 
 	$datetime = $helper->get_datetime();
 	$ip = $helper->get_real_ip();
@@ -759,6 +762,32 @@ function process_order(
 	$api_key_active = (int)($authentication_array['api_key_active'] ?? 0);
 	$account_active = (int)($authentication_array['account_active'] ?? 0);
 
+	/* lock in the wallet ID */
+	$query = "
+		SELECT id, balance
+		FROM wallets
+		WHERE guid = '$guid'
+		AND active = 1
+	";
+
+	$selection = $db->do_select($query);
+	$balance = (int)($selection[0]['balance'] ?? 0);
+	$wallet_id = (int)($selection[0]['id'] ?? 0);
+
+	if($wallet_id == 0) {
+		$RETURN_STATUS = 'error';
+		$RETURN_MSG = 'You have no active wallet';
+		$RETURN_CODE = 400;
+		$FULFILLED = 2;
+	}
+
+	if($balance == 0 || $balance < $amount) {
+		$RETURN_STATUS = 'error';
+		$RETURN_MSG = 'You have insufficient balance in your current wallet';
+		$RETURN_CODE = 403;
+		$FULFILLED = 2;
+	}
+
 	if($account_active === 0) {
 		$RETURN_STATUS = 'error';
 		$RETURN_MSG = 'Your account is frozen';
@@ -782,7 +811,8 @@ function process_order(
 		$FULFILLED,
 		$amount,
 		$address,
-		$api_key_id
+		$api_key_id,
+		$wallet_id
 	);
 
 	if($inserted) {
