@@ -20,6 +20,8 @@ The system will check for the existence of the following softwares that are requ
  7. Casper Client 1.4+
 ```
 
+Ubuntu 18+ and Apache2 are optional and can be switched out for other common platforms, but the built-in interactive setup script will not work in that case. The setup of the operating system and HTTP server software should be handled by the dev. Note, the http document root is **casperfyre-backend/public**
+
 ## Setup
 
 We generally would use the latest version of Ubuntu for testing installs. Example hosting server: AWS ec2 t2 medium with at least 10Gb SSD. Before doing anything else, make sure you're up to date.
