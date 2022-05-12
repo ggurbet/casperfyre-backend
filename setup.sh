@@ -200,6 +200,7 @@ sudo a2enmod rewrite
 sudo a2enmod headers
 sudo a2enmod ssl
 sudo service apache2 restart
+sudo chown -R www-data:www-data tmp/
 
 if [ $COMPOSER_VERSION -lt 2 ]; then
 	echo -e "${COLOR_YELLOW}Installing composer${COLOR_END}"

@@ -14,10 +14,6 @@ global $helper;
 
 authenticate_cron();
 
-if(!is_dir(BASE_DIR.'/tmp')) {
-	mkdir(BASE_DIR.'/tmp');
-}
-
 $query = "
 	SELECT *
 	FROM orders
