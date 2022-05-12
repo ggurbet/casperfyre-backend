@@ -472,7 +472,15 @@ class Helper {
 		return $balance;
 	}
 
-	public static function get_user_secret_key($wallet_id) {
+	/**
+	 *
+	 * Get wallet secret key by ID
+	 *
+	 * @param  string  $wallet_id
+	 * @return int     $secret_key  Hex string format.
+	 *
+	 */
+	public static function get_wallet_secret_key($wallet_id) {
 		global $db;
 
 		$query = "

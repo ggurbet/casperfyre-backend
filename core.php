@@ -764,15 +764,17 @@ function process_order(
 
 	/* lock in the wallet ID */
 	$query = "
-		SELECT id, balance
+		SELECT id, address, balance
 		FROM wallets
 		WHERE guid = '$guid'
 		AND active = 1
 	";
 
 	$selection = $db->do_select($query);
-	$balance = (int)($selection[0]['balance'] ?? 0);
 	$wallet_id = (int)($selection[0]['id'] ?? 0);
+	$operator_address = $selection[0]['address'] ?? '';
+	$db_balance = (int)($selection[0]['balance'] ?? 0);
+	$chain_balance = 0;
 
 	if($wallet_id == 0) {
 		$RETURN_STATUS = 'error';
@@ -781,7 +783,16 @@ function process_order(
 		$FULFILLED = 2;
 	}
 
-	if($balance == 0 || $balance < $amount) {
+	if($db_balance == 0 || $db_balance < $amount) {
+		$RETURN_STATUS = 'error';
+		$RETURN_MSG = 'You have insufficient balance in your current wallet';
+		$RETURN_CODE = 403;
+		$FULFILLED = 2;
+	} else {
+		$chain_balance = $helper->get_wallet_balance($operator_address);
+	}
+
+	if($chain_balance == 0 || $chain_balance < $amount) {
 		$RETURN_STATUS = 'error';
 		$RETURN_MSG = 'You have insufficient balance in your current wallet';
 		$RETURN_CODE = 403;

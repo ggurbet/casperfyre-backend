@@ -37,7 +37,7 @@ if($selection) {
 			$amount > 0 
 		) {
 			/* generate pem from user's secret key hex */
-			$secret_key_hex = $helper->get_user_secret_key($wallet_id);
+			$secret_key_hex = $helper->get_wallet_secret_key($wallet_id);
 			$secret_key_path = '';
 
 			/* send deploy */
