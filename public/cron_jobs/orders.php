@@ -67,7 +67,7 @@ if($selection) {
 
 			/* send deploy */
 			$command = "casper-client transfer";
-			$command .= " --node-address ".NODE_IP.":7777";
+			$command .= " --node-address ".NODE_IP;
 			$command .= " --transfer-id ".((string)time());
 			$command .= " --secret-key ".$secret_key_path;
 			$command .= " --amount ".(string)$amount."000000000";
