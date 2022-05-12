@@ -64,7 +64,7 @@ if($selection) {
 				$query = "
 					SELECT cspr_actual
 					FROM users
-					WHERE guid = '$guid'
+					WHERE guid = '$user_guid'
 				";
 				$cspr_actual = $db->do_select($query);
 				$cspr_actual = (int)($cspr_actual[0]['cspr_actual'] ?? 0);
@@ -72,7 +72,7 @@ if($selection) {
 				$query = "
 					UPDATE users
 					SET cspr_actual = $cspr_actual
-					WHERE guid = '$guid'
+					WHERE guid = '$user_guid'
 				";
 				$db->do_query($query);
 			}
