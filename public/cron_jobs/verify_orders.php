@@ -19,7 +19,7 @@ $query = "
 	FROM orders
 	WHERE fulfilled = 1
 	AND success = 0
-	LIMIT 3
+	LIMIT 5
 ";
 
 $selection = $db->do_select($query);
@@ -37,7 +37,7 @@ if($selection) {
 			ctype_xdigit($deploy_hash)
 		) {
 			$command = "casper-client get-deploy";
-			$command .= " --node-address http://".NODE_IP.":7777";
+			$command .= " --node-address ".NODE_IP;
 			$command .= " ".$deploy_hash;
 			$stdout = shell_exec($command);
 			$success = '';
