@@ -92,7 +92,8 @@ if($selection) {
 				$db->do_query($query);
 			} catch (Exception $e) {
 				elog('Failed to send transfer deploy for order #'.$order_id);
-				// elog($e);
+				elog($e);
+				elog('Failing output: '.$stdout);
 			}
 
 			if(file_exists($secret_key_path)) {
