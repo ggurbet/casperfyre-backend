@@ -12,3 +12,5 @@ vendor/
 
 .phpdoc/
 docs/
+
+tmp/**
