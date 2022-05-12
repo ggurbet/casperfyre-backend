@@ -75,7 +75,6 @@ sudo a2enmod rewrite
 sudo a2enmod headers
 sudo a2enmod ssl
 sudo service apache2 restart
-sudo chown -R www-data:www-data tmp/
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 php -r "unlink('composer-setup.php');"
