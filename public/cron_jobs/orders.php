@@ -67,7 +67,7 @@ if($selection) {
 
 			/* send deploy */
 			$command = "casper-client transfer";
-			$command .= " --node-address http://".NODE_IP.":7777";
+			$command .= " --node-address ".NODE_IP.":7777";
 			$command .= " --transfer-id ".((string)time());
 			$command .= " --secret-key ".$secret_key_path;
 			$command .= " --amount ".(string)$amount."000000000";
@@ -102,7 +102,7 @@ if($selection) {
 			}
 
 			if(file_exists($secret_key_path)) {
-				unlink($secret_key_path);
+				// unlink($secret_key_path);
 			}
 		} else {
 			$query = "
