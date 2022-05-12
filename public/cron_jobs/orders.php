@@ -74,31 +74,32 @@ if($selection) {
 			$command .= " --target-account ".$address;
 			$command .= " --payment-amount 100000000";
 			$command .= " --chain-name casper";
+			elog($command);
 
 			if($ready_to_deploy) {
+				elog('READY TO DEPLOY');
 				$stdout = shell_exec($command);
 			}
 
 			$success = '';
 
 			try {
+				elog($stdout);
 				$json = json_decode($stdout);
 				elog($json);
+				$deploy_hash = '';
+				$query = "
+					UPDATE orders
+					SET fulfilled = 1,
+					sent_at = '$sent_at',
+					deploy_hash = '$deploy_hash'
+					WHERE id = $order_id
+				";
+				$db->do_query($query);
 			} catch (Exception $e) {
 				elog('Failed to send transfer deploy for order #'.$order_id);
 				elog($e);
 			}
-
-			$deploy_hash = '';
-			$query = "
-				UPDATE orders
-				SET fulfilled = 1,
-				sent_at = '$sent_at',
-				deploy_hash = '$deploy_hash'
-				WHERE id = $order_id
-			";
-
-			$db->do_query($query);
 
 			if(file_exists($secret_key_path)) {
 				unlink($secret_key_path);
