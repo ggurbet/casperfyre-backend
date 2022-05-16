@@ -275,10 +275,10 @@ function get_params() {
 /**
  * Authenticate a session for frontend
  *
+ * If session belongs to a role with low clearance, checks for admin approval/verification. With some exceptions.
+ *
  * @param  int   $required_clearance
  * @return array
- *
- * If session belongs to a role with low clearance, checks for admin approval/verification. With some exceptions.
  *
  */
 function authenticate_session($required_clearance = 1) {
