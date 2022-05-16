@@ -60,8 +60,7 @@ final class RouterTest extends TestCase
 			if(
 				$this->dir_external_scan[$i] == '.' ||
 				$this->dir_external_scan[$i] == '..' ||
-				$this->dir_external_scan[$i] == 'index.php' ||
-				$this->dir_external_scan[$i] == 'docs'
+				$this->dir_external_scan[$i] == 'index.php'
 			) {
 				unset($this->dir_external_scan[$i]);
 			}
@@ -96,10 +95,7 @@ final class RouterTest extends TestCase
 					$this->router_admin_scan[] = $name;
 				}
 
-				if(
-					$type == 'external_api' &&
-					!strstr($route, '/docs/')
-				) {
+				if($type == 'external_api') {
 					$this->router_external_scan[] = $name;
 				}
 			}
@@ -176,8 +172,7 @@ final class RouterTest extends TestCase
 			if(
 				$val == '.' ||
 				$val == '..' ||
-				$val == 'index.php' ||
-				$val == 'docs'
+				$val == 'index.php'
 			) {
 				unset($this->dir_external_scan[$key]);
 			}
@@ -212,10 +207,7 @@ final class RouterTest extends TestCase
 					$this->router_admin_scan[] = $name;
 				}
 
-				if(
-					$type == 'external_api' &&
-					!strstr($route, '/docs/')
-				) {
+				if($type == 'external_api') {
 					$this->router_external_scan[] = $name;
 				}
 			}

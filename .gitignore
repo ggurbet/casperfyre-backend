@@ -12,5 +12,6 @@ vendor/
 
 .phpdoc/
 docs/
+public/docs/
 
 tmp/*.pem

@@ -464,7 +464,7 @@ class Helper {
 			$balance_motes =  gmp_intval($balance_object);
 			$balance = (int)($balance_motes / 1000000000);
 		} catch (Exception $e) {
-			elog('Failed to get balance of '.$validator_id);
+			// elog('Failed to get balance of '.$validator_id);
 			// elog($e);
 			return $balance;
 		}
