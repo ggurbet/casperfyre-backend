@@ -8,8 +8,13 @@ include_once('../../../core.php');
  *
  * This is the main endpoint that devs will use to request tokens from their faucet API.
  *
- * @param string  $address
- * @param int     $amount
+ * @api
+ * @version  1.0.0   CasperFYRE
+ * @param    string  $address
+ * @param    int     $amount
+ *
+ * @response
+ * 200 - Success. Dispensing $amount CSPR to $address
  *
  */
 class Dispense extends Endpoints {
