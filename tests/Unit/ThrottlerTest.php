@@ -29,6 +29,11 @@ final class ThrottlerTest extends TestCase
 
 		foreach ($lines as $line) {
 			if(strstr($line, 'RewriteRule')) {
+				// disclude /docs/
+				if(strstr($line, '/docs/')) {
+					continue;
+				}
+
 				if(
 					strstr($line, '^user/') ||
 					strstr($line, '^admin/') ||

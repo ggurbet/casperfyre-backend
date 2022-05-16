@@ -60,7 +60,8 @@ final class RouterTest extends TestCase
 			if(
 				$this->dir_external_scan[$i] == '.' ||
 				$this->dir_external_scan[$i] == '..' ||
-				$this->dir_external_scan[$i] == 'index.php'
+				$this->dir_external_scan[$i] == 'index.php' ||
+				$this->dir_external_scan[$i] == 'docs'
 			) {
 				unset($this->dir_external_scan[$i]);
 			}
@@ -81,6 +82,7 @@ final class RouterTest extends TestCase
 		foreach ($lines as $line) {
 			if(strstr($line, 'RewriteRule')) {
 				$s = explode(' ', $line);
+				$route = $s[1] ?? '';
 				$path = $s[2] ?? '';
 				$path_split = explode('/', $path);
 				$type = $path_split[1] ?? '';
@@ -94,7 +96,10 @@ final class RouterTest extends TestCase
 					$this->router_admin_scan[] = $name;
 				}
 
-				if($type == 'external_api') {
+				if(
+					$type == 'external_api' &&
+					!strstr($route, '/docs/')
+				) {
 					$this->router_external_scan[] = $name;
 				}
 			}
@@ -171,7 +176,8 @@ final class RouterTest extends TestCase
 			if(
 				$val == '.' ||
 				$val == '..' ||
-				$val == 'index.php'
+				$val == 'index.php' ||
+				$val == 'docs'
 			) {
 				unset($this->dir_external_scan[$key]);
 			}
@@ -192,6 +198,7 @@ final class RouterTest extends TestCase
 		foreach ($lines as $line) {
 			if(strstr($line, 'RewriteRule')) {
 				$s = explode(' ', $line);
+				$route = $s[1] ?? '';
 				$path = $s[2] ?? '';
 				$path_split = explode('/', $path);
 				$type = $path_split[1] ?? '';
@@ -205,7 +212,10 @@ final class RouterTest extends TestCase
 					$this->router_admin_scan[] = $name;
 				}
 
-				if($type == 'external_api') {
+				if(
+					$type == 'external_api' &&
+					!strstr($route, '/docs/')
+				) {
 					$this->router_external_scan[] = $name;
 				}
 			}
