@@ -478,7 +478,8 @@ function authenticate_api() {
 	}
 
 	$query = "
-		SELECT a.api_key, a.active AS api_key_active, b.guid AS guid, b.api_key_active AS account_active
+		SELECT a.api_key, a.active AS api_key_active, b.guid AS guid,
+		b.api_key_active AS account_active, b.admin_approved
 		FROM api_keys AS a
 		JOIN users AS b
 		ON a.guid = b.guid
@@ -761,6 +762,7 @@ function process_order(
 	$api_key_id = $helper->get_apikey_id_by_apikey($api_key);
 	$api_key_active = (int)($authentication_array['api_key_active'] ?? 0);
 	$account_active = (int)($authentication_array['account_active'] ?? 0);
+	$admin_approved = (int)($authentication_array['admin_approved'] ?? 0);
 
 	/* lock in the wallet ID */
 	$query = "
@@ -803,6 +805,13 @@ function process_order(
 		$RETURN_STATUS = 'error';
 		$RETURN_MSG = 'Your account is frozen';
 		$RETURN_CODE = 401;
+		$FULFILLED = 2;
+	}
+
+	if($admin_approved === 0) {
+		$RETURN_STATUS = 'error';
+		$RETURN_MSG = 'Your account is disabled';
+		$RETURN_CODE = 403;
 		$FULFILLED = 2;
 	}
 
