@@ -29,7 +29,7 @@ class UserUpdateMfa extends Endpoints {
 			_exit(
 				'error',
 				'Requires MFA confirmation first',
-				401,
+				403,
 				'Requires MFA confirmation first'
 			);
 		}

@@ -171,6 +171,11 @@ function _exit(
 
 	header('Content-type:application/json;charset=utf-8');
 	http_response_code($exit_code);
+
+	if($exit_code == 401) {
+		header('WWW-Authenticate: Bearer token;error="invalid_or_expired_token"');
+	}
+
 	exit(json_encode(array(
 		'status' => $status,
 		'detail' => $detail
@@ -312,7 +317,7 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Invalid bearer token', 
-			400,
+			401,
 			'Invalid bearer token'
 		);
 	}
@@ -370,7 +375,7 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Unauthorized', 
-			401,
+			403,
 			'Failed clearance check'
 		);
 	}
@@ -392,7 +397,7 @@ function authenticate_session($required_clearance = 1) {
 			_exit(
 				'error', 
 				'Unauthorized', 
-				401,
+				403,
 				'Failed clearance level 1 with no verification or admin approval'
 			);
 		}
@@ -403,7 +408,7 @@ function authenticate_session($required_clearance = 1) {
 		_exit(
 			'error', 
 			'Unauthorized', 
-			401,
+			403,
 			'Failed clearance level 2 with no verification or admin approval'
 		);
 	}
@@ -731,7 +736,7 @@ function process_order(
 	if(!$whitelist) {
 		$RETURN_STATUS = 'error';
 		$RETURN_MSG = 'IP address authentication failed';
-		$RETURN_CODE = 401;
+		$RETURN_CODE = 403;
 		$FULFILLED = 2;
 	}
 
@@ -804,7 +809,7 @@ function process_order(
 	if($account_active === 0) {
 		$RETURN_STATUS = 'error';
 		$RETURN_MSG = 'Your account is frozen';
-		$RETURN_CODE = 401;
+		$RETURN_CODE = 403;
 		$FULFILLED = 2;
 	}
 
@@ -818,7 +823,7 @@ function process_order(
 	if($api_key_active === 0) {
 		$RETURN_STATUS = 'error';
 		$RETURN_MSG = 'Your API key has been frozen';
-		$RETURN_CODE = 401;
+		$RETURN_CODE = 403;
 		$FULFILLED = 2;
 	}
 

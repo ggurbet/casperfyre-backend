@@ -26,14 +26,14 @@ class UserConfirmMfa extends Endpoints {
 			_exit(
 				'error',
 				'Incorrect MFA code',
-				401,
+				403,
 				'Incorrect MFA code'
 			);
 		} elseif($response == 'expired') {
 			_exit(
 				'error',
 				'MFA code is expired',
-				401,
+				403,
 				'MFA code is expired'
 			);
 		} elseif($response == 'success') {

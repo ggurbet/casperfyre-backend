@@ -58,7 +58,7 @@ class UserLogin extends Endpoints {
 			_exit(
 				'error',
 				'Invalid email or password',
-				401,
+				403,
 				'Invalid email or password'
 			);
 		}

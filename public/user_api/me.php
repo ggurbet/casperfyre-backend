@@ -37,7 +37,7 @@ class UserMe extends Endpoints {
 		_exit(
 			'error',
 			'Unauthorized',
-			401,
+			403,
 			'Unauthorized'
 		);
 	}

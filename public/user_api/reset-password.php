@@ -58,7 +58,7 @@ class UserResetPassword extends Endpoints {
 			_exit(
 				'error',
 				'Password reset code is expired. Please try again',
-				401,
+				403,
 				'Password reset code is expired'
 			);
 		}
@@ -78,7 +78,7 @@ class UserResetPassword extends Endpoints {
 			_exit(
 				'error',
 				'Password reset token is expired. Please try again',
-				401,
+				403,
 				'Password reset token is expired'
 			);
 		}
@@ -109,7 +109,7 @@ class UserResetPassword extends Endpoints {
 				_exit(
 					'error',
 					'Error resetting password. Not authorized',
-					401,
+					403,
 					'Error resetting password. Not authorized'
 				);
 			}
@@ -118,7 +118,7 @@ class UserResetPassword extends Endpoints {
 				_exit(
 					'error',
 					'Error resetting password. Not authorized',
-					401,
+					403,
 					'Error resetting password. Not authorized'
 				);
 			}

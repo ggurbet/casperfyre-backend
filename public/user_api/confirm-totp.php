@@ -52,7 +52,7 @@ class UserConfirmTotp extends Endpoints {
 		_exit(
 			'error',
 			'Authentication failed',
-			401,
+			403,
 			'Authentication failed'
 		);
 	}

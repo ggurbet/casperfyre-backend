@@ -51,7 +51,7 @@ class UserConfirmUpdateEmail extends Endpoints {
 				_exit(
 					'error',
 					'Email change request has expired. Please try again',
-					401,
+					403,
 					'Email change request has expired. Please try again'
 				);
 			}
