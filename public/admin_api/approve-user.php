@@ -130,7 +130,7 @@ class AdminApproveUser extends Endpoints {
 					$user_email,
 					$subject,
 					$body,
-					getenv('FRONTEND_URL').'/auth/login'
+					'https://'.getenv('FRONTEND_URL').'/auth/login'
 				);
 			}
 
