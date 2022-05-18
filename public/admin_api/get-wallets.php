@@ -25,7 +25,7 @@ class AdminGetWallets extends Endpoints {
 			FROM wallets
 		";
 
-		if($user_guid) $query .= "WHERE guid = '$user_guid'";
+		if($user_guid) $query .= " WHERE guid = '$user_guid'";
 
 		$selection = $db->do_select($query);
 

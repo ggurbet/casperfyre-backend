@@ -13,10 +13,10 @@ class UserGetWallet extends Endpoints {
 
 		require_method('GET');
 		$auth = authenticate_session();
-		$guid = $auth['guid'] ?? 0;
+		$guid = $auth['guid'] ?? '';
 
 		$query = "
-			SELECT address, created_at, balance
+			SELECT address, active, created_at, balance
 			FROM wallets
 			WHERE guid = '$guid'
 			AND active = 1
