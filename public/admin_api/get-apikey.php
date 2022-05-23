@@ -6,10 +6,11 @@ include_once('../../core.php');
  *
  * HEADER Authorization: Bearer
  *
+ * Works by either specifying by api key ID or by user's guid. Checks guid first.
+ *
  * @param string  $guid
  * @param int     $api_key_id
  *
- * Works by either specifying by api key ID or by user's guid. Checks guid first.
  */
 class AdminGetApikey extends Endpoints {
 	function __construct(
@@ -38,10 +39,11 @@ class AdminGetApikey extends Endpoints {
 			$selection = $selection[0] ?? array();
 			$api_key_id = $selection['api_key_id'] ?? 0;
 
+			/* get total_cspr_sent <-- by guid */
 			$query = "
 				SELECT amount
 				FROM orders
-				WHERE api_key_id_used = $api_key_id
+				WHERE guid = '$user_guid'
 				AND success = 1
 			";
 			$result = $db->do_select($query);
@@ -54,6 +56,18 @@ class AdminGetApikey extends Endpoints {
 			}
 
 			$selection['total_cspr_sent'] = $total_cspr_sent;
+
+
+			/* get total_calls <-- by guid */
+			$query = "
+				SELECT SUM(total_calls)
+				AS total_calls
+				FROM api_keys
+				WHERE guid = '$user_guid'
+			";
+			$total_calls = $db->do_select($query);
+			$total_calls = (int)($total_calls[0]['total_calls'] ?? 0);
+			$selection['total_calls'] = $total_calls;
 
 			_exit(
 				'success',

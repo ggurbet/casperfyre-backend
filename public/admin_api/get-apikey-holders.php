@@ -29,6 +29,7 @@ class AdminGetApikeyHolders extends Endpoints {
 			WHERE a.role = 'user'
 			GROUP BY a.guid
 		";
+
 		$selection = $db->do_select($query);
 
 		_exit(

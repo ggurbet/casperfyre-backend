@@ -11,7 +11,7 @@ include_once('../../core.php');
 class AdminGetHistory extends Endpoints {
 	function __construct(
 		$guid = ''
-	) {	
+	) {
 		global $db;
 
 		require_method('GET');
@@ -20,21 +20,21 @@ class AdminGetHistory extends Endpoints {
 		$admin_guid = $auth['guid'] ?? '';
 		$user_guid = parent::$params['guid'] ?? '';
 
-		if($user_guid && $user_guid != '') {
-			$query = "
-				SELECT * 
-				FROM orders
-				WHERE guid = '$user_guid'
-				ORDER BY id DESC
-			";
-		} else {
-			$query = "
-				SELECT * 
-				FROM orders
-				ORDER BY id DESC
-			";
+		if(!$user_guid) {
+			_exit(
+				'error',
+				'Invalid guid',
+				400,
+				'Invalid guid'
+			);
 		}
 
+		$query = "
+			SELECT * 
+			FROM orders
+			WHERE guid = '$user_guid'
+			ORDER BY id DESC
+		";
 		$results = $db->do_select($query);
 
 		_exit(

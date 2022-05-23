@@ -35,6 +35,7 @@ class AdminGetApikeys extends Endpoints {
 			LEFT JOIN api_keys AS b
 			ON a.guid = b.guid
 			WHERE a.guid = '$user_guid'
+			ORDER BY created_at DESC
 		";
 		$selection = $db->do_select($query);
 
