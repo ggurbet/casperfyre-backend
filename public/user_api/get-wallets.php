@@ -19,6 +19,7 @@ class UserGetWallets extends Endpoints {
 			SELECT address, active, created_at, inactive_at, balance
 			FROM wallets
 			WHERE guid = '$guid'
+			ORDER BY id DESC
 		";
 
 		$selection = $db->do_select($query);
