@@ -57,7 +57,6 @@ class AdminGetApikey extends Endpoints {
 
 			$selection['total_cspr_sent'] = $total_cspr_sent;
 
-
 			/* get total_calls <-- by guid */
 			$query = "
 				SELECT SUM(total_calls)
