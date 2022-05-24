@@ -162,7 +162,7 @@ curl -X POST https://api.casperfyre.com/v1/dispense \
   -d '{ "address": "CSPR_ADDRESS", "amount": 100 }'
 ```
 
-This example curl request will dispense 100 token to the specified address.
+This example curl request will dispense 100 token to the specified address. Please note, if you are deploying to your own instance and domain, the base URL will be your own URL that you setup, not **api.casperfyre.com**.
 
 ### Other notes
 
