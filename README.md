@@ -185,3 +185,5 @@ composer run-script generate-docs
 ```
 
 You will find the newly generated documentation at /docs/index.html
+
+This documentation is also linked out and used to display to API users from the dashboard settings page.
