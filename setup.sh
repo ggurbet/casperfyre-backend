@@ -228,3 +228,6 @@ fi
 echo -e "${COLOR_GREEN}[+] Done${COLOR_END}"
 echo 
 echo -e "Please note, you will still need to setup emailer credentials information in your .env before the email scheduler will work."
+echo
+echo -e "${COLOR_YELLOW}BACKUP YOUR MASTER KEY --> ${COLOR_GREEN}$MASTER_KEY${COLOR_END}"
+echo -e "Wallet keys/token balances will be lost if this key is lost."
