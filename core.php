@@ -62,13 +62,9 @@ include_once('classes/totp.php');
  */
 $db = new DB();
 $helper = new Helper();
+$db->check_integrity();
 $throttle = new Throttle($helper->get_real_ip());
 $casper_client = new Casper\Rpc\RpcClient(NODE_IP);
-
-/**
- * Check DB integrity
- */
-$db->check_integrity();
 
 /**
  * Error logging
