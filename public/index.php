@@ -8,8 +8,8 @@ if ($DEV_SERVER) {
 	header('Access-Control-Allow-Methods:  POST, PUT, GET, OPTIONS');
 
 	function elog2($msg) {
-		file_put_contents('php://stderr', print_r($msg, true));
-		file_put_contents('php://stderr', print_r("\n", true));
+		file_put_contents('php://stdout', print_r($msg, true));
+		file_put_contents('php://stdout', print_r("\n", true));
 	}
 	elog2('------- USING DEV SERVER -------');
 
