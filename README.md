@@ -11,7 +11,7 @@ Dispensory API interface for Casper mainnet. This is the backend API repo for th
 The system will check for the existence of the following softwares that are required to run a full API server.
 
 ```
- 1. Ubuntu 18+
+ 1. Ubuntu 20+
  2. Apache2
  3. PHP 7+ {bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
  4. Mysql 5+
@@ -20,7 +20,7 @@ The system will check for the existence of the following softwares that are requ
  7. Casper Client 1.4+
 ```
 
-Ubuntu 18+ and Apache2 are optional and can be switched out for other common platforms, but the built-in interactive setup script will not work in that case. The setup of the operating system and HTTP server software should be handled by the dev. Note, the http document root is **casperfyre-backend/public**
+Ubuntu 20+ and Apache2 are optional and can be switched out for other common platforms, but the built-in interactive setup script will not work in that case. The setup of the operating system and HTTP server software should be handled by the dev. Note, the http document root is **casperfyre-backend/public**
 
 ## Setup
 
@@ -174,6 +174,12 @@ We use PHPUnit for unit testing of the portal's critical functionality. In order
 
 ```bash
 composer run-script test
+```
+
+Instead of creating an Apache server and setting up VHOSTs, you can use the built in PHP server for testing instead. To spin up the built in PHP server, run
+
+```bash
+composer run-script server-dev
 ```
 
 ### Documentation
