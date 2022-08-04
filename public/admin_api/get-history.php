@@ -1,5 +1,5 @@
 <?php
-include_once('../../core.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/../core.php');
 /**
  *
  * GET /admin/get-history
@@ -20,21 +20,21 @@ class AdminGetHistory extends Endpoints {
 		$admin_guid = $auth['guid'] ?? '';
 		$user_guid = parent::$params['guid'] ?? '';
 
-		if(!$user_guid) {
-			_exit(
-				'error',
-				'Invalid guid',
-				400,
-				'Invalid guid'
-			);
+		if ($user_guid) {
+			$query = "
+				SELECT * 
+				FROM orders
+				WHERE guid = '$user_guid'
+				ORDER BY id DESC
+			";
+		} else {
+			$query = "
+				SELECT * 
+				FROM orders
+				ORDER BY id DESC
+			";
 		}
 
-		$query = "
-			SELECT * 
-			FROM orders
-			WHERE guid = '$user_guid'
-			ORDER BY id DESC
-		";
 		$results = $db->do_select($query);
 
 		_exit(

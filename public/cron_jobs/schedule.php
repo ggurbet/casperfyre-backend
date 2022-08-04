@@ -8,7 +8,7 @@
  * System cron will use curl or wget to ping this endpoint every 60 seconds to handle email scheduler.
  *
  */
-include_once('../../core.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/../core.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;

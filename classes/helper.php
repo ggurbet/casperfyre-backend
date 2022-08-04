@@ -179,6 +179,11 @@ class Helper {
 				'$created_at'
 			)
 		";
+
+		if (DEV_MODE) {
+			elog("EMAIL SCHEDULED: ".$recipient."\n".$body."\n".$link."\n");
+		}
+
 		return $db->do_query($query);
 	}
 

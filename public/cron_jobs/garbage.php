@@ -8,7 +8,7 @@
  * System cron will use curl or wget to ping this endpoint for cleanup of old records and junk.
  *
  */
-include_once('../../core.php');
+include_once($_SERVER['DOCUMENT_ROOT'].'/../core.php');
 
 global $helper;
 

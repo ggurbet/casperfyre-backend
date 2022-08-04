@@ -21,6 +21,12 @@ include_once('classes/dotenv.php');
 $dotenv = new Dotenv(__DIR__.'/.env');
 $dotenv->load();
 
+$DEV_MODE = (bool)(getenv('DEV_MODE'));
+
+if ($_SERVER['SERVER_NAME'] == '127.0.0.1') {
+	$DEV_MODE = true;
+}
+
 define('BASE_DIR', __DIR__);
 define('API_VERSION', 1);
 define('APP_NAME', getenv('APP_NAME'));
@@ -32,7 +38,7 @@ define('DB_NAME', getenv('DB_NAME'));
 define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
 define('CRON_TOKEN', getenv('CRON_TOKEN'));
-define('DEV_MODE', (bool)(getenv('DEV_MODE')));
+define('DEV_MODE', $DEV_MODE);
 define('DB_CONN', (getenv('DB_CONN')));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
