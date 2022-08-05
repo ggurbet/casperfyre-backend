@@ -11,7 +11,6 @@
     "require": {
         "paragonie/sodium_compat": "^1.17",
         "phpmailer/phpmailer": "^6.6",
-        "make-software/casper-php-sdk": "dev-master",
         "phpunit/phpunit": "^9.5",
         "spomky-labs/otphp": "^10.0"
     },

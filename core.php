@@ -58,6 +58,7 @@ include_once('classes/helper.php');
 include_once('classes/throttle.php');
 include_once('classes/endpoints.php');
 include_once('classes/totp.php');
+include_once('classes/Blake2b.php');
 
 /**
  * Instantiate
@@ -65,14 +66,13 @@ include_once('classes/totp.php');
  * @var DB        $db            Database instance.
  * @var Helper    $helper        Helper instance.
  * @var Throttle  $throttle      Helper instance.
- * @var RpcClient $casper_client Helper instance.
  *
  */
-$db = new DB();
-$helper = new Helper();
+$db =       new DB();
+$helper =   new Helper();
 $db->check_integrity();
 $throttle = new Throttle($helper->get_real_ip());
-$casper_client = new Casper\Rpc\RpcClient(NODE_IP);
+$blake2b =  new Blake2b();
 
 /**
  * Error logging

@@ -440,39 +440,105 @@ class Helper {
 		);
 	}
 
+	public static function get_account_hash($validator_id) {
+		global $blake2b;
+
+		if(!self::correct_validator_id_format($validator_id)) {
+			return '';
+		}
+
+		$firstbyte = substr($validator_id, 0, 2);
+		$validator_id = substr($validator_id, 2);
+
+		if($firstbyte === '01') {
+			$algorithm_name = unpack('H*', 'ed25519');
+		} else {
+			$algorithm_name = unpack('H*', 'secp256k1');
+		}
+
+		$sequence = hex2bin(
+			($algorithm_name[1] ?? '').
+			'00'.
+			$validator_id
+		);
+
+		return bin2hex($blake2b->hash($sequence));
+	}
+
 	/**
 	 *
 	 * Get wallet balance
 	 *
-	 * Using PHP Casper Client SDK. Returns 0 if no record found
+	 * Using direct RPC call. Returns 0 if no record found
 	 *
 	 * @param  string  $validator_id
 	 * @return int     $balance
 	 *
 	 */
 	public static function get_wallet_balance($validator_id) {
-		global $casper_client;
-
 		if(!self::correct_validator_id_format($validator_id)) {
 			return 0;
 		}
 
 		$balance = 0;
 
-		try {
-			$recipient_public_key = Casper\Serializer\CLPublicKeySerializer::fromHex($validator_id);
-			$latest_block = $casper_client->getLatestBlock();
-			$block_hash = $latest_block->getHash();
-			$state_root_hash = $casper_client->getStateRootHash($block_hash);
-			$account = $casper_client->getAccount($block_hash, $recipient_public_key);
-			$balance_object = $casper_client->getAccountBalance($state_root_hash, $account->getMainPurse());
-			$balance_motes =  gmp_intval($balance_object);
-			$balance = (int)($balance_motes / 1000000000);
-		} catch (Exception $e) {
-			// elog('Failed to get balance of '.$validator_id);
-			// elog($e);
-			return $balance;
-		}
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, NODE_IP.'/rpc');
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, [
+			'Accept: application/json',
+			'Content-type: application/json',
+		]);
+
+		// get block hash first 
+		$json_data = [
+			'id' => (int) time(),
+			'jsonrpc' => '2.0',
+			'method' => 'chain_get_block',
+			'params' => array()
+		];
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_data));
+		$response = curl_exec($curl);
+		$decodedResponse = json_decode($response, true);
+		$state_root_hash = $decodedResponse['result']['block']['header']['state_root_hash'] ?? '';
+
+		// get uref
+		$json_data = [
+			'id' => (int) time(),
+			'jsonrpc' => '2.0',
+			'method' => 'state_get_item',
+			'params' => array(
+				'state_root_hash' => $state_root_hash,
+				'key' => 'account-hash-'.self::get_account_hash($validator_id),
+				'path' => []
+			)
+		];
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_data));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		$decodedResponse = json_decode($response, true);
+		$uref = $decodedResponse['result']['stored_value']['Account']['main_purse'] ?? '';
+		elog($uref);
+
+		// finally get balance
+		$json_data = [
+			'id' => (int) time(),
+			'jsonrpc' => '2.0',
+			'method' => 'state_get_balance',
+			'params' => array(
+				'state_root_hash' => $state_root_hash,
+				'purse_uref' => $uref,
+			)
+		];
+
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_data));
+		$response = curl_exec($curl);
+		curl_close($curl);
+		$decodedResponse = json_decode($response, true);
+
+		$balance_motes = $decodedResponse['result']['balance_value'] ?? 0;
+		$balance = (int)($balance_motes / 1000000000);
 
 		return $balance;
 	}

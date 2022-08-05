@@ -115,6 +115,8 @@ sed -i "s/\[CRON_TOKEN\]/$CRON_TOKEN/g" .env
 
 echo -e "${COLOR_YELLOW}Checking for required software...${COLOR_END}"
 
+sudo apt-get update
+
 OS_VERSION=$(cat /etc/os-release | awk -F '=' '{print $2}' | tr -d '"' | sed -n '1 p')
 OS_RELEASE=$(cat /etc/os-release | awk -F '=' '{print $2}' | tr -d '"' | sed -n '2 p' | cut -d'.' -f1)
 
