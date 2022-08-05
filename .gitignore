@@ -15,3 +15,5 @@ docs/
 public/docs/
 
 tmp/*.pem
+
+database.sqlite
