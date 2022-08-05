@@ -65,6 +65,11 @@ else
 	FRONTEND_URL="GITPOD:3000"
 	CORS_SITE="GITPOD:3001"
 	DATABASE_TYPE="sqlite"
+	DATABASE_HOST=""
+	DATABASE_USER=""
+	DATABASE_PASSWORD=""
+
+	rm database.sqlite
 fi
 
 echo -e "${COLOR_YELLOW}Your email address (Admin email)${COLOR_END}"
@@ -204,19 +209,7 @@ fi
 
 composer install
 composer update
-
-CURRENT_CRONS=$(crontab -l)
-
-if [[ "$CURRENT_CRONS" == *"$CORS_SITE"* ]]; then
-	echo -e "${COLOR_YELLOW}Crontab detected. Skipping${COLOR_END}"
-else
-	echo -e "${COLOR_YELLOW}Installing crontab${COLOR_END}"
-	(crontab -l 2>>/dev/null; echo "* * * * * curl   -s $CORS_SITE/cron/schedule         -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
-	(crontab -l 2>>/dev/null; echo "* * * * * curl   -s $CORS_SITE/cron/orders           -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
-	(crontab -l 2>>/dev/null; echo "*/5 * * * * curl -s $CORS_SITE/cron/verify-orders    -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
-	(crontab -l 2>>/dev/null; echo "*/2 * * * * curl -s $CORS_SITE/cron/refresh-balances -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
-	(crontab -l 2>>/dev/null; echo "2 * * * * curl   -s $CORS_SITE/cron/garbage          -H 'Authorization: token $CRON_TOKEN' >> dev/null 2>&1") | crontab -
-fi
+composer run-script test
 
 echo -e "${COLOR_GREEN}[+] Done${COLOR_END}"
 echo 
