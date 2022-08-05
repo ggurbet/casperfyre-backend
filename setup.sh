@@ -106,7 +106,7 @@ sed -i "s/\[ADMIN_EMAIL\]/$ADMIN_EMAIL/g" .env
 sed -i "s/\[FRONTEND_URL\]/$FRONTEND_URL/g" .env
 sed -i "s/\[CORS_SITE\]/$CORS_SITE/g" .env
 sed -i "s/\[NODE_IP\]/$NODE_IP/g" .env
-sed -i "s/\[DB_CONN\]/$DATABASE_TYPE/g" .env
+sed -i "s/\[DB_TYPE\]/$DATABASE_TYPE/g" .env
 sed -i "s/\[DB_HOST\]/$DATABASE_HOST/g" .env
 sed -i "s/\[DB_USER\]/$DATABASE_USER/g" .env
 sed -i "s/\[DB_PASS\]/$DATABASE_PASSWORD/g" .env
