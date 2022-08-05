@@ -124,34 +124,10 @@ else
 	PHP_VERSION=$(php --version | cut -d' ' -f2 | tr -d '\n' | cut -d"." -f1)
 fi
 
-if ! command -v mysql &> /dev/null; then
-	MYSQL_VERSION=0
-else
-	MYSQL_VERSION=$(mysql --version | cut -d'.' -f1 | awk '{print $3}')
-fi
-
 if ! command -v composer &> /dev/null; then
 	COMPOSER_VERSION=0
 else
 	COMPOSER_VERSION=$(composer --version | cut -d' ' -f3 | cut -d'.' -f1)
-fi
-
-if ! command -v node &> /dev/null; then
-	NODEJS_VERSION=0
-else
-	NODEJS_VERSION=$(node --version | cut -d'.' -f1 | tr -d 'v')
-fi
-
-if ! command -v npm &> /dev/null; then
-	NPM_VERSION=0
-else
-	NPM_VERSION=$(npm --version | cut -d'.' -f1)
-fi
-
-if ! command -v yarn &> /dev/null; then
-	YARN_VERSION=0
-else
-	YARN_VERSION=$(yarn --version | cut -d'.' -f1)
 fi
 
 if ! command -v casper-client &> /dev/null; then
@@ -168,11 +144,6 @@ fi
 
 if [ $OS_RELEASE -lt 18 ]; then
 	echo -e "${COLOR_RED}You are using Ubuntu version $OS_RELEASE. Please use at least Ubuntu version 18${COLOR_END}"
-	exit 1
-fi
-
-if [ $MYSQL_VERSION -lt 5 ]; then
-	echo -e "${COLOR_RED}You are using Mysql version $MYSQL_VERSION. Please install and configure at least Mysql version 5${COLOR_END}"
 	exit 1
 fi
 
