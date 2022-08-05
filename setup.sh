@@ -7,10 +7,65 @@ COLOR_END='\033[0m'
 
 echo -e "${COLOR_GREEN}Setting up CasperFYRE API..${COLOR_END}"
 echo
-echo -e "Please have your database details ready before starting this setup."
-read -p "Press enter to continue >" READY
-echo
-echo
+
+while true; do
+	read -p "Is this for a dev build? (y/n) >" YN
+	case $YN in
+		[yY] ) DEV_BUILD=true;
+			break;;
+		[nN] ) echo;
+			break;;
+		* ) ;;
+	esac
+done
+
+if [ -z "$DEV_BUILD" ]; then
+	echo "PRODUCTION BUILD"
+	echo
+	echo -e "Please have your database details ready before starting this setup."
+	read -p "Press enter to continue >" READY
+	echo
+	echo
+
+	echo -e "${COLOR_YELLOW}Please enter the main URL of this server. Default (casperfyre.com)${COLOR_END}"
+	read -p "Main domain URL: " FRONTEND_URL
+	if [ -z "$FRONTEND_URL" ]; then
+		FRONTEND_URL="casperfyre.com"
+	fi
+
+	echo -e "${COLOR_YELLOW}Please enter the API URL of this server. Default (api.casperfyre.com)${COLOR_END}"
+	read -p "API domain URL: " CORS_SITE
+	if [ -z "$CORS_SITE" ]; then
+		CORS_SITE="api.casperfyre.com"
+	fi
+
+	DATABASE_TYPE="mysql"
+
+	echo -e "${COLOR_YELLOW}Please enter your database hostname. Default (localhost)${COLOR_END}"
+	read -p "Database host: " DATABASE_HOST
+	if [ -z "$DATABASE_HOST" ]; then
+		DATABASE_HOST="localhost"
+	fi
+
+	echo -e "${COLOR_YELLOW}Please enter your database user. Default (root) ${COLOR_END}"
+	read -p "Database username: " DATABASE_USER
+	if [ -z "$DATABASE_USER" ]; then
+		DATABASE_USER="root"
+	fi
+
+	echo -e "${COLOR_YELLOW}Please enter your database password. ${COLOR_END}"
+	read -s -p "Database password: " DATABASE_PASSWORD
+	if [ -z "$DATABASE_PASSWORD" ]; then
+		echo -e "${COLOR_RED}Please specify a password for your Mysql database. ${COLOR_END}"
+		exit 1
+	fi
+
+else
+	echo "DEV BUILD"
+	FRONTEND_URL="GITPOD:3000"
+	CORS_SITE="GITPOD:3001"
+	DATABASE_TYPE="sqlite"
+fi
 
 echo -e "${COLOR_YELLOW}Your email address (Admin email)${COLOR_END}"
 read -p "Your email: " ADMIN_EMAIL
@@ -19,42 +74,7 @@ if [ -z "$ADMIN_EMAIL" ]; then
 	exit 1
 fi
 
-echo -e "${COLOR_YELLOW}Please enter the main URL of this server. Default (casperfyre.com)${COLOR_END}"
-read -p "Main domain URL: " FRONTEND_URL
-if [ -z "$FRONTEND_URL" ]; then
-	FRONTEND_URL="casperfyre.com"
-fi
-
-echo -e "${COLOR_YELLOW}Please enter the API URL of this server. Default (api.casperfyre.com)${COLOR_END}"
-read -p "API domain URL: " CORS_SITE
-if [ -z "$CORS_SITE" ]; then
-	CORS_SITE="api.casperfyre.com"
-fi
-
-echo -e "${COLOR_YELLOW}Please enter a known validator IP. Default (18.219.70.138)${COLOR_END}"
-read -p "Node IP: " NODE_IP
-if [ -z "$NODE_IP" ]; then
-	NODE_IP="18.219.70.138"
-fi
-
-echo -e "${COLOR_YELLOW}Please enter your database hostname. Default (localhost)${COLOR_END}"
-read -p "Database host: " DATABASE_HOST
-if [ -z "$DATABASE_HOST" ]; then
-	DATABASE_HOST="localhost"
-fi
-
-echo -e "${COLOR_YELLOW}Please enter your database user. Default (root) ${COLOR_END}"
-read -p "Database username: " DATABASE_USER
-if [ -z "$DATABASE_USER" ]; then
-	DATABASE_USER="root"
-fi
-
-echo -e "${COLOR_YELLOW}Please enter your database password. ${COLOR_END}"
-read -s -p "Database password: " DATABASE_PASSWORD
-if [ -z "$DATABASE_PASSWORD" ]; then
-	echo -e "${COLOR_RED}Please specify a password for your Mysql database. ${COLOR_END}"
-	exit 1
-fi
+NODE_IP="18.219.70.138"
 
 echo -e "${COLOR_GREEN}Generating entropy...${COLOR_END}"
 
@@ -81,6 +101,7 @@ sed -i "s/\[ADMIN_EMAIL\]/$ADMIN_EMAIL/g" .env
 sed -i "s/\[FRONTEND_URL\]/$FRONTEND_URL/g" .env
 sed -i "s/\[CORS_SITE\]/$CORS_SITE/g" .env
 sed -i "s/\[NODE_IP\]/$NODE_IP/g" .env
+sed -i "s/\[DB_CONN\]/$DATABASE_TYPE/g" .env
 sed -i "s/\[DB_HOST\]/$DATABASE_HOST/g" .env
 sed -i "s/\[DB_USER\]/$DATABASE_USER/g" .env
 sed -i "s/\[DB_PASS\]/$DATABASE_PASSWORD/g" .env
