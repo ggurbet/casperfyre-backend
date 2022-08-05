@@ -13,7 +13,7 @@ The system will check for the existence of the following softwares that are requ
 ```
  1. Ubuntu 20+
  2. Apache2 (Not required for dev build)
- 3. PHP 7+ {bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
+ 3. PHP 7+ {bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp,sqlite3}
  4. Mysql 5+
  5. cURL
  6. Composer 2+

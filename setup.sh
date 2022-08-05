@@ -176,7 +176,7 @@ if [ $PHP_VERSION -lt 7 ]; then
 	sudo add-apt-repository ppa:ondrej/php
 	sudo apt-get update
 	sudo apt-get install -y php8.1
-	sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
+	sudo apt-get install -y php8.1-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp,sqlite3}
 else
 	echo -e "${COLOR_GREEN}PHP installed${COLOR_END}"
 fi

@@ -4,7 +4,7 @@
  */
 class DB extends SQLite3 {
 	function __construct() {
-		$this->open(BASE_DIR.'/database/database.sqlite');
+		$this->open(BASE_DIR.'/database.sqlite');
 	}
 
 	function __destruct() {
@@ -56,7 +56,7 @@ class DB extends SQLite3 {
 
 		if($tables) {
 			foreach ($tables as $table) {
-				$all_tables[] = $table['Tables_in_'.DB_NAME];
+				$all_tables[] = $table['Tables_in_'.DB_NAME] ?? $table['name'] ?? '';
 			}
 		}
 
@@ -190,7 +190,8 @@ class DB extends SQLite3 {
 			$this->do_query($query);
 			elog('DB: Created user table');
 			$created_email = getenv('ADMIN_EMAIL');
-			$random_password_hash = hash('sha256', 'Password123#');
+			$test_password = 'Password123#';
+			$test_password_hash = hash('sha256', $test_password);
 			$query = "
 				INSERT INTO `users` VALUES (
 					'5a199618-682d-2006-4c4c-c0cde9e672d5',
@@ -199,7 +200,7 @@ class DB extends SQLite3 {
 					1,
 					'admin',
 					'admin',
-					'$random_password_hash',
+					'$test_password_hash',
 					1,
 					NULL,
 					NULL,
@@ -216,6 +217,8 @@ class DB extends SQLite3 {
 			";
 			$this->do_query($query);
 			elog('Created admin');
+			elog('Email:    '.$created_email);
+			elog('Password: '.$test_password);
 		}
 
 		if(!in_array('wallets', $all_tables)) {

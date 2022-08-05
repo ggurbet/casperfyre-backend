@@ -1,3 +1,1 @@
-## Temporary *.pem file storage
-
-For usage by the Casper Client.
+## Temporary file storage for the server

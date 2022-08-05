@@ -21,9 +21,11 @@ include_once('classes/dotenv.php');
 $dotenv = new Dotenv(__DIR__.'/.env');
 $dotenv->load();
 
-$DEV_MODE = (bool)(getenv('DEV_MODE'));
+$DEV_SERVER = $_SERVER['HTTP_HOST'] ?? '';
+$DEV_SERVER = strpos($DEV_SERVER, "3001") !== false ? true : false;
+$DEV_MODE   = (bool)(getenv('DEV_MODE'));
 
-if ($_SERVER['SERVER_NAME'] == '127.0.0.1') {
+if ($DEV_SERVER) {
 	$DEV_MODE = true;
 }
 
