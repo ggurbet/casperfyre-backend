@@ -24,16 +24,18 @@ $dotenv->load();
 $DEV_SERVER = $_SERVER['HTTP_HOST'] ?? '';
 $DEV_SERVER = strpos($DEV_SERVER, "3001") !== false ? true : false;
 $DEV_MODE   = (bool)(getenv('DEV_MODE'));
+$DB_CONN    = 'mysql';
 
 if ($DEV_SERVER) {
 	$DEV_MODE = true;
+	$DB_CONN = 'sqlite';
 }
 
 define('BASE_DIR', __DIR__);
 define('API_VERSION', 1);
 define('APP_NAME', getenv('APP_NAME'));
 define('CORS_SITE', getenv('CORS_SITE'));
-define('DB_CONN', getenv('DB_CONN'));
+define('DB_CONN', $DB_CONN);
 define('DB_HOST', getenv('DB_HOST'));
 define('DB_USER', getenv('DB_USER'));
 define('DB_PASS', getenv('DB_PASS'));
