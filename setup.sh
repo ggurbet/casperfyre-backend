@@ -7,7 +7,7 @@ COLOR_END='\033[0m'
 
 echo -e "${COLOR_GREEN}Setting up CasperFYRE API..${COLOR_END}"
 echo
-echo -e "Please have your database and vhost details ready before starting this setup."
+echo -e "Please have your database details ready before starting this setup."
 read -p "Press enter to continue >" READY
 echo
 echo
@@ -15,22 +15,20 @@ echo
 echo -e "${COLOR_YELLOW}Your email address (Admin email)${COLOR_END}"
 read -p "Your email: " ADMIN_EMAIL
 if [ -z "$ADMIN_EMAIL" ]; then
-	echo -e "${COLOR_RED}Please specify a main URL for your server. ${COLOR_END}"
+	echo -e "${COLOR_RED}Please specify an email address to use for the initial admin. ${COLOR_END}"
 	exit 1
 fi
 
-echo -e "${COLOR_YELLOW}Please enter the main URL of this server (eg. casperfyre.com)${COLOR_END}"
+echo -e "${COLOR_YELLOW}Please enter the main URL of this server. Default (casperfyre.com)${COLOR_END}"
 read -p "Main domain URL: " FRONTEND_URL
 if [ -z "$FRONTEND_URL" ]; then
-	echo -e "${COLOR_RED}Please specify a main URL for your server. ${COLOR_END}"
-	exit 1
+	FRONTEND_URL="casperfyre.com"
 fi
 
-echo -e "${COLOR_YELLOW}Please enter the API URL of this server (eg. api.casperfyre.com)${COLOR_END}"
+echo -e "${COLOR_YELLOW}Please enter the API URL of this server. Default (api.casperfyre.com)${COLOR_END}"
 read -p "API domain URL: " CORS_SITE
 if [ -z "$CORS_SITE" ]; then
-	echo -e "${COLOR_RED}Please specify a API URL for your server. ${COLOR_END}"
-	exit 1
+	CORS_SITE="api.casperfyre.com"
 fi
 
 echo -e "${COLOR_YELLOW}Please enter a known validator IP. Default (18.219.70.138)${COLOR_END}"
@@ -57,14 +55,6 @@ if [ -z "$DATABASE_PASSWORD" ]; then
 	echo -e "${COLOR_RED}Please specify a password for your Mysql database. ${COLOR_END}"
 	exit 1
 fi
-
-echo ''
-# echo -e "${COLOR_YELLOW}Please enter your VHOST document directory for the backend API (eg. /var/www/casperfyre-backend/public). ${COLOR_END}"
-# read -p "VHOST directory: " API_VHOST
-# if [ -z "$API_VHOST" ]; then
-# 	echo -e "${COLOR_RED}Please specify your API VHOST directory. ${COLOR_END}"
-# 	exit 1
-# fi
 
 echo -e "${COLOR_GREEN}Generating entropy...${COLOR_END}"
 
@@ -101,12 +91,6 @@ echo -e "${COLOR_YELLOW}Checking for required software...${COLOR_END}"
 
 OS_VERSION=$(cat /etc/os-release | awk -F '=' '{print $2}' | tr -d '"' | sed -n '1 p')
 OS_RELEASE=$(cat /etc/os-release | awk -F '=' '{print $2}' | tr -d '"' | sed -n '2 p' | cut -d'.' -f1)
-
-if ! command -v apache2 &> /dev/null; then
-	APACHE_VERSION=0
-else
-	APACHE_VERSION=$(apache2 -v | tr -d '\n' | cut -d'/' -f2 | cut -d'.' -f1)
-fi
 
 if ! command -v php &> /dev/null; then
 	PHP_VERSION=0
@@ -166,14 +150,6 @@ if [ $MYSQL_VERSION -lt 5 ]; then
 	exit 1
 fi
 
-if [ $APACHE_VERSION -lt 2 ]; then
-	echo -e "${COLOR_YELLOW}Installing Apache2${COLOR_END}"
-	sudo apt -y install apache2
-	sudo apt -y install software-properties-common
-else
-	echo -e "${COLOR_GREEN}Apache installed${COLOR_END}"
-fi
-
 if [ $PHP_VERSION -lt 7 ]; then
 	echo -e "${COLOR_YELLOW}Installing PHP 8.1${COLOR_END}"
 	sudo add-apt-repository ppa:ondrej/php
@@ -196,10 +172,6 @@ else
 fi
 
 sudo apt -y install curl
-sudo a2enmod rewrite
-sudo a2enmod headers
-sudo a2enmod ssl
-sudo service apache2 restart
 sudo chown -R www-data:www-data tmp/
 
 if [ $COMPOSER_VERSION -lt 2 ]; then
@@ -227,7 +199,7 @@ fi
 
 echo -e "${COLOR_GREEN}[+] Done${COLOR_END}"
 echo 
-echo -e "Please note, you will still need to setup emailer credentials information in your .env before the email scheduler will work."
+echo -e "Please note, you will need to setup emailer credentials information in your .env before the email scheduler will work."
 echo
 echo -e "${COLOR_YELLOW}BACKUP YOUR MASTER KEY --> ${COLOR_GREEN}$MASTER_KEY${COLOR_END}"
 echo -e "Wallet keys/token balances will be lost if this key is lost."

@@ -940,7 +940,7 @@ function get_usage($guid = '') {
 			FROM orders
 			WHERE guid = '$guid' 
 			AND created_at >= '$twomonthsago' 
-			AND created_at < 'onemonthago'
+			AND created_at < '$onemonthago'
 			AND (
 				fulfilled = 0
 				OR

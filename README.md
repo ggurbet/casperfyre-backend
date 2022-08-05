@@ -12,7 +12,7 @@ The system will check for the existence of the following softwares that are requ
 
 ```
  1. Ubuntu 20+
- 2. Apache2
+ 2. Apache2 (Not required for dev build)
  3. PHP 7+ {bcmath,bz2,intl,gd,mbstring,mysql,zip,common,curl,xml,gmp}
  4. Mysql 5+
  5. cURL
@@ -61,7 +61,7 @@ cd casperfyre-api
 ./setup.sh
 ```
 
-**Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, follow these steps.
+**Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, or if you plan on deploying a production build, follow these steps.
 
 ```bash
 sudo apt -y install apache2
@@ -125,9 +125,11 @@ For this example, using an Ubuntu 20 Ec2 instance, our http vhost would look som
 </VirtualHost>
 ```
 
+## Finish Environment
+
 The first time pinging the server will build the tables inside the given named database and create an admin account.
 
-Find admin credentials in apache error log. Example output:
+Find admin credentials in the server log. Example output:
 
 ````
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Created admin
@@ -135,9 +137,7 @@ Find admin credentials in apache error log. Example output:
 [CasperFYRE 2022-04-05T12:28:46-04:00] - Password: "password"
 ````
 
-You can also use the apache error log to explore any/all API calls resulting in anything other than a success 200 code.
-
-### Finish Environment
+You can also use the server log to explore any/all API calls resulting in anything other than a success 200 code.
 
 The setup script does not contain interactive input pertaining to the webmaster email. You must setup an email server and provide an email username, password, port, host, etc; Or a relay API key like Sendgrid, in order to make the webmaster email scheduler function. This is required for receiving 2fa codes, getting registration confirmation codes, password reset links, and other similar functions.
 
@@ -146,6 +146,12 @@ cat .env
 ```
 
 Adjust your .env configuration variables to fit your instance. 
+
+Finally, you can use the built in PHP server for testing. To spin up the built in PHP server, run
+
+```bash
+composer run-script serve-dev
+```
 
 ## Usage Guide
 
@@ -174,12 +180,6 @@ We use PHPUnit for unit testing of the portal's critical functionality. In order
 
 ```bash
 composer run-script test
-```
-
-Instead of creating an Apache server and setting up VHOSTs, you can use the built in PHP server for testing instead. To spin up the built in PHP server, run
-
-```bash
-composer run-script server-dev
 ```
 
 ### Documentation
