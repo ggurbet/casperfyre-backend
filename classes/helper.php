@@ -519,7 +519,6 @@ class Helper {
 		curl_close($curl);
 		$decodedResponse = json_decode($response, true);
 		$uref = $decodedResponse['result']['stored_value']['Account']['main_purse'] ?? '';
-		elog($uref);
 
 		// finally get balance
 		$json_data = [

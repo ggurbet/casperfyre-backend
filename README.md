@@ -26,40 +26,16 @@ Ubuntu 20+ and Apache2 are optional and can be switched out for other common pla
 
 We generally would use the latest version of Ubuntu for testing installs. Example hosting server: AWS ec2 t2 medium with at least 10Gb SSD. Before doing anything else, make sure you're up to date.
 
-```bash
-sudo apt-get update
-```
+For a dev build, we are using Gitpod.
 
-### Database
-
-You will first need to create the database itself manually, and set user/password for your DB.
-
-e.g. 
+**Option 1 -** Use Gitpod Dev deployment. Spin up a new Gitpod workspace and execute the following.
 
 ```bash
-sudo apt -y install mysql-server
-sudo mysql -u root
-```
-
-```sql
-mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'YOUR_DATABASE_PASSWORD';
-mysql> create database casperfyre;
-mysql> exit
-````
-
-### Software
-
-Setup the repo according to our VHOST path using the instruction below. Note, the actual VHOST path in this case would be set to **/var/www/casperfyre-api/public**
-
-**Option 1 -** Navigate to the http root, and run **setup.sh** to run interactive setup script.
-
-```bash
-sudo mkdir /var/www
-cd /var/www/
-git clone https://github.com/ledgerleapllc/casperfyre-backend casperfyre-api
-cd casperfyre-api
 ./setup.sh
+composer run-script serve-dev
 ```
+
+Gitpod should allow you to forward the traffic from the API to the browser and use URL as our API url to which we can point a front end.
 
 **Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, or if you plan on deploying a production build, follow these steps.
 
