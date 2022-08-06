@@ -35,7 +35,7 @@ For a dev build, we are using Gitpod.
 composer run-script serve-dev
 ```
 
-Gitpod should allow you to forward the traffic from the API to the browser and use URL as our API url to which we can point a front end.
+Gitpod should allow you to forward the traffic from the API to the browser and use the URL as our API url to which we can point a front end.
 
 **Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, or if you plan on deploying a production build, follow these steps.
 

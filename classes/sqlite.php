@@ -21,8 +21,10 @@ class DB extends SQLite3 {
 		$return = null;
 		$ret = $this->query($query);
 
-		while($row = $ret->fetchArray(SQLITE3_ASSOC)) {
-			$return[] = $row;
+		if ($ret) {
+			while ($row = $ret->fetchArray(SQLITE3_ASSOC)) {
+				$return[] = $row;
+			}
 		}
 
 		return $return;
