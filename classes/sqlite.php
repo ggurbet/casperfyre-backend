@@ -223,8 +223,8 @@ class SqliteDB extends SQLite3 {
 			elog('Password: '.$test_password);
 
 			// integration test user
-			$created_email = getenv('INTEGRATION_EMAIL');
-			$test_password = getenv('INTEGRATION_PASSWORD');
+			$created_email = getenv('INTEGRATION_TEST_EMAIL');
+			$test_password = getenv('INTEGRATION_TEST_PASSWORD');
 			$test_password_hash = hash('sha256', $test_password);
 			$query = "
 				INSERT INTO `users` VALUES (
@@ -250,7 +250,7 @@ class SqliteDB extends SQLite3 {
 				)
 			";
 			$this->do_query($query);
-			elog('Created admin');
+			elog('Created test user');
 			elog('Email:    '.$created_email);
 			elog('Password: '.$test_password);
 		}
