@@ -69,7 +69,9 @@ else
 	DATABASE_USER=""
 	DATABASE_PASSWORD=""
 
-	rm database.sqlite
+	if [ -f "database.sqlite" ]; then
+		rm database.sqlite
+	fi
 fi
 
 echo -e "${COLOR_YELLOW}Your email address (Admin email)${COLOR_END}"
