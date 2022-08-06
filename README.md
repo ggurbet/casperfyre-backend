@@ -144,6 +144,15 @@ curl -X POST https://api.casperfyre.com/v1/dispense \
   -d '{ "address": "CSPR_ADDRESS", "amount": 100 }'
 ```
 
+Or, if you are testing with a Gitpod,
+
+```bash
+curl -X POST https://YOUR-GITPOD-URL.gitpod.io/v1/dispense \
+  -H 'Content-type: application/json' \
+  -H 'Authorization: token API_KEY' \
+  -d '{ "address": "CSPR_ADDRESS", "amount": 100 }'
+```
+
 This example curl request will dispense 100 token to the specified address. Please note, if you are deploying to your own instance and domain, the base URL will be your own URL that you setup, not **api.casperfyre.com**.
 
 ### Other notes
