@@ -221,6 +221,38 @@ class DB extends SQLite3 {
 			elog('Created admin');
 			elog('Email:    '.$created_email);
 			elog('Password: '.$test_password);
+
+			// integration test user
+			$created_email = getenv('INTEGRATION_EMAIL');
+			$test_password = getenv('INTEGRATION_PASSWORD');
+			$test_password_hash = hash('sha256', $test_password);
+			$query = "
+				INSERT INTO `users` VALUES (
+					'00000000-0000-0000-4c4c-000000000000',
+					'admin',
+					'$created_email',
+					1,
+					'admin',
+					'admin',
+					'$test_password_hash',
+					1,
+					NULL,
+					NULL,
+					NULL,
+					'ledgerleap llc',
+					' -- dev: no description -- ',
+					0,
+					0,
+					1,
+					NULL,
+					0,
+					0
+				)
+			";
+			$this->do_query($query);
+			elog('Created admin');
+			elog('Email:    '.$created_email);
+			elog('Password: '.$test_password);
 		}
 
 		if(!in_array('wallets', $all_tables)) {
