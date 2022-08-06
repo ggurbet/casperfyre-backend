@@ -56,7 +56,8 @@ if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
  * Load classes
  */
 include_once('vendor/autoload.php');
-DB_CONN == 'sqlite' ? include_once('classes/sqlite.php') : include_once('classes/db.php');
+include_once('classes/db.php');
+include_once('classes/sqlite.php');
 include_once('classes/helper.php');
 include_once('classes/throttle.php');
 include_once('classes/endpoints.php');
@@ -71,11 +72,15 @@ include_once('classes/Blake2b.php');
  * @var Throttle  $throttle      Helper instance.
  *
  */
-$db =       new DB();
-$helper =   new Helper();
+if (DB_CONN == 'sqlite') {
+	$db   = new SqliteDB();
+} else {
+	$db   = new DB();
+}
+$helper   = new Helper();
 $db->check_integrity();
 $throttle = new Throttle($helper->get_real_ip());
-$blake2b =  new Blake2b();
+$blake2b  = new Blake2b();
 
 /**
  * Error logging

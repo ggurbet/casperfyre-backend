@@ -2,7 +2,7 @@
 /**
  * Sqlite database class. Purposed for unit test workflow
  */
-class DB extends SQLite3 {
+class SqliteDB extends SQLite3 {
 	function __construct() {
 		$this->open(BASE_DIR.'/database.sqlite');
 	}
