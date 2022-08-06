@@ -229,11 +229,11 @@ class SqliteDB extends SQLite3 {
 			$query = "
 				INSERT INTO `users` VALUES (
 					'00000000-0000-0000-4c4c-000000000000',
-					'admin',
+					'user',
 					'$created_email',
 					1,
-					'admin',
-					'admin',
+					'user',
+					'user',
 					'$test_password_hash',
 					1,
 					NULL,

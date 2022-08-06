@@ -27,9 +27,8 @@ $DEV_SERVER = strpos($DEV_SERVER, "gitpod") !== false ? true : false;
 $DEV_MODE   = (bool)(getenv('DEV_MODE'));
 $DB_CONN    = 'mysql';
 
-if ($DEV_SERVER) {
-	$DEV_MODE = true;
-	$DB_CONN = 'sqlite';
+if ($DEV_SERVER || $DEV_MODE) {
+	$DB_CONN  = 'sqlite';
 }
 
 define('BASE_DIR', __DIR__);
@@ -72,7 +71,7 @@ include_once('classes/Blake2b.php');
  * @var Throttle  $throttle      Helper instance.
  *
  */
-if (DB_CONN == 'sqlite') {
+if ($DB_CONN == 'sqlite') {
 	$db   = new SqliteDB();
 } else {
 	$db   = new DB();
