@@ -216,7 +216,7 @@ class DB {
 			$this->do_query($query);
 			elog('DB: Created user table');
 			$created_email = getenv('ADMIN_EMAIL');
-			$random_password = $helper->generate_hash();
+			$random_password = Helper::generate_hash();
 			$random_password_hash = hash('sha256', $random_password);
 			$query = "
 				INSERT INTO `users` VALUES (
