@@ -2,16 +2,17 @@
 # Please adjust to your needs (see https://www.gitpod.io/docs/config-gitpod-file)
 # and commit this file to your remote git repository to share the goodness with others.
 
-image:
-  file: .gitpod.dockerfile
-  context: apache
-
 ports:
   - port: 8080
     onOpen: open-preview
+    visibility: public
 
 tasks:
   - name: Apache
-    command: a2enmod rewrite && a2enmod headers && apachectl start
+    command: >
+      sudo cp apache/apache.conf /etc/apache2/apache2.conf 
+      sudo a2enmod rewrite 
+      sudo a2enmod headers 
+      sudo apachectl start
   - name: Instructions
     command: echo "Run ./setup.sh to build API"
