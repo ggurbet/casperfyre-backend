@@ -2,6 +2,7 @@
 
 $DEV_SERVER = $_SERVER['HTTP_HOST'] ?? '';
 $DEV_SERVER = strpos($DEV_SERVER, "3001") !== false ? true : false;
+$DEV_SERVER = strpos($DEV_SERVER, "gitpod") !== false ? true : false;
 
 if ($DEV_SERVER) {
 	header("Access-Control-Allow-Origin: *");
