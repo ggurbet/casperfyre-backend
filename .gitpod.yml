@@ -12,6 +12,6 @@ ports:
 
 tasks:
   - name: Apache
-    command: apachectl start &&
+    command: a2enmod rewrite && a2enmod headers && apachectl start
   - name: Instructions
     command: echo "Run ./setup.sh to build API"
