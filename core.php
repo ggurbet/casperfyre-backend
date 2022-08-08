@@ -21,21 +21,11 @@ include_once('classes/dotenv.php');
 $dotenv = new Dotenv(__DIR__.'/.env');
 $dotenv->load();
 
-$DEV_SERVER = $_SERVER['HTTP_HOST'] ?? '';
-$DEV_SERVER = strstr($DEV_SERVER, "3001")   ? true : false;
-$DEV_SERVER = strstr($DEV_SERVER, "gitpod") ? true : false;
-$DEV_MODE   = (bool)(getenv('DEV_MODE'));
-$DB_CONN    = 'mysql';
-
-if ($DEV_SERVER || $DEV_MODE) {
-	$DB_CONN  = 'sqlite';
-}
-
 define('BASE_DIR', __DIR__);
 define('API_VERSION', 1);
 define('APP_NAME', getenv('APP_NAME'));
 define('CORS_SITE', getenv('CORS_SITE'));
-define('DB_CONN', $DB_CONN);
+define('DB_CONN', getenv('DB_CONN'));
 define('DB_HOST', getenv('DB_HOST'));
 define('DB_USER', getenv('DB_USER'));
 define('DB_PASS', getenv('DB_PASS'));
@@ -43,7 +33,7 @@ define('DB_NAME', getenv('DB_NAME'));
 define('ADMIN_EMAIL', getenv('ADMIN_EMAIL'));
 define('MASTER_KEY', getenv('MASTER_KEY'));
 define('CRON_TOKEN', getenv('CRON_TOKEN'));
-define('DEV_MODE', $DEV_MODE);
+define('DEV_MODE', (bool)(getenv('DEV_MODE')));
 
 if(filter_var(getenv('NODE_IP'), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 	define('NODE_IP', 'http://'.getenv('NODE_IP').':7777');
