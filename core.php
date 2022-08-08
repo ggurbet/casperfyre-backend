@@ -61,7 +61,7 @@ include_once('classes/Blake2b.php');
  * @var Throttle  $throttle      Helper instance.
  *
  */
-if ($DB_CONN == 'sqlite') {
+if (DB_CONN == 'sqlite') {
 	$db   = new SqliteDB();
 } else {
 	$db   = new DB();
