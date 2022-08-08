@@ -25,13 +25,13 @@ class AdminGetHistory extends Endpoints {
 				SELECT * 
 				FROM orders
 				WHERE guid = '$user_guid'
-				ORDER BY id DESC
+				ORDER BY created_at DESC
 			";
 		} else {
 			$query = "
 				SELECT * 
 				FROM orders
-				ORDER BY id DESC
+				ORDER BY created_at DESC
 			";
 		}
 

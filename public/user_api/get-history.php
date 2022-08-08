@@ -19,7 +19,7 @@ class UserGetHistory extends Endpoints {
 			SELECT * 
 			FROM orders
 			WHERE guid = '$guid'
-			ORDER BY id DESC
+			ORDER BY created_at DESC
 		";
 		$results = $db->do_select($query);
 

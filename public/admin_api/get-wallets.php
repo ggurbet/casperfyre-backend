@@ -27,7 +27,7 @@ class AdminGetWallets extends Endpoints {
 
 		if($user_guid) $query .= " WHERE guid = '$user_guid'";
 
-		$query .= " ORDER BY id DESC";
+		$query .= " ORDER BY created_at DESC";
 		$selection = $db->do_select($query);
 
 		_exit(

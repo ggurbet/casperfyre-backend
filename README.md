@@ -37,6 +37,12 @@ apachectl start
 
 Gitpod should allow you to forward the traffic from the API to the browser and use the public URL as our API to which we can point a front end.
 
+Since there is no emailer in Dev mode, we can collect email content, 2fa codes, etc. From the logger.
+
+```bash
+tail -f /var/log/apache2/error.log
+```
+
 **Option 2 -** If you need to setup the software manually, or if something goes wrong with the setup script, or if you plan on deploying a production build, follow these steps.
 
 ```bash
