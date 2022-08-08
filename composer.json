@@ -20,7 +20,7 @@
         ]
     },
     "scripts": {
-        "serve-dev": "php -S 0.0.0.0:3001 -t public/",
+        "serve-dev": "php -S 0.0.0.0:3000 -t public/",
         "test": "echo ; echo '[+] Running Unit Tests' ; echo ; ./vendor/bin/phpunit --testdox tests/Unit",
         "test-integration": "echo ; echo '[+] Running Integration Tests' ; echo ; ./vendor/bin/phpunit --testdox tests/Integration",
         "generate-docs": "./phpdoc -d . --ignore docs/ --ignore vendor/ --ignore .git/ -t docs && ./phpdoc -d public/external_api/v1/ --ignore public/external_api/v1/index.php -t public/docs && sed -i 's/--primary-color-hue: 96/--primary-color-hue: 1/' public/docs/css/base.css && sed -i 's/--primary-color-saturation: 57/--primary-color-saturation: 80/' public/docs/css/base.css && echo 'Docs have been generated and outputted to http://BASEURL.com/docs/'"

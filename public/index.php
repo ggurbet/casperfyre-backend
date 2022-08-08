@@ -4,9 +4,9 @@ header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
 header('Access-Control-Allow-Methods:  POST, PUT, GET, OPTIONS');
 
-$DEV_SERVER = $_SERVER['HTTP_HOST'] ?? '';
-$DEV_SERVER = strstr($DEV_SERVER, "3001") ? true : false;
-$DEV_SERVER = strstr($DEV_SERVER, "gitpod") ? true : false;
+$HTTP_HOST = $_SERVER['HTTP_HOST'] ?? '';
+$DEV_SERVER = strstr($HTTP_HOST, "3000") ? true : false;
+$DEV_SERVER = strstr($HTTP_HOST, "gitpod") ? true : false;
 
 if ($DEV_SERVER) {
 	function elog2($msg) {

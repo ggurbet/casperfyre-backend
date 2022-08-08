@@ -4,7 +4,3 @@
 
 tasks:
   - init: echo "Run ./setup.sh to build API"
-
-ports:
-  - port: 3001
-    onOpen: open-browser
