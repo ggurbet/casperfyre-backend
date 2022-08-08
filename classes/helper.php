@@ -516,7 +516,6 @@ class Helper {
 		];
 		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($json_data));
 		$response = curl_exec($curl);
-		curl_close($curl);
 		$decodedResponse = json_decode($response, true);
 		$uref = $decodedResponse['result']['stored_value']['Account']['main_purse'] ?? '';
 
