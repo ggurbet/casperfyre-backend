@@ -8,6 +8,6 @@ ports:
     visibility: public
 
 tasks:
-  - init : sudo cp apache/apache.conf /etc/apache2/apache2.conf && sudo a2enmod rewrite && sudo a2enmod headers && sudo apachectl start
+  - init : sudo cp apache/apache.conf /etc/apache2/apache2.conf && sudo a2enmod rewrite && sudo a2enmod headers
   - name: Instructions
     command: echo "Run ./setup.sh to build API"
