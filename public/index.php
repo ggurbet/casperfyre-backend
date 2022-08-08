@@ -1,14 +1,14 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
+header('Access-Control-Allow-Methods:  POST, PUT, GET, OPTIONS');
+
 $DEV_SERVER = $_SERVER['HTTP_HOST'] ?? '';
 $DEV_SERVER = strstr($DEV_SERVER, "3001") ? true : false;
 $DEV_SERVER = strstr($DEV_SERVER, "gitpod") ? true : false;
 
 if ($DEV_SERVER) {
-	header("Access-Control-Allow-Origin: *");
-	header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
-	header('Access-Control-Allow-Methods:  POST, PUT, GET, OPTIONS');
-
 	function elog2($msg) {
 		file_put_contents('php://stdout', print_r($msg, true));
 		file_put_contents('php://stdout', print_r("\n", true));
