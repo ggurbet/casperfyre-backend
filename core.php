@@ -598,7 +598,7 @@ function _request($key, $strict = 0) {
  * @param  string $datetime
  * @param  string $ip
  * @param  int    $return_code
- * @param  int    $fulfilled
+ * @param  int    $fulfilled    Fulfilled codes: 0 = pending, 1 = sent/confirmed, 2 = failed
  * @param  int    $amount
  * @param  string $address
  * @param  int    $api_key_id

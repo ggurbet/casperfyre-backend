@@ -31,7 +31,15 @@ class UserUpdateLimits extends Endpoints {
 		$message = '';
 
 		if(gettype($per_limit) == 'integer') {
-			$per_limit < 0 ? $per_limit = 0 : $per_limit;
+			if($per_limit < 0) {
+				_exit(
+					'error',
+					'Cannot change a limit to a negative number',
+					400,
+					'Cannot change a limit to a negative number'
+				);
+			}
+
 			$query = "
 				UPDATE limits
 				SET per_limit = $per_limit
@@ -42,7 +50,15 @@ class UserUpdateLimits extends Endpoints {
 		}
 
 		if(gettype($day_limit) == 'integer') {
-			$day_limit < 0 ? $day_limit = 0 : $day_limit;
+			if($day_limit < 0) {
+				_exit(
+					'error',
+					'Cannot change a limit to a negative number',
+					400,
+					'Cannot change a limit to a negative number'
+				);
+			}
+
 			$query = "
 				UPDATE limits
 				SET day_limit = $day_limit
@@ -53,7 +69,15 @@ class UserUpdateLimits extends Endpoints {
 		}
 
 		if(gettype($month_limit) == 'integer') {
-			$month_limit < 0 ? $month_limit = 0 : $month_limit;
+			if($month_limit < 0) {
+				_exit(
+					'error',
+					'Cannot change a limit to a negative number',
+					400,
+					'Cannot change a limit to a negative number'
+				);
+			}
+
 			$query = "
 				UPDATE limits
 				SET month_limit = $month_limit
